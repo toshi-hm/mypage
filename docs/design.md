@@ -11,7 +11,7 @@
 ### 非スコープ(現時点)
 
 - Cloudflare への実デプロイ(設定・手順の準備のみ行う)
-- CMS・DB などの動的バックエンド
+- DB などの動的バックエンド(記事は Git ベース CMS で管理する。`docs/design-articles.md` 参照)
 - 多言語対応
 
 ## 2. 技術選定
@@ -153,7 +153,8 @@ ci.yml
 
 1. `wrangler.jsonc` の `assets` 設定で `dist/` を static assets として配信(準備済み)
 2. Cloudflare アカウント連携後、`bunx wrangler deploy` でデプロイ
-3. 将来的には CI に deploy ジョブを追加(main マージ時に自動デプロイ、`CLOUDFLARE_API_TOKEN` を Secrets 管理)
+3. CMS(`/admin`)の本番ログイン用 GitHub OAuth プロキシを Cloudflare Workers に追加(`docs/design-articles.md` 参照)
+4. 将来的には CI に deploy ジョブを追加(main マージ時に自動デプロイ、`CLOUDFLARE_API_TOKEN` を Secrets 管理)
 
 ## 9. 開発支援 (Claude Code)
 

@@ -1,0 +1,22 @@
+---
+// Sveltia CMS 管理画面。@sveltia/cms を Vite でバンドルして同梱する(外部 CDN 非依存)。
+// ローカルでは「Work with Local Repository」でプロキシ不要で編集できる。
+// 本番で GitHub ログインを使うには OAuth プロキシが必要(docs/design-articles.md 参照)。
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<link rel="cms-config-url" href="/admin/config.yml" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<title>Content Manager | mypage</title>
+	</head>
+	<body>
+		<script>
+			import "@sveltia/cms";
+		</script>
+	</body>
+</html>

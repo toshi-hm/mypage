@@ -1,6 +1,13 @@
 ---
+import { getCollection } from "astro:content";
+import ArticleCard from "../components/ArticleCard.astro";
 import LinkCard from "../components/LinkCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
+
+const latestArticles = sortByPubDateDesc(
+	await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
+).slice(0, 3);
 ---
 
 <BaseLayout title="Home">
@@ -11,6 +18,28 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			で配信される予定の個人ホームページです。
 		</p>
 	</section>
+
+	{
+		latestArticles.length > 0 && (
+			<section>
+				<h2>Latest Articles</h2>
+				<div class="cards">
+					{latestArticles.map((article) => (
+						<ArticleCard
+							slug={article.id}
+							title={article.data.title}
+							summary={excerpt(article.data, article.body)}
+							pubDate={article.data.pubDate}
+							tags={article.data.tags}
+						/>
+					))}
+				</div>
+				<p class="more">
+					<a href="/articles/">すべての記事を見る →</a>
+				</p>
+			</section>
+		)
+	}
 
 	<section>
 		<h2>Links</h2>

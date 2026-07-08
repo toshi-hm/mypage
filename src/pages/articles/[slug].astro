@@ -1,0 +1,97 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { excerpt, formatDate, isPublishable } from "../../utils/articles";
+
+export async function getStaticPaths() {
+	const articles = await getCollection("articles", ({ data }) =>
+		isPublishable(data, import.meta.env.PROD),
+	);
+	return articles.map((article) => ({
+		params: { slug: article.id },
+		props: { article },
+	}));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const { title, pubDate, updatedDate, tags } = article.data;
+---
+
+<BaseLayout title={title} description={excerpt(article.data, article.body)}>
+	<article>
+		<header>
+			<h1>{title}</h1>
+			<p class="meta">
+				<time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+				{
+					updatedDate && (
+						<span>
+							(更新: <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>)
+						</span>
+					)
+				}
+			</p>
+			{
+				tags.length > 0 && (
+					<ul class="tags">
+						{tags.map((tag) => (
+							<li>{tag}</li>
+						))}
+					</ul>
+				)
+			}
+		</header>
+		<div class="body">
+			<Content />
+		</div>
+		<footer>
+			<a href="/articles/">← 記事一覧へ</a>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	header h1 {
+		margin-bottom: 0.25rem;
+	}
+
+	.meta {
+		margin: 0 0 0.5rem;
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+	}
+
+	.tags {
+		display: flex;
+		gap: 0.4rem;
+		list-style: none;
+		margin: 0 0 1rem;
+		padding: 0;
+		font-size: 0.8rem;
+	}
+
+	.tags li {
+		padding: 0.05rem 0.5rem;
+		border-radius: 999px;
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+		font-weight: 600;
+	}
+
+	.body :global(pre) {
+		padding: 1rem;
+		border-radius: var(--radius);
+		overflow-x: auto;
+	}
+
+	.body :global(img) {
+		max-width: 100%;
+	}
+
+	footer {
+		margin-top: 2.5rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--color-border);
+	}
+</style>
