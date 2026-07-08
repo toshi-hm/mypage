@@ -33,3 +33,13 @@
 
 - コミットメッセージの機械検証(commitlint)。個人リポジトリでは規約(`.claude/rules/git-workflow.md`)運用で十分
 - ビジュアルリグレッションテスト
+
+## 5. バージョン方針(2026-07 監査)
+
+- **npm 依存**: `bun outdated` で監査し、最新へ追従(以後は Dependabot が週次で追従)
+  - **TypeScript は 6.x に据え置き**: TS 7(ネイティブコンパイラ)は `@astrojs/check` の
+    peerDependencies が `^5 || ^6` のため未対応。対応後に移行する(据え置き理由を明記)
+- **GitHub Actions**: Node.js 20 ランナーの廃止(2026-09)に伴い Node 24 対応版へ更新
+  - `actions/checkout` v4 → **v7** / `actions/upload-artifact` v4 → **v7**
+  - `oven-sh/setup-bun` は v2 が現行 major のまま
+  - 以後は Dependabot(github-actions エコシステム)が週次で追従

@@ -14,7 +14,7 @@ jobs:
     name: Lint & Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -30,7 +30,7 @@ jobs:
     name: Typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -41,14 +41,14 @@ jobs:
     name: Unit Test (coverage gate)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
       - run: bun install --frozen-lockfile
       - name: "Vitest (coverage thresholds: stmts 90 / branch 85 / funcs 90 / lines 90)"
         run: bun run test:coverage
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: coverage-report
           path: coverage/
@@ -58,7 +58,7 @@ jobs:
     name: Build (Astro)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -66,7 +66,7 @@ jobs:
       - run: bun run build
       - name: Validate wrangler config (dry-run)
         run: bun run deploy:dry-run
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
@@ -76,7 +76,7 @@ jobs:
     name: Build (Storybook)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -87,7 +87,7 @@ jobs:
     name: E2E & A11y (Playwright)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -95,7 +95,7 @@ jobs:
       - run: bunx playwright install --with-deps chromium
       - run: bun run build
       - run: bun run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
@@ -106,7 +106,7 @@ jobs:
     name: Lighthouse
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -114,7 +114,7 @@ jobs:
       - run: bun run build
       - name: Lighthouse CI (perf >= 0.9, a11y / bp / seo = 1.0)
         run: bun run lighthouse
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: lighthouse-reports
