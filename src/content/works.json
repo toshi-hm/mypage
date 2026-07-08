@@ -1,0 +1,22 @@
+{
+  "works": [
+    {
+      "id": "mypage",
+      "name": "mypage(このサイト)",
+      "description": "Astro 7 + React islands + Bun で構築した個人ホームページ。Git ベース CMS で記事を管理し、Cloudflare Workers で配信予定。",
+      "repo": "https://github.com/toshi-hm/mypage",
+      "tech": ["astro", "react", "typescript", "bun", "cloudflare"],
+      "featured": true,
+      "order": 1
+    },
+    {
+      "id": "sample-tool",
+      "name": "サンプルツール",
+      "description": "Works のデータ構造を示すサンプルエントリ。実際の制作物に置き換えてください。",
+      "url": "https://example.com",
+      "tech": ["typescript"],
+      "featured": false,
+      "order": 2
+    }
+  ]
+}

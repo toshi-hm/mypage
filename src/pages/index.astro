@@ -2,12 +2,15 @@
 import { getCollection } from "astro:content";
 import ArticleCard from "../components/ArticleCard.astro";
 import LinkCard from "../components/LinkCard.astro";
+import WorkCard from "../components/WorkCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
+import { sortWorks } from "../utils/works";
 
 const latestArticles = sortByPubDateDesc(
 	await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
 ).slice(0, 3);
+const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.featured));
 ---
 
 <BaseLayout title="Home">
@@ -36,6 +39,28 @@ const latestArticles = sortByPubDateDesc(
 				</div>
 				<p class="more">
 					<a href="/articles/">すべての記事を見る →</a>
+				</p>
+			</section>
+		)
+	}
+
+	{
+		featuredWorks.length > 0 && (
+			<section>
+				<h2>Featured Works</h2>
+				<div class="cards">
+					{featuredWorks.map((work) => (
+						<WorkCard
+							name={work.data.name}
+							description={work.data.description}
+							url={work.data.url}
+							repo={work.data.repo}
+							tech={work.data.tech}
+						/>
+					))}
+				</div>
+				<p class="more">
+					<a href="/works/">すべての制作物を見る →</a>
 				</p>
 			</section>
 		)
