@@ -50,6 +50,28 @@ export function sortByPubDateDesc<T extends { data: Pick<ArticleData, "pubDate">
   return entries.toSorted((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 }
 
+export interface FeedItem {
+  title: string;
+  pubDate: Date;
+  description: string;
+  link: string;
+}
+
+/**
+ * RSS フィード項目を組み立てる。pubDate 降順に並べ、
+ * description は excerpt(description → 本文抜粋)を使う。
+ */
+export function toFeedItems(
+  entries: Array<{ id: string; data: ArticleData; body?: string | undefined }>,
+): FeedItem[] {
+  return sortByPubDateDesc(entries).map((entry) => ({
+    title: entry.data.title,
+    pubDate: entry.data.pubDate,
+    description: excerpt(entry.data, entry.body),
+    link: `/articles/${entry.id}/`,
+  }));
+}
+
 /** 日付を YYYY-MM-DD 形式で整形する */
 export function formatDate(date: Date): string {
   const y = date.getFullYear();
