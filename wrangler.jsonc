@@ -1,0 +1,11 @@
+// Cloudflare Workers (static assets) 配信設定。
+// デプロイはまだ行わない。ローカル確認: bun run preview:cf
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mypage",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+}

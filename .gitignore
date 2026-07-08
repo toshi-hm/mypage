@@ -1,0 +1,24 @@
+# build output
+dist/
+storybook-static/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+*.log
+
+# environment
+.env
+.env.*
+!.env.example
+
+# cloudflare
+.wrangler/
+
+# misc
+.DS_Store
+coverage/

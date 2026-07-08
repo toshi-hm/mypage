@@ -1,0 +1,41 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "toshi-hm の個人ホームページ" } = Astro.props;
+const pageTitle = title === "Home" ? "toshi-hm | mypage" : `${title} | toshi-hm`;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<title>{pageTitle}</title>
+		<script is:inline>
+			// FOUC 防止のため、テーマを描画前に適用する
+			const stored = localStorage.getItem("theme");
+			const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+			const theme = stored === "light" || stored === "dark" ? stored : prefersDark ? "dark" : "light";
+			document.documentElement.dataset.theme = theme;
+		</script>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>
