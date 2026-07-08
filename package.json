@@ -25,6 +25,8 @@
     "@astrojs/sitemap": "^3.7.3",
     "@sveltia/cms": "^0.170.2",
     "astro": "^7.0.6",
+    "astro-pagefind": "^2.0.1",
+    "pagefind": "^1.5.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

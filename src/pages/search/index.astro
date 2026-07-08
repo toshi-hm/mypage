@@ -1,0 +1,30 @@
+---
+import Search from "astro-pagefind/components/Search.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search" description="サイト内検索">
+	<h1>Search</h1>
+	<p class="note">記事本文を全文検索できます。</p>
+	<Search className="pagefind-ui" searchboxOptions={{ showSubResults: true }} />
+</BaseLayout>
+
+<style is:global>
+	/* Pagefind UI をサイトのテーマ(CSS カスタムプロパティ)に追従させる */
+	.pagefind-ui {
+		--pagefind-ui-primary: var(--color-accent);
+		--pagefind-ui-text: var(--color-text);
+		--pagefind-ui-background: var(--color-surface);
+		--pagefind-ui-border: var(--color-border);
+		--pagefind-ui-tag: var(--color-accent-soft);
+		--pagefind-ui-border-radius: var(--radius);
+		--pagefind-ui-font: inherit;
+	}
+</style>
+
+<style>
+	.note {
+		color: var(--color-text-muted);
+		font-size: 0.9rem;
+	}
+</style>

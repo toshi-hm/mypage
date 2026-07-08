@@ -1,6 +1,7 @@
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
+import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +13,8 @@ export default defineConfig({
       // 管理画面はクローラ導線から除外(robots.txt / noindex と三重の防御)
       filter: (page) => !new URL(page).pathname.startsWith("/admin/"),
     }),
+    // ビルド後に dist/ から静的検索インデックスを生成する(/search/ で使用)
+    pagefind(),
   ],
   markdown: {
     shikiConfig: {
