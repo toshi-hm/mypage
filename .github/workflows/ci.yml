@@ -85,7 +85,7 @@ jobs:
           bun-version: latest
       - run: bun install --frozen-lockfile
       - run: bun run build
-      - name: Lighthouse CI (perf >= 0.95, a11y / bp / seo = 1.0)
+      - name: Lighthouse CI (perf >= 0.9, a11y / bp / seo = 1.0)
         run: bun run lighthouse
       - uses: actions/upload-artifact@v4
         if: always()
