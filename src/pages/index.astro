@@ -5,16 +5,23 @@ import HeroVisual from "../components/islands/HeroVisual";
 import LinkCard from "../components/LinkCard.astro";
 import WorkCard from "../components/WorkCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
+import { buildWebSiteLd } from "../utils/structured-data";
 import { sortWorks } from "../utils/works";
 
 const latestArticles = sortByPubDateDesc(
 	await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
 ).slice(0, 3);
 const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.featured));
+const jsonLd = buildWebSiteLd({
+	name: SITE_TITLE,
+	description: SITE_DESCRIPTION,
+	url: Astro.site?.href ?? "https://mypage.example.com/",
+});
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" jsonLd={jsonLd}>
 	<section class="hero">
 		<HeroVisual client:visible />
 		<p class="side-label" aria-hidden="true">個人サイト — since 2026</p>

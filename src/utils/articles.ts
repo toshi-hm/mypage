@@ -111,6 +111,32 @@ export function getAdjacentArticles<T extends { id: string; data: Pick<ArticleDa
   return { newer: sorted[index - 1], older: sorted[index + 1] };
 }
 
+/**
+ * タグ共起数ベースの関連記事を返す(共有タグ数降順 → pubDate 降順)。
+ * 自分自身と共有タグ 0 件の記事は含めない。
+ */
+export function relatedArticles<
+  T extends { id: string; data: Pick<ArticleData, "tags" | "pubDate"> },
+>(entries: T[], currentId: string, max = 3): T[] {
+  const current = entries.find((entry) => entry.id === currentId);
+  if (!current) return [];
+  const currentTags = new Set(current.data.tags);
+
+  return entries
+    .filter((entry) => entry.id !== currentId)
+    .map((entry) => ({
+      entry,
+      shared: entry.data.tags.filter((tag) => currentTags.has(tag)).length,
+    }))
+    .filter(({ shared }) => shared > 0)
+    .toSorted(
+      (a, b) =>
+        b.shared - a.shared || b.entry.data.pubDate.getTime() - a.entry.data.pubDate.getTime(),
+    )
+    .slice(0, max)
+    .map(({ entry }) => entry);
+}
+
 /** 日付を YYYY-MM-DD 形式で整形する */
 export function formatDate(date: Date): string {
   const y = date.getFullYear();

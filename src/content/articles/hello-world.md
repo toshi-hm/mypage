@@ -4,6 +4,7 @@ description: Astro 7 + Bun で個人ホームページを作りました。
 pubDate: 2026-07-01
 tags:
   - announcement
+  - astro
 ---
 
 ## はじめに
