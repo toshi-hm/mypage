@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { collectTags, excerpt, isPublishable, sortByPubDateDesc } from "../../utils/articles";
+
+export async function getStaticPaths() {
+	const articles = await getCollection("articles", ({ data }) =>
+		isPublishable(data, import.meta.env.PROD),
+	);
+	return collectTags(articles).map(({ tag }) => ({
+		params: { tag },
+		props: {
+			articles: sortByPubDateDesc(articles.filter((article) => article.data.tags.includes(tag))),
+		},
+	}));
+}
+
+const { tag } = Astro.params;
+const { articles } = Astro.props;
+---
+
+<BaseLayout title={`Tag: ${tag}`} description={`タグ「${tag}」の記事一覧`}>
+	<h1>Tag: {tag}</h1>
+	<p class="lead">{articles.length} 件の記事</p>
+	<div class="list">
+		{
+			articles.map((article) => (
+				<ArticleCard
+					slug={article.id}
+					title={article.data.title}
+					summary={excerpt(article.data, article.body)}
+					pubDate={article.data.pubDate}
+					tags={article.data.tags}
+				/>
+			))
+		}
+	</div>
+	<p class="back"><a href="/tags/">← タグ一覧へ</a></p>
+</BaseLayout>
+
+<style>
+	.lead {
+		color: var(--color-text-muted);
+		font-size: 0.9rem;
+	}
+
+	.list {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.back {
+		margin-top: 2rem;
+	}
+</style>
