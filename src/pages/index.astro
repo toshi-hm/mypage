@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ArticleCard from "../components/ArticleCard.astro";
+import HeroVisual from "../components/islands/HeroVisual";
 import LinkCard from "../components/LinkCard.astro";
 import WorkCard from "../components/WorkCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -15,6 +16,7 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 
 <BaseLayout title="Home">
 	<section class="hero">
+		<HeroVisual client:visible />
 		<p class="side-label" aria-hidden="true">個人サイト — since 2026</p>
 		<div>
 			<h1><span class="kicker mono">Hello, I am</span>toshi-hm</h1>
@@ -97,9 +99,18 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 
 <style>
 	.hero {
+		position: relative;
 		display: flex;
 		gap: 1.5rem;
 		padding: 2.5rem 0 3rem;
+	}
+
+	/* WebGL 演出は本文の背後に敷く(装飾のため pointer-events も切る) */
+	.hero :global(.hero-visual) {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
 	}
 
 	/* 縦書きのサイドラベル(純 CSS の装飾) */
