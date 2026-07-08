@@ -90,6 +90,27 @@ export function collectTags(entries: Array<{ data: Pick<ArticleData, "tags"> }>)
     .toSorted((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
 }
 
+export interface AdjacentArticles<T> {
+  /** 1 つ新しい記事(pubDate 降順の一覧で 1 つ上) */
+  newer: T | undefined;
+  /** 1 つ古い記事(pubDate 降順の一覧で 1 つ下) */
+  older: T | undefined;
+}
+
+/**
+ * pubDate 降順に並べたうえで、指定 id の前後の記事を返す。
+ * 対象 id が見つからない場合はどちらも undefined。
+ */
+export function getAdjacentArticles<T extends { id: string; data: Pick<ArticleData, "pubDate"> }>(
+  entries: T[],
+  id: string,
+): AdjacentArticles<T> {
+  const sorted = sortByPubDateDesc(entries);
+  const index = sorted.findIndex((entry) => entry.id === id);
+  if (index === -1) return { newer: undefined, older: undefined };
+  return { newer: sorted[index - 1], older: sorted[index + 1] };
+}
+
 /** 日付を YYYY-MM-DD 形式で整形する */
 export function formatDate(date: Date): string {
   const y = date.getFullYear();

@@ -2,19 +2,26 @@
 import { getCollection, render } from "astro:content";
 import TagList from "../../components/TagList.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { excerpt, formatDate, isPublishable } from "../../utils/articles";
+import { excerpt, formatDate, getAdjacentArticles, isPublishable } from "../../utils/articles";
 
 export async function getStaticPaths() {
 	const articles = await getCollection("articles", ({ data }) =>
 		isPublishable(data, import.meta.env.PROD),
 	);
-	return articles.map((article) => ({
-		params: { slug: article.id },
-		props: { article },
-	}));
+	return articles.map((article) => {
+		const { newer, older } = getAdjacentArticles(articles, article.id);
+		return {
+			params: { slug: article.id },
+			props: {
+				article,
+				newer: newer && { slug: newer.id, title: newer.data.title },
+				older: older && { slug: older.id, title: older.data.title },
+			},
+		};
+	});
 }
 
-const { article } = Astro.props;
+const { article, newer, older } = Astro.props;
 const { Content } = await render(article);
 const { title, pubDate, updatedDate, tags } = article.data;
 ---
@@ -41,7 +48,23 @@ const { title, pubDate, updatedDate, tags } = article.data;
 			<Content />
 		</div>
 		<footer>
-			<a href="/articles/">← 記事一覧へ</a>
+			<nav class="adjacent" aria-label="前後の記事">
+				{
+					newer && (
+						<a class="newer" href={`/articles/${newer.slug}/`}>
+							← {newer.title}
+						</a>
+					)
+				}
+				{
+					older && (
+						<a class="older" href={`/articles/${older.slug}/`}>
+							{older.title} →
+						</a>
+					)
+				}
+			</nav>
+			<a href="/articles/">記事一覧へ</a>
 		</footer>
 	</article>
 </BaseLayout>
@@ -76,5 +99,18 @@ const { title, pubDate, updatedDate, tags } = article.data;
 		margin-top: 2.5rem;
 		padding-top: 1rem;
 		border-top: 1px solid var(--color-border);
+	}
+
+	.adjacent {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1rem;
+		font-size: 0.9rem;
+	}
+
+	.adjacent .older {
+		margin-left: auto;
+		text-align: right;
 	}
 </style>
