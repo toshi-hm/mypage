@@ -17,7 +17,7 @@ export default defineConfig({
     // 完了せず、遷移後の要素が「不安定」判定のままクリックできなくなることがある。
     // reduced-motion をエミュレートすると global.css の @media ガードで
     // View Transitions とアニメーションが無効になり、E2E が決定的になる。
-    reducedMotion: "reduce",
+    contextOptions: { reducedMotion: "reduce" },
     ...(executablePath ? { launchOptions: { executablePath } } : {}),
   },
   projects: [
