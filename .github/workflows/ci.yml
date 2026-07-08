@@ -46,7 +46,7 @@ jobs:
         with:
           bun-version: latest
       - run: bun install --frozen-lockfile
-      - name: Vitest (coverage thresholds: stmts 90 / branch 85 / funcs 90 / lines 90)
+      - name: "Vitest (coverage thresholds: stmts 90 / branch 85 / funcs 90 / lines 90)"
         run: bun run test:coverage
       - uses: actions/upload-artifact@v4
         with:
