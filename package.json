@@ -16,6 +16,7 @@
     "typecheck": "astro check && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "lighthouse": "lhci autorun",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -35,7 +36,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.12.1",
     "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.61.1",
     "@storybook/addon-docs": "^10.4.6",
     "@storybook/react-vite": "^10.4.6",
     "@testing-library/dom": "^10.4.0",
