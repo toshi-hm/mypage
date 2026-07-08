@@ -13,6 +13,11 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:4321",
     trace: "on-first-retry",
+    // MPA View Transitions(@view-transition)は headless Chrome でトランジションが
+    // 完了せず、遷移後の要素が「不安定」判定のままクリックできなくなることがある。
+    // reduced-motion をエミュレートすると global.css の @media ガードで
+    // View Transitions とアニメーションが無効になり、E2E が決定的になる。
+    reducedMotion: "reduce",
     ...(executablePath ? { launchOptions: { executablePath } } : {}),
   },
   projects: [
