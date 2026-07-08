@@ -74,3 +74,22 @@ jobs:
           bun-version: latest
       - run: bun install --frozen-lockfile
       - run: bun run build-storybook
+
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - name: Lighthouse CI (perf >= 0.95, a11y / bp / seo = 1.0)
+        run: bun run lighthouse
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports
+          retention-days: 14

@@ -10,39 +10,44 @@ const isExternal = /^https?:\/\//.test(href);
 ---
 
 <a
-	class="card"
+	class="row"
 	href={href}
 	target={isExternal ? "_blank" : undefined}
 	rel={isExternal ? "noopener noreferrer" : undefined}
 >
-	<span class="title">{title}</span>
+	<span class="title">{title}{isExternal && <span aria-hidden="true">&nbsp;↗</span>}</span>
 	{description && <span class="description">{description}</span>}
 </a>
 
 <style>
-	.card {
+	.row {
 		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-		padding: 1rem 1.25rem;
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius);
-		background: var(--color-surface);
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		border-top: 1px solid var(--color-border);
+		padding: 0.9rem 0.25rem 1rem;
 		text-decoration: none;
-		transition: border-color 0.15s ease;
 	}
 
-	.card:hover {
-		border-color: var(--color-accent);
+	.row:hover {
+		border-top-color: var(--color-accent);
+	}
+
+	.row:hover .title {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 0.2em;
 	}
 
 	.title {
-		font-weight: 600;
+		font-weight: 700;
 		color: var(--color-text);
 	}
 
 	.description {
 		font-size: 0.85rem;
 		color: var(--color-text-muted);
+		text-align: right;
 	}
 </style>
