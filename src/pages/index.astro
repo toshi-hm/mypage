@@ -15,18 +15,26 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 
 <BaseLayout title="Home">
 	<section class="hero">
-		<h1>こんにちは、toshi-hm です</h1>
-		<p>
-			ソフトウェアエンジニアです。このサイトは Astro + TypeScript で作られ、Cloudflare
-			で配信される予定の個人ホームページです。
-		</p>
+		<p class="side-label" aria-hidden="true">個人サイト — since 2026</p>
+		<div>
+			<h1><span class="kicker mono">Hello, I am</span>toshi-hm</h1>
+			<p class="lead">
+				ソフトウェアエンジニア。このサイトは Astro + TypeScript + Bun で作られ、Cloudflare
+				で配信される予定の個人ホームページです。
+			</p>
+		</div>
 	</section>
 
 	{
 		latestArticles.length > 0 && (
-			<section>
-				<h2>Latest Articles</h2>
-				<div class="cards">
+			<section aria-labelledby="sec-articles">
+				<h2 class="section-label" id="sec-articles">
+					<span class="no" aria-hidden="true">
+						01
+					</span>
+					Latest Articles
+				</h2>
+				<div class="rows">
 					{latestArticles.map((article) => (
 						<ArticleCard
 							slug={article.id}
@@ -46,9 +54,14 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 
 	{
 		featuredWorks.length > 0 && (
-			<section>
-				<h2>Featured Works</h2>
-				<div class="cards">
+			<section aria-labelledby="sec-works">
+				<h2 class="section-label" id="sec-works">
+					<span class="no" aria-hidden="true">
+						02
+					</span>
+					Featured Works
+				</h2>
+				<div class="rows">
 					{featuredWorks.map((work) => (
 						<WorkCard
 							name={work.data.name}
@@ -66,9 +79,12 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 		)
 	}
 
-	<section>
-		<h2>Links</h2>
-		<div class="cards">
+	<section aria-labelledby="sec-links">
+		<h2 class="section-label" id="sec-links">
+			<span class="no" aria-hidden="true">03</span>
+			Links
+		</h2>
+		<div class="rows">
 			<LinkCard title="About" href="/about/" description="プロフィール・スキル・経歴" />
 			<LinkCard
 				title="GitHub"
@@ -81,21 +97,54 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 
 <style>
 	.hero {
-		padding: 2rem 0;
+		display: flex;
+		gap: 1.5rem;
+		padding: 2.5rem 0 3rem;
+	}
+
+	/* 縦書きのサイドラベル(純 CSS の装飾) */
+	.side-label {
+		writing-mode: vertical-rl;
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.25em;
+		color: var(--color-text-muted);
+		border-left: 1px solid var(--color-border);
+		padding-left: 0.6rem;
 	}
 
 	.hero h1 {
-		font-size: 2rem;
-		margin: 0 0 0.75rem;
+		margin: 0 0 1rem;
+		border-bottom: none;
+		padding-bottom: 0;
+		font-size: clamp(2.4rem, 1.4rem + 5vw, 4rem);
+		line-height: 1.1;
 	}
 
-	.hero p {
+	.kicker {
+		display: block;
+		font-size: 0.85rem;
+		font-weight: 400;
+		color: var(--color-accent);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		margin-bottom: 0.4rem;
+	}
+
+	.lead {
 		color: var(--color-text-muted);
 		margin: 0;
+		max-width: 36rem;
 	}
 
-	.cards {
+	.rows {
 		display: grid;
-		gap: 0.75rem;
+	}
+
+	.more {
+		margin: 0.75rem 0 0;
+		font-size: 0.9rem;
+		text-align: right;
 	}
 </style>

@@ -13,65 +13,66 @@ interface Props {
 const { slug, title, summary, pubDate, tags = [] } = Astro.props;
 ---
 
-<article class="card">
-	<h3><a href={`/articles/${slug}/`}>{title}</a></h3>
-	{summary && <p class="summary">{summary}</p>}
-	<footer>
+<article class="row">
+	<div class="head">
+		<h2><a href={`/articles/${slug}/`}>{title}</a></h2>
 		<time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
-		<TagList tags={tags} />
-	</footer>
+	</div>
+	{summary && <p class="summary">{summary}</p>}
+	<TagList tags={tags} />
 </article>
 
 <style>
-	.card {
-		padding: 1rem 1.25rem;
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius);
-		background: var(--color-surface);
-		transition: border-color 0.15s ease;
+	/* 索引行スタイル: 箱ではなく罫線で区切る */
+	.row {
+		position: relative;
+		border-top: 1px solid var(--color-border);
+		padding: 0.9rem 0.25rem 1rem;
 	}
 
-	.card:hover {
-		border-color: var(--color-accent);
+	.row:hover {
+		border-top-color: var(--color-accent);
+		background: linear-gradient(to right, var(--color-accent-soft), transparent 65%);
 	}
 
-	h3 {
-		margin: 0 0 0.25rem;
-		font-size: 1.1rem;
+	.head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 
-	h3 a {
+	h2 {
+		margin: 0;
+		font-size: 1.05rem;
+	}
+
+	h2 a {
 		color: var(--color-text);
 		text-decoration: none;
 	}
 
-	h3 a::after {
-		/* カード全体をタイトルリンクのクリック領域にする(タグリンクは上に重なる) */
+	/* カード全体をタイトルリンクのクリック領域にする(タグリンクは上に重なる) */
+	h2 a::after {
 		content: "";
 		position: absolute;
 		inset: 0;
 	}
 
-	.card {
-		position: relative;
-	}
-
-	.card footer :global(.tags) {
+	.row :global(.tags) {
 		position: relative;
 		z-index: 1;
 	}
 
-	.summary {
-		margin: 0 0 0.5rem;
-		font-size: 0.9rem;
+	time {
+		flex-shrink: 0;
+		font-size: 0.8rem;
 		color: var(--color-text-muted);
 	}
 
-	footer {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		font-size: 0.8rem;
+	.summary {
+		margin: 0.25rem 0 0.5rem;
+		font-size: 0.88rem;
 		color: var(--color-text-muted);
 	}
 </style>

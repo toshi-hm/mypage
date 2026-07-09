@@ -19,6 +19,9 @@ node_modules/
 # cloudflare
 .wrangler/
 
+# lighthouse ci
+.lighthouseci/
+
 # misc
 .DS_Store
 coverage/

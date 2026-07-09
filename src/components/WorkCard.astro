@@ -10,8 +10,26 @@ interface Props {
 const { name, description, url, repo, tech = [] } = Astro.props;
 ---
 
-<article class="card">
-	<h3>{name}</h3>
+<article class="row">
+	<div class="head">
+		<h2>{name}</h2>
+		<span class="links">
+			{
+				url && (
+					<a href={url} target="_blank" rel="noopener noreferrer">
+						Site<span aria-hidden="true">&nbsp;↗</span>
+					</a>
+				)
+			}
+			{
+				repo && (
+					<a href={repo} target="_blank" rel="noopener noreferrer">
+						Repository<span aria-hidden="true">&nbsp;↗</span>
+					</a>
+				)
+			}
+		</span>
+	</div>
 	<p class="description">{description}</p>
 	{
 		tech.length > 0 && (
@@ -22,64 +40,58 @@ const { name, description, url, repo, tech = [] } = Astro.props;
 			</ul>
 		)
 	}
-	<footer>
-		{
-			url && (
-				<a href={url} target="_blank" rel="noopener noreferrer">
-					Site ↗
-				</a>
-			)
-		}
-		{
-			repo && (
-				<a href={repo} target="_blank" rel="noopener noreferrer">
-					Repository ↗
-				</a>
-			)
-		}
-	</footer>
 </article>
 
 <style>
-	.card {
-		padding: 1rem 1.25rem;
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius);
-		background: var(--color-surface);
+	.row {
+		border-top: 1px solid var(--color-border);
+		padding: 0.9rem 0.25rem 1rem;
 	}
 
-	h3 {
-		margin: 0 0 0.25rem;
-		font-size: 1.1rem;
+	.row:hover {
+		border-top-color: var(--color-accent);
+	}
+
+	.head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: 1.05rem;
+	}
+
+	.links {
+		display: flex;
+		gap: 1rem;
+		font-size: 0.85rem;
+		font-family: var(--font-mono);
 	}
 
 	.description {
-		margin: 0 0 0.5rem;
-		font-size: 0.9rem;
+		margin: 0.25rem 0 0.5rem;
+		font-size: 0.88rem;
 		color: var(--color-text-muted);
 	}
 
 	.tech {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.4rem;
+		gap: 0.25rem 0.75rem;
 		list-style: none;
-		margin: 0 0 0.5rem;
+		margin: 0;
 		padding: 0;
-		font-size: 0.8rem;
+		font-size: 0.78rem;
+		font-family: var(--font-mono);
+		color: var(--color-text-muted);
 	}
 
-	.tech li {
-		padding: 0.05rem 0.5rem;
-		border-radius: 999px;
-		background: var(--color-accent-soft);
+	.tech li::before {
+		content: "#";
 		color: var(--color-accent);
-		font-weight: 600;
-	}
-
-	footer {
-		display: flex;
-		gap: 1rem;
-		font-size: 0.85rem;
 	}
 </style>
