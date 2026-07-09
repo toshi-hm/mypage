@@ -1,0 +1,49 @@
+# Sveltia CMS 設定(Decap CMS 互換)
+# コンテンツモデルは src/content.config.ts の zod スキーマと一致させること
+backend:
+  name: github
+  repo: toshi-hm/mypage
+  branch: main
+
+media_folder: public/images/articles
+public_folder: /images/articles
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: articles
+    label: Articles
+    label_singular: Article
+    folder: src/content/articles
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} ({{pubDate}})"
+    sortable_fields: [pubDate, title]
+    fields:
+      - { name: title, label: タイトル, widget: string }
+      - { name: description, label: 概要, widget: string, required: false }
+      - {
+          name: pubDate,
+          label: 公開日,
+          widget: datetime,
+          time_format: false,
+          date_format: "YYYY-MM-DD",
+          format: "YYYY-MM-DD",
+        }
+      - {
+          name: updatedDate,
+          label: 更新日,
+          widget: datetime,
+          time_format: false,
+          date_format: "YYYY-MM-DD",
+          format: "YYYY-MM-DD",
+          required: false,
+        }
+      - { name: tags, label: タグ, widget: list, required: false }
+      - { name: draft, label: 下書き, widget: boolean, default: false, required: false }
+      - { name: body, label: 本文, widget: markdown }
