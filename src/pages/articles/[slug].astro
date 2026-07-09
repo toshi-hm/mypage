@@ -1,8 +1,16 @@
 ---
 import { getCollection, render } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
 import TagList from "../../components/TagList.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { excerpt, formatDate, getAdjacentArticles, isPublishable } from "../../utils/articles";
+import {
+	excerpt,
+	formatDate,
+	getAdjacentArticles,
+	isPublishable,
+	relatedArticles,
+} from "../../utils/articles";
+import { buildBlogPostingLd } from "../../utils/structured-data";
 
 export async function getStaticPaths() {
 	const articles = await getCollection("articles", ({ data }) =>
@@ -16,17 +24,34 @@ export async function getStaticPaths() {
 				article,
 				newer: newer && { slug: newer.id, title: newer.data.title },
 				older: older && { slug: older.id, title: older.data.title },
+				related: relatedArticles(articles, article.id).map((entry) => ({
+					slug: entry.id,
+					title: entry.data.title,
+					summary: excerpt(entry.data, entry.body),
+					pubDate: entry.data.pubDate,
+					tags: entry.data.tags,
+				})),
 			},
 		};
 	});
 }
 
-const { article, newer, older } = Astro.props;
+const { article, newer, older, related } = Astro.props;
 const { Content } = await render(article);
 const { title, pubDate, updatedDate, tags } = article.data;
+const description = excerpt(article.data, article.body);
+const jsonLd = buildBlogPostingLd({
+	title,
+	description,
+	url: new URL(`/articles/${article.id}/`, Astro.site ?? "https://mypage.example.com").href,
+	pubDate,
+	updatedDate,
+	tags,
+	authorName: "toshi-hm",
+});
 ---
 
-<BaseLayout title={title} description={excerpt(article.data, article.body)}>
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
 	<article>
 		<header>
 			<h1>{title}</h1>
@@ -64,6 +89,29 @@ const { title, pubDate, updatedDate, tags } = article.data;
 					)
 				}
 			</nav>
+			{
+				related.length > 0 && (
+					<section class="related" aria-labelledby="related-heading">
+						<h2 class="section-label" id="related-heading">
+							<span class="no" aria-hidden="true">
+								関連
+							</span>
+							Related Articles
+						</h2>
+						<div>
+							{related.map((item) => (
+								<ArticleCard
+									slug={item.slug}
+									title={item.title}
+									summary={item.summary}
+									pubDate={item.pubDate}
+									tags={item.tags}
+								/>
+							))}
+						</div>
+					</section>
+				)
+			}
 			<a href="/articles/">記事一覧へ</a>
 		</footer>
 	</article>
@@ -113,4 +161,9 @@ const { title, pubDate, updatedDate, tags } = article.data;
 		margin-left: auto;
 		text-align: right;
 	}
+
+	.related {
+		margin-bottom: 1.5rem;
+	}
+
 </style>
