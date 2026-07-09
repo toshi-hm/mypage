@@ -18,7 +18,7 @@ jobs:
             echo "設定手順は docs/design-deploy.md を参照してください。"
             exit 1
           fi
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
