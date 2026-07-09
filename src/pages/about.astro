@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const skills = ["TypeScript", "Astro", "React", "Bun", "Cloudflare"];
+---
+
+<BaseLayout title="About" description="toshi-hm のプロフィール">
+	<h1>About</h1>
+	<p>toshi-hm のプロフィールページです。</p>
+
+	<h2>Skills</h2>
+	<ul class="skills">
+		{skills.map((skill) => <li>{skill}</li>)}
+	</ul>
+
+	<h2>このサイトについて</h2>
+	<p>
+		Astro 7(静的出力)+ React islands 構成。詳細は
+		<a href="https://github.com/toshi-hm/mypage">リポジトリ</a>
+		の <code>docs/design.md</code> を参照してください。
+	</p>
+</BaseLayout>
+
+<style>
+	.skills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		list-style: none;
+		padding: 0;
+	}
+
+	.skills li {
+		padding: 0.25rem 0.75rem;
+		border-radius: 999px;
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+</style>
