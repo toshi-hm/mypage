@@ -22,6 +22,10 @@ node_modules/
 # lighthouse ci
 .lighthouseci/
 
+# playwright
+playwright-report/
+test-results/
+
 # misc
 .DS_Store
 coverage/
