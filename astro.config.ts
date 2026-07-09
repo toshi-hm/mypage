@@ -13,4 +13,14 @@ export default defineConfig({
       filter: (page) => !new URL(page).pathname.startsWith("/admin/"),
     }),
   ],
+  markdown: {
+    shikiConfig: {
+      // ライト/ダーク両テーマの色を CSS 変数で出力し、data-theme で切り替える
+      // (global.css の .astro-code ルールとセット)
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+    },
+  },
 });
