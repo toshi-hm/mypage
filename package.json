@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "preview:cf": "wrangler dev",
+    "deploy:dry-run": "wrangler deploy --dry-run",
     "lint": "oxlint",
     "lint:md": "markdownlint-cli2",
     "format": "oxfmt",

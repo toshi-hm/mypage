@@ -152,9 +152,10 @@ ci.yml
 ## 8. デプロイ計画(後続フェーズ)
 
 1. `wrangler.jsonc` の `assets` 設定で `dist/` を static assets として配信(準備済み)
-2. Cloudflare アカウント連携後、`bunx wrangler deploy` でデプロイ
+2. デプロイワークフロー(`workflow_dispatch`)と CI での `wrangler deploy --dry-run` 検証は準備済み。
+   secrets 設定と手順は `docs/design-deploy.md` を参照
 3. CMS(`/admin`)の本番ログイン用 GitHub OAuth プロキシを Cloudflare Workers に追加(`docs/design-articles.md` 参照)
-4. 将来的には CI に deploy ジョブを追加(main マージ時に自動デプロイ、`CLOUDFLARE_API_TOKEN` を Secrets 管理)
+4. 手動デプロイの安定を確認後、main マージ時の自動デプロイ化を判断
 
 ## 9. 開発支援 (Claude Code)
 
