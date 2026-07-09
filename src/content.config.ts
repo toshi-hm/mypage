@@ -1,4 +1,4 @@
-import { glob } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 import { SLUG_PATTERN } from "./utils/articles";
 
@@ -15,4 +15,21 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { articles };
+const works = defineCollection({
+  // CMS(file collection)が {"works": [...]} 形式で保存するため、parser で配列を取り出す
+  loader: file("src/content/works.json", {
+    parser: (text) => (JSON.parse(text) as { works: Array<Record<string, unknown>> }).works,
+  }),
+  schema: z.object({
+    id: z.string().regex(SLUG_PATTERN, "id は英数字ケバブケースのみ"),
+    name: z.string().min(1),
+    description: z.string().min(1),
+    url: z.string().url().optional(),
+    repo: z.string().url().optional(),
+    tech: z.array(z.string()).default([]),
+    featured: z.boolean().default(false),
+    order: z.number().int().default(0),
+  }),
+});
+
+export const collections = { articles, works };

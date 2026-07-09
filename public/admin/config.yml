@@ -13,6 +13,38 @@ slug:
   clean_accents: true
 
 collections:
+  - name: works
+    label: Works
+    files:
+      - name: works
+        label: Works 一覧
+        file: src/content/works.json
+        fields:
+          - name: works
+            label: 制作物
+            widget: list
+            fields:
+              - { name: id, label: ID(英数字ケバブケース), widget: string }
+              - { name: name, label: 名称, widget: string }
+              - { name: description, label: 説明, widget: text }
+              - { name: url, label: サイト URL, widget: string, required: false }
+              - { name: repo, label: リポジトリ URL, widget: string, required: false }
+              - { name: tech, label: 使用技術, widget: list, required: false }
+              - {
+                  name: featured,
+                  label: トップに表示,
+                  widget: boolean,
+                  default: false,
+                  required: false,
+                }
+              - {
+                  name: order,
+                  label: 表示順,
+                  widget: number,
+                  default: 0,
+                  value_type: int,
+                  required: false,
+                }
   - name: articles
     label: Articles
     label_singular: Article

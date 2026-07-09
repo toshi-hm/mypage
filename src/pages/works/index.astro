@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import WorkCard from "../../components/WorkCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { sortWorks } from "../../utils/works";
+
+const works = sortWorks(await getCollection("works"));
+---
+
+<BaseLayout title="Works" description="toshi-hm の制作物・プロジェクト">
+	<h1>Works</h1>
+	{works.length === 0 && <p>まだ制作物がありません。</p>}
+	<div class="list">
+		{
+			works.map((work) => (
+				<WorkCard
+					name={work.data.name}
+					description={work.data.description}
+					url={work.data.url}
+					repo={work.data.repo}
+					tech={work.data.tech}
+				/>
+			))
+		}
+	</div>
+</BaseLayout>
+
+<style>
+	.list {
+		display: grid;
+		gap: 0.75rem;
+	}
+</style>
