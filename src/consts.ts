@@ -1,2 +1,2 @@
-export const SITE_TITLE = "toshi-hm | mypage";
-export const SITE_DESCRIPTION = "toshi-hm の個人ホームページ";
+export const SITE_TITLE = "Hama Toshiva | mypage";
+export const SITE_DESCRIPTION = "Hama Toshiva の個人ホームページ";

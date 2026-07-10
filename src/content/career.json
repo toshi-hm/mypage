@@ -1,0 +1,21 @@
+{
+  "career": [
+    {
+      "id": "software-engineer",
+      "role": "ソフトウェアエンジニア",
+      "organization": "個人開発 / mypage",
+      "startDate": "2026-01",
+      "description": "Astro + TypeScript + Bun で本サイトを設計・実装。Git ベース CMS や CI/CD の整備も担当。",
+      "order": 2
+    },
+    {
+      "id": "sample-role",
+      "role": "サンプルの役割",
+      "organization": "サンプル組織",
+      "startDate": "2024-04",
+      "endDate": "2025-12",
+      "description": "Career のデータ構造を示すサンプルエントリ。実際の経歴に置き換えてください。",
+      "order": 1
+    }
+  ]
+}

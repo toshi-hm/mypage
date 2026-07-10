@@ -7,7 +7,7 @@ import { sortWorks } from "../../utils/works";
 const works = sortWorks(await getCollection("works"));
 ---
 
-<BaseLayout title="Works" description="toshi-hm の制作物・プロジェクト">
+<BaseLayout title="Works" description="Hama Toshiva の制作物・プロジェクト">
 	<h1>Works</h1>
 	{works.length === 0 && <p>まだ制作物がありません。</p>}
 	<div class="list">

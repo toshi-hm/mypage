@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("トップ → Articles → 記事詳細 → タグページと回遊できる", async ({ page }) => {
   await page.goto("/");
-  await expect(page).toHaveTitle(/toshi-hm/);
+  await expect(page).toHaveTitle(/Hama Toshiva/);
 
   await page.getByRole("navigation").getByRole("link", { name: "Articles" }).click();
   await expect(page).toHaveURL(/\/articles\/$/);

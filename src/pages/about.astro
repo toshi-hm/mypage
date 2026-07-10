@@ -1,17 +1,40 @@
 ---
+import { getCollection } from "astro:content";
+import CareerItem from "../components/CareerItem.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { sortCareer } from "../utils/career";
 
 const skills = ["TypeScript", "Astro", "React", "Bun", "Cloudflare"];
+const career = sortCareer(await getCollection("career"));
 ---
 
-<BaseLayout title="About" description="toshi-hm のプロフィール">
+<BaseLayout title="About" description="Hama Toshiva のプロフィール">
 	<h1>About</h1>
-	<p>toshi-hm のプロフィールページです。</p>
+	<p>Hama Toshiva のプロフィールページです。</p>
 
 	<h2>Skills</h2>
 	<ul class="skills">
 		{skills.map((skill) => <li>{skill}</li>)}
 	</ul>
+
+	{
+		career.length > 0 && (
+			<>
+				<h2>Career</h2>
+				<ul class="career">
+					{career.map((item) => (
+						<CareerItem
+							role={item.data.role}
+							organization={item.data.organization}
+							startDate={item.data.startDate}
+							endDate={item.data.endDate}
+							description={item.data.description}
+						/>
+					))}
+				</ul>
+			</>
+		)
+	}
 
 	<h2>このサイトについて</h2>
 	<p>
@@ -22,6 +45,12 @@ const skills = ["TypeScript", "Astro", "React", "Bun", "Cloudflare"];
 </BaseLayout>
 
 <style>
+	.career {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
 	.skills {
 		display: flex;
 		flex-wrap: wrap;

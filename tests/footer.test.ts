@@ -6,5 +6,5 @@ test("コピーライトに現在の年を表示する", async () => {
   const container = await AstroContainer.create();
   const result = await container.renderToString(Footer);
 
-  expect(result).toContain(`${new Date().getFullYear()} toshi-hm`);
+  expect(result).toContain(`${new Date().getFullYear()} Hama Toshiva`);
 });
