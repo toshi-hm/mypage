@@ -1,6 +1,6 @@
 # mypage
 
-Hama Toshiva の個人ホームページ。Astro 7(静的出力)+ React islands 構成。将来 Cloudflare Workers (static assets) にデプロイ予定。
+Hama Toshiya の個人ホームページ。Astro 7(静的出力)+ React islands 構成。将来 Cloudflare Workers (static assets) にデプロイ予定。
 
 設計の詳細は [docs/design.md](./docs/design.md) を参照。
 
