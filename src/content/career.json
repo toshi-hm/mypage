@@ -1,20 +1,35 @@
 {
   "career": [
     {
-      "id": "software-engineer",
+      "id": "lycorp-software-engineer",
       "role": "ソフトウェアエンジニア",
-      "organization": "個人開発 / mypage",
-      "startDate": "2026-01",
-      "description": "Astro + TypeScript + Bun で本サイトを設計・実装。Git ベース CMS や CI/CD の整備も担当。",
+      "organization": "LINEヤフー株式会社",
+      "track": "work",
+      "startDate": "2024-04",
+      "description": "新卒で入社し、フロントエンドエンジニアとしてプロダクト開発に従事。Vue.js / Nuxt 4、React / Next.jsを中心に、Bun、Express.js、Honoを用いた開発も経験しています。",
+      "highlights": ["Vue.js", "Nuxt 4", "React", "Next.js", "Bun", "Express.js", "Hono"],
+      "order": 3
+    },
+    {
+      "id": "rikkyo-graduate-school-ai",
+      "role": "人工知能科学専攻",
+      "organization": "立教大学大学院 人工知能科学研究科",
+      "track": "education",
+      "startDate": "2024-04",
+      "endDate": "2026-03",
+      "description": "新卒での就業と並行して人工知能科学を学び、修士（人工知能科学）を取得しました。",
+      "highlights": ["人工知能科学", "修士（人工知能科学）"],
       "order": 2
     },
     {
-      "id": "sample-role",
-      "role": "サンプルの役割",
-      "organization": "サンプル組織",
-      "startDate": "2024-04",
-      "endDate": "2025-12",
-      "description": "Career のデータ構造を示すサンプルエントリ。実際の経歴に置き換えてください。",
+      "id": "rikkyo-college-of-science-chemistry",
+      "role": "化学科",
+      "organization": "立教大学 理学部",
+      "track": "education",
+      "startDate": "2020-04",
+      "endDate": "2024-03",
+      "description": "化学を専攻し、学士（理学）を取得しました。",
+      "highlights": ["化学", "学士（理学）"],
       "order": 1
     }
   ]

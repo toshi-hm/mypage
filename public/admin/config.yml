@@ -59,6 +59,7 @@ collections:
               - { name: id, label: ID(英数字ケバブケース), widget: string }
               - { name: role, label: 役割・肩書き, widget: string }
               - { name: organization, label: 組織・プロジェクト名, widget: string }
+              - { name: track, label: 区分, widget: select, options: ["education", "work"] }
               - {
                   name: startDate,
                   label: 開始年月(YYYY-MM),
@@ -77,6 +78,7 @@ collections:
                   required: false,
                 }
               - { name: description, label: 概要, widget: text }
+              - { name: highlights, label: 関連キーワード, widget: list, required: false }
               - {
                   name: order,
                   label: 表示順,

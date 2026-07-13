@@ -7,4 +7,6 @@ test("コピーライトに現在の年を表示する", async () => {
   const result = await container.renderToString(Footer);
 
   expect(result).toContain(`${new Date().getFullYear()} Hama Toshiya`);
+  expect(result).toContain("https://github.com/toshi-hm");
+  expect(result).toContain("https://www.linkedin.com/in/toshiyahama");
 });

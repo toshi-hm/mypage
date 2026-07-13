@@ -6,8 +6,9 @@ test("検索語を入力すると Pagefind の結果が表示される", async (
 
   const input = page.locator("input[type='text'], input[type='search']").first();
   await input.waitFor();
-  await input.fill("CMS");
+  await input.fill("Cloudflare");
 
-  // Pagefind UI が結果リンクを描画する(記事本文がインデックスされている)
-  await expect(page.locator("a[href*='/articles/']").first()).toBeVisible({ timeout: 10_000 });
+  // Pagefind UI が公開記事への結果リンクを描画する(記事本文がインデックスされている)
+  const articleLink = page.locator("a[href*='/articles/hello-world/']").first();
+  await expect(articleLink).toBeVisible({ timeout: 10_000 });
 });

@@ -32,8 +32,10 @@ describe("CareerItem", () => {
       props: {
         role: "ソフトウェアエンジニア",
         organization: "mypage",
+        track: "work",
         startDate: "2026-01",
         description: "本サイトを設計・実装",
+        highlights: ["React", "Bun"],
       },
     });
 
@@ -41,5 +43,7 @@ describe("CareerItem", () => {
     expect(result).toContain("mypage");
     expect(result).toContain("2026-01 〜 現在");
     expect(result).toContain("本サイトを設計・実装");
+    expect(result).toContain("React");
+    expect(result).toContain("Bun");
   });
 });

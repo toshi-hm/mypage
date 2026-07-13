@@ -7,27 +7,140 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { sortCareer } from "../utils/career";
 const skills = ["TypeScript", "Astro", "React", "Bun", "Cloudflare"];
 const career = sortCareer(await getCollection("career"));
+const education = career.filter((item) => item.data.track === "education");
+const work = career.filter((item) => item.data.track === "work");
+const graduateSchool = education.find((item) => item.data.startDate === "2024-04");
+const undergraduate = education.find((item) => item.data.startDate === "2020-04");
+const currentWork = work.find((item) => !item.data.endDate);
+const now = new Date();
+const initialVisitDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
 ---
 
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
-  <PageHeader eyebrow="About me" title="Designing with intent. Building with care." description="技術とデザインの境界を行き来しながら、分かりやすく、気持ちよく使えるWeb体験を設計・実装しています。" />
+  <PageHeader eyebrow="About me" title="日常を少し便利にする、プロダクトをつくる。" description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。" />
+  <nav class="social-links" aria-label="ソーシャルリンク">
+    <a href="https://github.com/toshi-hm"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></a>
+    <a href="https://www.linkedin.com/in/toshiyahama"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></a>
+  </nav>
   <div class="profile-grid">
     <section aria-labelledby="skills-heading"><SectionHeading index="01" title="Skills" /><ul id="skills-heading" class="skills">{skills.map((skill, index) => <li><span class="mono">0{index + 1}</span>{skill}</li>)}</ul></section>
     <aside><p class="eyebrow">Currently</p><p>Astro と TypeScript を中心に、軽く、堅牢で、長く育てられるWebを探求しています。</p></aside>
   </div>
-  {career.length > 0 && <section><SectionHeading index="02" title="Career" /><ul class="career">{career.map((item) => <CareerItem role={item.data.role} organization={item.data.organization} startDate={item.data.startDate} endDate={item.data.endDate} description={item.data.description} />)}</ul></section>}
-  <section class="about-site"><SectionHeading index="03" title="This Site" /><p>Astro 7（静的出力）+ React islands 構成。設計と実装の詳細は <a href="https://github.com/toshi-hm/mypage">GitHub リポジトリ ↗</a> で公開しています。</p></section>
+  {career.length > 0 && <section class="career-section" aria-labelledby="career-heading">
+    <SectionHeading id="career-heading" index="02" title="Career" />
+    <p class="career-lead">理学から人工知能科学へ学びを広げながら、ソフトウェアエンジニアとしてプロダクト開発に取り組んできました。</p>
+    <div class="career-timeline">
+      <div class="visit-marker">
+        <span class="visit-label mono">SITE VISIT</span>
+        <time class="visit-date mono" datetime={initialVisitDate}>{initialVisitLabel}</time>
+        <small>今日まで続くキャリア</small>
+      </div>
+
+      <div class="timeline-row parallel-row">
+        {graduateSchool && <div class="timeline-entry education-entry">
+          <p class="lane-label"><span aria-hidden="true">01</span> Education</p>
+          <CareerItem role={graduateSchool.data.role} organization={graduateSchool.data.organization} track={graduateSchool.data.track} startDate={graduateSchool.data.startDate} endDate={graduateSchool.data.endDate} description={graduateSchool.data.description} highlights={graduateSchool.data.highlights} />
+        </div>}
+        <div class="education-duration" aria-label="2024年4月入学、2026年3月修了">
+          <span class="duration-point duration-end"><span class="mono">2026.03 修了</span></span>
+          <span class="duration-point duration-start"><span class="mono">2024.04 入学</span></span>
+        </div>
+        {currentWork && <div class="timeline-entry work-entry">
+          <p class="lane-label"><span aria-hidden="true">02</span> Professional</p>
+          <CareerItem role={currentWork.data.role} organization={currentWork.data.organization} track={currentWork.data.track} startDate={currentWork.data.startDate} endDate={currentWork.data.endDate} description={currentWork.data.description} highlights={currentWork.data.highlights} />
+        </div>}
+      </div>
+
+      <div class="parallel-marker">
+        <span class="mono">2024.04</span>
+        <strong>大学院進学 × 新卒入社</strong>
+        <small>2つのキャリアを同時にスタート</small>
+      </div>
+
+      {undergraduate && <div class="timeline-row undergraduate-row">
+        <div class="timeline-entry education-entry">
+          <CareerItem role={undergraduate.data.role} organization={undergraduate.data.organization} track={undergraduate.data.track} startDate={undergraduate.data.startDate} endDate={undergraduate.data.endDate} description={undergraduate.data.description} highlights={undergraduate.data.highlights} />
+        </div>
+        <div class="education-duration" aria-label="2020年4月入学、2024年3月卒業">
+          <span class="duration-point duration-end"><span class="mono">2024.03 卒業</span></span>
+          <span class="duration-point duration-start"><span class="mono">2020.04 入学</span></span>
+        </div>
+      </div>}
+    </div>
+  </section>}
 </BaseLayout>
 
+<script>
+  const visitDate = document.querySelector<HTMLTimeElement>(".visit-date");
+  if (visitDate) {
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    visitDate.dateTime = `${year}-${month}-${day}`;
+    visitDate.textContent = `${year}.${month}.${day}`;
+  }
+</script>
+
 <style>
+  .social-links { display: flex; flex-wrap: wrap; gap: .75rem; margin: -2rem 0 clamp(4rem, 8vw, 7rem); }
+  .social-links a { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 3rem; padding: .55rem .75rem .55rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-size: .8rem; font-weight: 750; text-decoration: none; box-shadow: var(--shadow-sm); }
+  .social-links a span:last-child { display: grid; place-items: center; width: 1.8rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); }
+  .social-links a:hover { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
   .profile-grid { display: grid; grid-template-columns: 1fr minmax(15rem, .45fr); gap: clamp(2rem, 6vw, 5rem); align-items: end; }
-  .skills, .career { list-style: none; margin: 0; padding: 0; }
+  .skills { list-style: none; margin: 0; padding: 0; }
   .skills { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--color-border); }
   .skills li { display: flex; align-items: center; gap: .8rem; padding: 1rem .5rem; border-bottom: 1px solid var(--color-border); font-weight: 750; }
   .skills span { color: var(--color-accent); font-size: .68rem; }
   aside { padding: 1.5rem; border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius); background: var(--color-highlight-soft); transform: rotate(1deg); }
   aside p:last-child { margin: 0; font-weight: 650; }
-  .career { max-width: 58rem; margin-left: clamp(0rem, 10vw, 8rem); }
-  .about-site > p { max-width: 42rem; color: var(--color-text-muted); font-size: 1.05rem; }
-  @media (max-width: 700px) { .profile-grid { grid-template-columns: 1fr; } .skills { grid-template-columns: 1fr; } }
+  .career-section { position: relative; }
+  .career-lead { max-width: 43rem; margin: 0 0 2rem; color: var(--color-text-muted); font-size: 1.05rem; }
+  .career-timeline { position: relative; display: grid; gap: 2.5rem; padding: 1.25rem 0 1rem; }
+  .career-timeline::before { content: ""; position: absolute; z-index: 0; top: .7rem; bottom: 0; left: 50%; width: 2px; background: linear-gradient(to bottom, var(--color-accent), color-mix(in srgb, var(--color-accent) 45%, var(--color-border)) 68%, var(--color-border)); transform: translateX(-50%); }
+  .career-timeline::after { content: ""; position: absolute; top: .25rem; left: 50%; width: .7rem; height: .7rem; border: solid var(--color-accent); border-width: 2px 0 0 2px; transform: translateX(-50%) rotate(45deg); }
+  .visit-marker { position: relative; z-index: 2; display: grid; grid-template-columns: auto auto; align-items: center; gap: .15rem .75rem; width: fit-content; margin: 0 auto 2rem; padding: .8rem 1.1rem; border: 1px solid var(--color-accent); border-radius: var(--radius); background: var(--color-surface); box-shadow: var(--shadow-sm); }
+  .visit-marker::after { content: ""; position: absolute; top: 100%; left: 50%; height: 2rem; border-left: 2px solid var(--color-accent); transform: translateX(-50%); }
+  .visit-label { color: var(--color-accent); font-size: .62rem; font-weight: 800; letter-spacing: .1em; }
+  .visit-date { font-size: .9rem; font-weight: 850; }
+  .visit-marker small { grid-column: 1 / -1; color: var(--color-text-muted); font-size: .7rem; text-align: center; }
+  .parallel-marker { position: relative; z-index: 2; display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: .8rem 1rem; width: fit-content; max-width: 100%; margin: 0 auto; padding: .8rem 1.2rem; border: 1px solid color-mix(in srgb, var(--color-highlight) 65%, var(--color-border)); border-radius: 999px; background: var(--color-highlight); color: var(--color-on-highlight); box-shadow: var(--shadow-sm); }
+  .parallel-marker .mono { font-size: .72rem; font-weight: 800; }
+  .parallel-marker strong { font-size: .88rem; }
+  .parallel-marker small { color: color-mix(in srgb, var(--color-on-highlight) 72%, transparent); font-size: .75rem; }
+  .timeline-row { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) 5rem minmax(0, 1fr); align-items: start; }
+  .timeline-entry { min-width: 0; }
+  .education-entry { grid-column: 1; }
+  .work-entry { grid-column: 3; }
+  .education-duration { position: relative; grid-column: 2; grid-row: 1; justify-self: stretch; align-self: stretch; min-height: 12rem; }
+  .education-duration::before { content: ""; position: absolute; top: .65rem; bottom: .65rem; left: 50%; width: .3rem; border-radius: 999px; background: var(--color-accent); transform: translateX(-50%); box-shadow: 0 0 0 3px var(--color-bg); }
+  .duration-point { position: absolute; z-index: 2; left: 50%; width: 1rem; aspect-ratio: 1; border: 3px solid var(--color-bg); border-radius: 50%; background: var(--color-highlight); box-shadow: 0 0 0 2px var(--color-accent); transform: translateX(-50%); transition: transform .2s ease, box-shadow .2s ease; }
+  .duration-point > span { position: absolute; left: 1.15rem; padding: .2rem .35rem; border-radius: .4rem; background: var(--color-bg); color: var(--color-accent); font-size: .58rem; font-weight: 800; line-height: 1.3; white-space: nowrap; }
+  .duration-end { top: .25rem; }
+  .duration-start { bottom: .25rem; }
+  .duration-end > span { top: -.15rem; }
+  .duration-start > span { bottom: -.15rem; }
+  .education-duration:hover .duration-point { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); transform: translateX(-50%) scale(1.18); }
+  .lane-label { display: flex; align-items: center; gap: .6rem; margin: 0 0 .75rem; color: var(--color-accent); font: 800 .76rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+  .lane-label span { display: grid; place-items: center; width: 1.75rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent-soft); font-size: .62rem; }
+  .work-lane .lane-label { color: color-mix(in srgb, var(--color-coral) 78%, var(--color-text)); }
+  .work-lane .lane-label span { background: color-mix(in srgb, var(--color-coral) 14%, var(--color-surface)); }
+  @media (max-width: 700px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .skills { grid-template-columns: 1fr; }
+    .career-timeline { gap: 2rem; padding-left: 0; }
+    .career-timeline::before { left: 1rem; }
+    .career-timeline::after { left: 1rem; }
+    .visit-marker { margin: 0 0 1.5rem 2.75rem; }
+    .visit-marker::after { left: -1.8rem; width: 1.8rem; height: 2px; top: 50%; border: 0; background: var(--color-accent); }
+    .parallel-marker { grid-template-columns: auto 1fr; margin: 0 0 0 2.75rem; border-radius: var(--radius); }
+    .parallel-marker small { grid-column: 1 / -1; }
+    .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0 0; }
+    .education-entry, .work-entry { grid-column: 2; }
+    .education-entry { grid-row: 1; }
+    .work-entry { grid-row: 2; margin-top: 1.25rem; }
+    .education-duration { grid-column: 1; grid-row: 1; min-height: 100%; }
+    .duration-point > span { left: .85rem; writing-mode: vertical-rl; font-size: .52rem; }
+  }
 </style>

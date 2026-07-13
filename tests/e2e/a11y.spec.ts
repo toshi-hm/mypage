@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 const pages = [
   { name: "トップ", path: "/" },
   { name: "記事一覧", path: "/articles/" },
-  { name: "記事詳細", path: "/articles/how-articles-work/" },
+  { name: "記事詳細", path: "/articles/hello-world/" },
   { name: "Works", path: "/works/" },
   { name: "About", path: "/about/" },
   { name: "タグ一覧", path: "/tags/" },
