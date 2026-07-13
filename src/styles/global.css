@@ -1,38 +1,59 @@
-/* ============================================================
-   デザインテーマ: 活版インデックス (editorial index)
-   紙の索引をモチーフに、罫線とタイポグラフィだけで構成する。
-   JS・画像・Web フォントは使わない(Lighthouse 満点維持のため)。
-   ============================================================ */
-
+/* Bright Studio design system
+   Atomic components consume these shared tokens; pages only compose them. */
 :root {
-  /* 紙とインク(すべて WCAG AA 以上のコントラストで設計) */
-  --color-bg: #f6f3ea;
-  --color-surface: #fdfbf4;
-  --color-text: #171410;
-  --color-text-muted: #5c564a;
-  --color-accent: #0f3ac0;
-  --color-accent-soft: #e7eafc;
-  --color-border: #d8d1c0;
-  --color-rule: #171410; /* 強い罫線(見出し・索引行) */
-  --radius: 2px;
-  --max-width: 44rem;
+  --color-bg: #f7f8f2;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fffdf6;
+  --color-text: #15231d;
+  --color-text-muted: #5c6963;
+  --color-accent: #1746d1;
+  --color-accent-strong: #0d2f9f;
+  --color-accent-soft: #e8eeff;
+  --color-highlight: #e8ff63;
+  --color-highlight-soft: #f5ffc5;
+  --color-coral: #ff765d;
+  --color-success: #147d52;
+  --color-on-highlight: #15231d;
+  --color-footer: #173e33;
+  --color-footer-text: #f6fbf6;
+  --color-footer-muted: #c4d0ca;
+  --color-border: #d9ded7;
+  --color-rule: #15231d;
+  --shadow-sm: 0 1px 2px rgb(21 35 29 / 8%), 0 8px 28px rgb(21 35 29 / 6%);
+  --shadow-lg: 0 22px 60px rgb(21 35 29 / 13%);
+  --radius-sm: 0.65rem;
+  --radius: 1.25rem;
+  --radius-lg: 2rem;
+  --max-width: 75rem;
+  --content-width: 47rem;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Menlo", "BIZ UDGothic", monospace;
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #131110;
-  --color-surface: #1b1815;
-  --color-text: #ede7d8;
-  --color-text-muted: #a9a291;
-  --color-accent: #9fb2ff;
-  --color-accent-soft: #222a4d;
-  --color-border: #37322a;
-  --color-rule: #ede7d8;
+  --color-bg: #101612;
+  --color-surface: #17201a;
+  --color-surface-raised: #1c261f;
+  --color-text: #f2f6ee;
+  --color-text-muted: #acb8b0;
+  --color-accent: #92aaff;
+  --color-accent-strong: #b9c6ff;
+  --color-accent-soft: #26345d;
+  --color-highlight: #dafa5a;
+  --color-highlight-soft: #303d1e;
+  --color-coral: #ff927d;
+  --color-success: #56d39c;
+  --color-on-highlight: #15231d;
+  --color-footer: #0b2c23;
+  --color-footer-text: #f6fbf6;
+  --color-footer-muted: #c4d0ca;
+  --color-border: #344039;
+  --color-rule: #f2f6ee;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 20%), 0 10px 30px rgb(0 0 0 / 18%);
+  --shadow-lg: 0 24px 64px rgb(0 0 0 / 28%);
   color-scheme: dark;
 }
 
-/* CSS のみの MPA View Transitions(対応ブラウザだけで有効) */
 @view-transition {
   navigation: auto;
 }
@@ -41,10 +62,10 @@
   @view-transition {
     navigation: none;
   }
-
   *,
   *::before,
   *::after {
+    scroll-behavior: auto !important;
     transition: none !important;
     animation: none !important;
   }
@@ -60,7 +81,7 @@ html {
   font-feature-settings: "palt";
   background: var(--color-bg);
   color: var(--color-text);
-  line-height: 1.85;
+  line-height: 1.75;
   letter-spacing: 0.01em;
   scrollbar-gutter: stable;
 }
@@ -70,32 +91,52 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  background:
+    radial-gradient(
+      circle at 7% 8%,
+      color-mix(in srgb, var(--color-highlight) 22%, transparent) 0 9rem,
+      transparent 9.1rem
+    ),
+    radial-gradient(
+      circle at 94% 34%,
+      color-mix(in srgb, var(--color-accent) 8%, transparent) 0 14rem,
+      transparent 14.1rem
+    ),
+    var(--color-bg);
 }
 
 main {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2.5rem 1.25rem 5rem;
+  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.1rem, 4vw, 3rem) clamp(5rem, 10vw, 8rem);
   flex: 1;
 }
-
-/* ---- タイポグラフィ ---- */
 
 h1,
 h2,
 h3 {
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(1.9rem, 1.2rem + 3vw, 3rem);
-  margin: 0 0 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-rule);
+  margin: 0;
+  font-size: clamp(2.75rem, 7vw, 6.5rem);
+  font-weight: 750;
 }
 
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.35rem);
+}
+h3 {
+  font-size: 1.1rem;
+}
+p {
+  text-wrap: pretty;
+}
 time,
 .mono {
   font-family: var(--font-mono);
@@ -103,12 +144,10 @@ time,
   letter-spacing: 0;
 }
 
-/* ---- リンク・フォーカス ---- */
-
 a {
   color: var(--color-accent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 0.22em;
 }
 
 a:hover {
@@ -116,18 +155,15 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius);
+  outline: 3px solid var(--color-coral);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
-
-/* ---- コード ---- */
 
 code {
   font-family: var(--font-mono);
 }
 
-/* Shiki dual theme: ダークテーマ時はコードブロックの色をダーク側へ切り替える */
 :root[data-theme="dark"] .astro-code,
 :root[data-theme="dark"] .astro-code span {
   color: var(--shiki-dark) !important;
@@ -137,21 +173,35 @@ code {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-/* ---- 共有ユーティリティ(索引スタイル) ---- */
-
-/* セクション見出し: 「01 / Articles」のような通し番号付きラベル */
-.section-label {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin: 3rem 0 0.75rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--color-rule);
-  font-size: 1.05rem;
+.content-narrow {
+  max-width: var(--content-width);
+}
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.section-label .no {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
+.page-lead {
+  max-width: 42rem;
+  margin: 1rem 0 0;
   color: var(--color-text-muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+@media (max-width: 680px) {
+  body {
+    background: var(--color-bg);
+  }
+  main {
+    padding-inline: 1rem;
+  }
 }

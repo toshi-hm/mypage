@@ -4,7 +4,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout title="Not Found" description="ページが見つかりません">
 	<section class="not-found">
-		<h1>404</h1>
+		<p class="eyebrow">Lost in the studio</p>
+		<h1>4<span>0</span>4</h1>
 		<p>お探しのページは見つかりませんでした。</p>
 		<a href="/">トップへ戻る</a>
 	</section>
@@ -13,12 +14,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <style>
 	.not-found {
 		text-align: center;
-		padding: 4rem 0;
+		padding: clamp(5rem, 12vw, 10rem) 0;
 	}
 
 	.not-found h1 {
-		font-size: 4rem;
+		font-size: clamp(6rem, 22vw, 14rem);
 		margin: 0;
-		color: var(--color-accent);
+		color: var(--color-text);
 	}
+
+	.not-found h1 span { color: var(--color-accent); }
+	.not-found a { display: inline-flex; margin-top: 1rem; padding: .7rem 1.2rem; border-radius: 999px; background: var(--color-text); color: var(--color-bg); font-weight: 700; text-decoration: none; }
 </style>

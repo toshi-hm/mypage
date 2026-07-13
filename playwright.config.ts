@@ -3,6 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 // E2E はビルド済みサイト(astro preview)に対して実行する。
 // ローカルで Playwright 同梱以外の Chromium を使う場合は PW_CHROMIUM_PATH を指定する。
 const executablePath = process.env["PW_CHROMIUM_PATH"];
+const port = Number(process.env["E2E_PORT"] ?? 4321);
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -11,7 +12,7 @@ export default defineConfig({
   retries: process.env["CI"] ? 2 : 0,
   reporter: process.env["CI"] ? [["list"], ["html", { open: "never" }]] : "list",
   use: {
-    baseURL: "http://localhost:4321",
+    baseURL: `http://localhost:${port}`,
     trace: "on-first-retry",
     // MPA View Transitions(@view-transition)は headless Chrome でトランジションが
     // 完了せず、遷移後の要素が「不安定」判定のままクリックできなくなることがある。
@@ -27,8 +28,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "bun run preview",
-    port: 4321,
-    reuseExistingServer: !process.env["CI"],
+    command: `bun run preview --port ${port}`,
+    port,
+    reuseExistingServer: !process.env["CI"] && !process.env["E2E_PORT"],
   },
 });

@@ -1,0 +1,19 @@
+---
+interface Props { title: string; href: string; description?: string; }
+const { title, href, description } = Astro.props;
+const isExternal = /^https?:\/\//.test(href);
+---
+
+<a class="link-card" href={href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined}>
+  <span class="copy"><strong>{title}</strong>{description && <small>{description}</small>}</span>
+  <span class="arrow" aria-hidden="true">{isExternal ? "↗" : "→"}</span>
+</a>
+
+<style>
+  .link-card { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.35rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); color: var(--color-text); text-decoration: none; box-shadow: var(--shadow-sm); transition: border-color .2s ease, transform .2s ease; }
+  .link-card:hover { border-color: var(--color-accent); transform: translateX(4px); }
+  .copy { display: grid; gap: .15rem; }
+  strong { font-size: 1.05rem; }
+  small { color: var(--color-text-muted); }
+  .arrow { display: grid; place-items: center; flex: none; width: 2.4rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); font-weight: 800; }
+</style>

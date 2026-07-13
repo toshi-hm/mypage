@@ -1,6 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, test } from "vitest";
-import TagList from "../src/components/TagList.astro";
+import TagList from "../src/components/atoms/TagList.astro";
 import { collectTags } from "../src/utils/articles";
 
 const withTags = (tags: string[]) => ({ data: { tags } });

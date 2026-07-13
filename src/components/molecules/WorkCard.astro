@@ -1,0 +1,30 @@
+---
+interface Props { name: string; description: string; url?: string; repo?: string; tech?: string[]; }
+const { name, description, url, repo, tech = [] } = Astro.props;
+---
+
+<article class="work-card">
+  <p class="label mono">Selected work</p>
+  <div class="head"><h2>{name}</h2><span class="mark" aria-hidden="true">↗</span></div>
+  <p class="description">{description}</p>
+  {tech.length > 0 && <ul class="tech">{tech.map((item) => <li>{item}</li>)}</ul>}
+  <div class="links">
+    {url && <a href={url} target="_blank" rel="noopener noreferrer">Visit site ↗</a>}
+    {repo && <a href={repo} target="_blank" rel="noopener noreferrer">Repository ↗</a>}
+  </div>
+</article>
+
+<style>
+  .work-card { min-height: 19rem; padding: clamp(1.4rem, 3vw, 2rem); border: 1px solid var(--color-border); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg); background: var(--color-accent-soft); transition: transform .2s ease; }
+  .work-card:nth-child(even) { background: var(--color-highlight-soft); border-radius: var(--radius-lg) var(--radius-sm) var(--radius-lg) var(--radius-lg); }
+  .work-card:hover { transform: rotate(-.5deg) translateY(-3px); }
+  .label { margin: 0 0 2.5rem; color: var(--color-accent); font-size: .7rem; font-weight: 700; text-transform: uppercase; }
+  .head { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+  h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.4rem); }
+  .mark { display: grid; place-items: center; width: 2.5rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-text); color: var(--color-bg); }
+  .description { max-width: 32rem; margin: .8rem 0 1.4rem; color: var(--color-text-muted); }
+  .tech { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 0 0 1.5rem; padding: 0; color: var(--color-text-muted); font: 600 .72rem/1 var(--font-mono); }
+  .tech li { padding: .35rem .6rem; border: 1px solid var(--color-border); border-radius: 999px; background: color-mix(in srgb, var(--color-surface) 65%, transparent); }
+  .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: auto; }
+  .links a { color: var(--color-text); font: 700 .78rem/1.4 var(--font-mono); }
+</style>

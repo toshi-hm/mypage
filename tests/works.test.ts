@@ -1,6 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, test } from "vitest";
-import WorkCard from "../src/components/WorkCard.astro";
+import WorkCard from "../src/components/molecules/WorkCard.astro";
 import { sortWorks } from "../src/utils/works";
 
 const work = (name: string, order: number) => ({ data: { name, order } });

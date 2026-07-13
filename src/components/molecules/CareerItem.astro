@@ -1,0 +1,21 @@
+---
+import { formatPeriod } from "../../utils/career";
+interface Props { role: string; organization: string; startDate: string; endDate?: string; description: string; }
+const { role, organization, startDate, endDate, description } = Astro.props;
+---
+
+<li class="career-item">
+  <p class="period mono">{formatPeriod(startDate, endDate)}</p>
+  <div><p class="organization">{organization}</p><h3>{role}</h3><p class="description">{description}</p></div>
+</li>
+
+<style>
+  .career-item { position: relative; display: grid; grid-template-columns: minmax(8rem, .35fr) 1fr; gap: 1.5rem; padding: 1.5rem 0 1.5rem 2rem; border-left: 1px solid var(--color-border); }
+  .career-item::before { content: ""; position: absolute; left: -.45rem; top: 1.8rem; width: .8rem; aspect-ratio: 1; border: 3px solid var(--color-bg); border-radius: 50%; background: var(--color-coral); }
+  p { margin: 0; }
+  .period { color: var(--color-text-muted); font-size: .75rem; }
+  .organization { color: var(--color-accent); font: 700 .74rem/1.4 var(--font-mono); text-transform: uppercase; }
+  h3 { margin: .35rem 0 .5rem; font-size: 1.2rem; }
+  .description { color: var(--color-text-muted); font-size: .9rem; }
+  @media (max-width: 560px) { .career-item { grid-template-columns: 1fr; gap: .5rem; } }
+</style>
