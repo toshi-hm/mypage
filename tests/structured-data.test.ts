@@ -4,14 +4,14 @@ import { buildBlogPostingLd, buildWebSiteLd } from "../src/utils/structured-data
 describe("buildWebSiteLd", () => {
   test("WebSite スキーマの主要フィールドを持つ", () => {
     const ld = buildWebSiteLd({
-      name: "toshi-hm | mypage",
+      name: "Hama Toshiya | mypage",
       description: "個人ホームページ",
       url: "https://example.com/",
     });
 
     expect(ld["@context"]).toBe("https://schema.org");
     expect(ld["@type"]).toBe("WebSite");
-    expect(ld["name"]).toBe("toshi-hm | mypage");
+    expect(ld["name"]).toBe("Hama Toshiya | mypage");
     expect(ld["url"]).toBe("https://example.com/");
   });
 });
@@ -23,7 +23,7 @@ describe("buildBlogPostingLd", () => {
     url: "https://example.com/articles/post/",
     pubDate: new Date("2026-07-01T00:00:00Z"),
     tags: ["astro", "meta"],
-    authorName: "toshi-hm",
+    authorName: "Hama Toshiya",
   };
 
   test("BlogPosting スキーマの主要フィールドを持つ", () => {
@@ -33,7 +33,7 @@ describe("buildBlogPostingLd", () => {
     expect(ld["headline"]).toBe("記事タイトル");
     expect(ld["datePublished"]).toBe("2026-07-01T00:00:00.000Z");
     expect(ld["keywords"]).toBe("astro,meta");
-    expect(ld["author"]).toEqual({ "@type": "Person", name: "toshi-hm" });
+    expect(ld["author"]).toEqual({ "@type": "Person", name: "Hama Toshiya" });
     expect(ld["dateModified"]).toBeUndefined();
   });
 
