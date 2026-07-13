@@ -24,8 +24,17 @@ const works = defineCollection({
     id: z.string().regex(SLUG_PATTERN, "id は英数字ケバブケースのみ"),
     name: z.string().min(1),
     description: z.string().min(1),
-    url: z.string().url().optional(),
-    repo: z.string().url().optional(),
+    // href に直接展開されるため、javascript: 等のスキームを排除し http(s) のみ許可する
+    url: z
+      .string()
+      .url()
+      .refine((u) => /^https?:\/\//i.test(u), "http(s) の URL のみ許可")
+      .optional(),
+    repo: z
+      .string()
+      .url()
+      .refine((u) => /^https?:\/\//i.test(u), "http(s) の URL のみ許可")
+      .optional(),
     tech: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     order: z.number().int().default(0),
