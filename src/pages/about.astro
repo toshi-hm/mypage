@@ -42,7 +42,7 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
           <p class="lane-label"><span aria-hidden="true">01</span> Education</p>
           <CareerItem role={graduateSchool.data.role} organization={graduateSchool.data.organization} track={graduateSchool.data.track} startDate={graduateSchool.data.startDate} endDate={graduateSchool.data.endDate} description={graduateSchool.data.description} highlights={graduateSchool.data.highlights} />
         </div>}
-        <div class="education-duration" aria-label="2024年4月入学、2026年3月修了">
+        <div class="education-duration" role="img" aria-label="2024年4月入学、2026年3月修了">
           <span class="duration-point duration-end"><span class="mono">2026.03 修了</span></span>
           <span class="duration-point duration-start"><span class="mono">2024.04 入学</span></span>
         </div>
@@ -62,7 +62,7 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
         <div class="timeline-entry education-entry">
           <CareerItem role={undergraduate.data.role} organization={undergraduate.data.organization} track={undergraduate.data.track} startDate={undergraduate.data.startDate} endDate={undergraduate.data.endDate} description={undergraduate.data.description} highlights={undergraduate.data.highlights} />
         </div>
-        <div class="education-duration" aria-label="2020年4月入学、2024年3月卒業">
+        <div class="education-duration" role="img" aria-label="2020年4月入学、2024年3月卒業">
           <span class="duration-point duration-end"><span class="mono">2024.03 卒業</span></span>
           <span class="duration-point duration-start"><span class="mono">2020.04 入学</span></span>
         </div>
@@ -124,8 +124,8 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
   .education-duration:hover .duration-point { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); transform: translateX(-50%) scale(1.18); }
   .lane-label { display: flex; align-items: center; gap: .6rem; margin: 0 0 .75rem; color: var(--color-accent); font: 800 .76rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
   .lane-label span { display: grid; place-items: center; width: 1.75rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent-soft); font-size: .62rem; }
-  .work-lane .lane-label { color: color-mix(in srgb, var(--color-coral) 78%, var(--color-text)); }
-  .work-lane .lane-label span { background: color-mix(in srgb, var(--color-coral) 14%, var(--color-surface)); }
+  .work-entry .lane-label { color: color-mix(in srgb, var(--color-coral) 78%, var(--color-text)); }
+  .work-entry .lane-label span { background: color-mix(in srgb, var(--color-coral) 14%, var(--color-surface)); }
   @media (max-width: 700px) {
     .profile-grid { grid-template-columns: 1fr; }
     .skills { grid-template-columns: 1fr; }
