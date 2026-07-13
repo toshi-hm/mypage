@@ -1,6 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, test } from "vitest";
-import CareerItem from "../src/components/CareerItem.astro";
+import CareerItem from "../src/components/molecules/CareerItem.astro";
 import { formatPeriod, sortCareer } from "../src/utils/career";
 
 const entry = (startDate: string, order: number) => ({ data: { startDate, order } });

@@ -17,7 +17,7 @@ test("トップ → Articles → 記事詳細 → タグページと回遊でき
   const tagLink = page.locator(".tags a").first();
   await tagLink.click();
   await expect(page).toHaveURL(/\/tags\/[a-z0-9-]+\/$/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Tag:");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("#");
 });
 
 test("Works と About にナビゲーションできる", async ({ page }) => {
@@ -26,7 +26,8 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Works" })).toBeVisible();
 
   await page.getByRole("navigation").getByRole("link", { name: "About" }).click();
-  await expect(page.getByRole("heading", { level: 1, name: "About" })).toBeVisible();
+  await expect(page).toHaveURL(/\/about\/$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Designing with intent");
 });
 
 test("存在しない URL では 404 ページが表示される", async ({ page }) => {

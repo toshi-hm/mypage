@@ -1,70 +1,33 @@
 ---
 import { getCollection } from "astro:content";
-import CareerItem from "../components/CareerItem.astro";
+import CareerItem from "../components/molecules/CareerItem.astro";
+import PageHeader from "../components/molecules/PageHeader.astro";
+import SectionHeading from "../components/molecules/SectionHeading.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { sortCareer } from "../utils/career";
-
 const skills = ["TypeScript", "Astro", "React", "Bun", "Cloudflare"];
 const career = sortCareer(await getCollection("career"));
 ---
 
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
-	<h1>About</h1>
-	<p>Hama Toshiya のプロフィールページです。</p>
-
-	<h2>Skills</h2>
-	<ul class="skills">
-		{skills.map((skill) => <li>{skill}</li>)}
-	</ul>
-
-	{
-		career.length > 0 && (
-			<>
-				<h2>Career</h2>
-				<ul class="career">
-					{career.map((item) => (
-						<CareerItem
-							role={item.data.role}
-							organization={item.data.organization}
-							startDate={item.data.startDate}
-							endDate={item.data.endDate}
-							description={item.data.description}
-						/>
-					))}
-				</ul>
-			</>
-		)
-	}
-
-	<h2>このサイトについて</h2>
-	<p>
-		Astro 7(静的出力)+ React islands 構成。詳細は
-		<a href="https://github.com/toshi-hm/mypage">リポジトリ</a>
-		の <code>docs/design.md</code> を参照してください。
-	</p>
+  <PageHeader eyebrow="About me" title="Designing with intent. Building with care." description="技術とデザインの境界を行き来しながら、分かりやすく、気持ちよく使えるWeb体験を設計・実装しています。" />
+  <div class="profile-grid">
+    <section aria-labelledby="skills-heading"><SectionHeading index="01" title="Skills" /><ul id="skills-heading" class="skills">{skills.map((skill, index) => <li><span class="mono">0{index + 1}</span>{skill}</li>)}</ul></section>
+    <aside><p class="eyebrow">Currently</p><p>Astro と TypeScript を中心に、軽く、堅牢で、長く育てられるWebを探求しています。</p></aside>
+  </div>
+  {career.length > 0 && <section><SectionHeading index="02" title="Career" /><ul class="career">{career.map((item) => <CareerItem role={item.data.role} organization={item.data.organization} startDate={item.data.startDate} endDate={item.data.endDate} description={item.data.description} />)}</ul></section>}
+  <section class="about-site"><SectionHeading index="03" title="This Site" /><p>Astro 7（静的出力）+ React islands 構成。設計と実装の詳細は <a href="https://github.com/toshi-hm/mypage">GitHub リポジトリ ↗</a> で公開しています。</p></section>
 </BaseLayout>
 
 <style>
-	.career {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.skills {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		list-style: none;
-		padding: 0;
-	}
-
-	.skills li {
-		padding: 0.25rem 0.75rem;
-		border-radius: 999px;
-		background: var(--color-accent-soft);
-		color: var(--color-accent);
-		font-size: 0.85rem;
-		font-weight: 600;
-	}
+  .profile-grid { display: grid; grid-template-columns: 1fr minmax(15rem, .45fr); gap: clamp(2rem, 6vw, 5rem); align-items: end; }
+  .skills, .career { list-style: none; margin: 0; padding: 0; }
+  .skills { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--color-border); }
+  .skills li { display: flex; align-items: center; gap: .8rem; padding: 1rem .5rem; border-bottom: 1px solid var(--color-border); font-weight: 750; }
+  .skills span { color: var(--color-accent); font-size: .68rem; }
+  aside { padding: 1.5rem; border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius); background: var(--color-highlight-soft); transform: rotate(1deg); }
+  aside p:last-child { margin: 0; font-weight: 650; }
+  .career { max-width: 58rem; margin-left: clamp(0rem, 10vw, 8rem); }
+  .about-site > p { max-width: 42rem; color: var(--color-text-muted); font-size: 1.05rem; }
+  @media (max-width: 700px) { .profile-grid { grid-template-columns: 1fr; } .skills { grid-template-columns: 1fr; } }
 </style>

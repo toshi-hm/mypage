@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
-import ArticleCard from "../../components/ArticleCard.astro";
-import TagList from "../../components/TagList.astro";
+import TagList from "../../components/atoms/TagList.astro";
+import ArticleCard from "../../components/molecules/ArticleCard.astro";
+import SectionHeading from "../../components/molecules/SectionHeading.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
 	excerpt,
@@ -53,7 +54,8 @@ const jsonLd = buildBlogPostingLd({
 
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
 	<article>
-		<header>
+		<header class="article-header">
+			<p class="eyebrow">Journal entry</p>
 			<h1>{title}</h1>
 			<p class="meta">
 				<time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
@@ -91,14 +93,9 @@ const jsonLd = buildBlogPostingLd({
 			</nav>
 			{
 				related.length > 0 && (
-					<section class="related" aria-labelledby="related-heading">
-						<h2 class="section-label" id="related-heading">
-							<span class="no" aria-hidden="true">
-								関連
-							</span>
-							Related Articles
-						</h2>
-						<div>
+					<section class="related">
+						<SectionHeading index="More" title="Related Articles" />
+						<div class="related-grid">
 							{related.map((item) => (
 								<ArticleCard
 									slug={item.slug}
@@ -118,8 +115,18 @@ const jsonLd = buildBlogPostingLd({
 </BaseLayout>
 
 <style>
+	article {
+		max-width: var(--content-width);
+		margin: 0 auto;
+	}
+
+	.article-header {
+		padding: clamp(2rem, 6vw, 5rem) 0 2rem;
+	}
+
 	header h1 {
-		margin-bottom: 0.25rem;
+		margin-bottom: 1rem;
+		font-size: clamp(2.5rem, 7vw, 5.5rem);
 	}
 
 	.meta {
@@ -139,13 +146,22 @@ const jsonLd = buildBlogPostingLd({
 		overflow-x: auto;
 	}
 
+	.body :global(h2) {
+		margin-top: 3rem;
+	}
+
+	.body :global(p),
+	.body :global(li) {
+		color: var(--color-text-muted);
+	}
+
 	.body :global(img) {
 		max-width: 100%;
 	}
 
 	footer {
-		margin-top: 2.5rem;
-		padding-top: 1rem;
+		margin-top: 4rem;
+		padding-top: 1.5rem;
 		border-top: 1px solid var(--color-border);
 	}
 
@@ -164,6 +180,16 @@ const jsonLd = buildBlogPostingLd({
 
 	.related {
 		margin-bottom: 1.5rem;
+	}
+
+	.related-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+
+	@media (max-width: 600px) {
+		.related-grid { grid-template-columns: 1fr; }
 	}
 
 </style>

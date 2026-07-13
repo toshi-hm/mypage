@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, test } from "vitest";
-import ThemeToggle from "../src/components/islands/ThemeToggle";
+import ThemeToggle from "../src/components/atoms/ThemeToggle";
 
 beforeEach(() => {
   localStorage.clear();

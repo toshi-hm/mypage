@@ -1,33 +1,20 @@
 ---
 import { getCollection } from "astro:content";
-import WorkCard from "../../components/WorkCard.astro";
+import PageHeader from "../../components/molecules/PageHeader.astro";
+import WorkCard from "../../components/molecules/WorkCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { sortWorks } from "../../utils/works";
-
 const works = sortWorks(await getCollection("works"));
 ---
 
 <BaseLayout title="Works" description="Hama Toshiya の制作物・プロジェクト">
-	<h1>Works</h1>
-	{works.length === 0 && <p>まだ制作物がありません。</p>}
-	<div class="list">
-		{
-			works.map((work) => (
-				<WorkCard
-					name={work.data.name}
-					description={work.data.description}
-					url={work.data.url}
-					repo={work.data.repo}
-					tech={work.data.tech}
-				/>
-			))
-		}
-	</div>
+  <PageHeader eyebrow="Selected projects" title="Works" description="課題をほどき、仕組みに落とし込み、触って心地よいところまで。最近の制作と実験です。" />
+  {works.length === 0 && <p>まだ制作物がありません。</p>}
+  <div class="list">{works.map((work) => <WorkCard name={work.data.name} description={work.data.description} url={work.data.url} repo={work.data.repo} tech={work.data.tech} />)}</div>
 </BaseLayout>
 
 <style>
-	.list {
-		display: grid;
-		gap: 0.75rem;
-	}
+  .list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .list :global(.work-card:nth-child(3n)) { grid-column: 1 / -1; }
+  @media (max-width: 700px) { .list { grid-template-columns: 1fr; } .list :global(.work-card:nth-child(3n)) { grid-column: auto; } }
 </style>

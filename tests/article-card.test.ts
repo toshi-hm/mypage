@@ -1,6 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { expect, test } from "vitest";
-import ArticleCard from "../src/components/ArticleCard.astro";
+import ArticleCard from "../src/components/molecules/ArticleCard.astro";
 
 test("タイトル・リンク・日付を描画する", async () => {
   const container = await AstroContainer.create();

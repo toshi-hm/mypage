@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import ArticleCard from "../../components/ArticleCard.astro";
+import ArticleCard from "../../components/molecules/ArticleCard.astro";
+import PageHeader from "../../components/molecules/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { collectTags, excerpt, isPublishable, sortByPubDateDesc } from "../../utils/articles";
 
@@ -21,8 +22,7 @@ const { articles } = Astro.props;
 ---
 
 <BaseLayout title={`Tag: ${tag}`} description={`タグ「${tag}」の記事一覧`}>
-	<h1>Tag: {tag}</h1>
-	<p class="lead">{articles.length} 件の記事</p>
+	<PageHeader eyebrow={`${articles.length} stories`} title={`#${tag}`} description="このテーマに関連する記事をまとめています。" />
 	<div class="list">
 		{
 			articles.map((article) => (
@@ -47,10 +47,14 @@ const { articles } = Astro.props;
 
 	.list {
 		display: grid;
-		gap: 0.75rem;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
 	}
 
 	.back {
 		margin-top: 2rem;
 	}
+
+	@media (max-width: 800px) { .list { grid-template-columns: repeat(2, 1fr); } }
+	@media (max-width: 560px) { .list { grid-template-columns: 1fr; } }
 </style>

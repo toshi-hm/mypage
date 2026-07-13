@@ -1,9 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import ArticleCard from "../components/ArticleCard.astro";
-import HeroVisual from "../components/islands/HeroVisual";
-import LinkCard from "../components/LinkCard.astro";
-import WorkCard from "../components/WorkCard.astro";
+import ArticleCard from "../components/molecules/ArticleCard.astro";
+import LinkCard from "../components/molecules/LinkCard.astro";
+import SectionHeading from "../components/molecules/SectionHeading.astro";
+import WorkCard from "../components/molecules/WorkCard.astro";
+import HomeHero from "../components/organisms/HomeHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
@@ -11,158 +12,54 @@ import { buildWebSiteLd } from "../utils/structured-data";
 import { sortWorks } from "../utils/works";
 
 const latestArticles = sortByPubDateDesc(
-	await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
+  await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
 ).slice(0, 3);
 const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.featured));
 const jsonLd = buildWebSiteLd({
-	name: SITE_TITLE,
-	description: SITE_DESCRIPTION,
-	url: Astro.site?.href ?? "https://mypage.example.com/",
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  url: Astro.site?.href ?? "https://mypage.example.com/",
 });
 ---
 
 <BaseLayout title="Home" jsonLd={jsonLd}>
-	<section class="hero">
-		<HeroVisual client:visible />
-		<p class="side-label" aria-hidden="true">個人サイト — since 2026</p>
-		<div>
-			<h1><span class="kicker mono">Hello, I am</span>Hama Toshiya</h1>
-			<p class="lead">
-				ソフトウェアエンジニア。このサイトは Astro + TypeScript + Bun で作られ、Cloudflare
-				で配信される予定の個人ホームページです。
-			</p>
-		</div>
-	</section>
-
-	{
-		latestArticles.length > 0 && (
-			<section aria-labelledby="sec-articles">
-				<h2 class="section-label" id="sec-articles">
-					<span class="no" aria-hidden="true">
-						01
-					</span>
-					Latest Articles
-				</h2>
-				<div class="rows">
-					{latestArticles.map((article) => (
-						<ArticleCard
-							slug={article.id}
-							title={article.data.title}
-							summary={excerpt(article.data, article.body)}
-							pubDate={article.data.pubDate}
-							tags={article.data.tags}
-						/>
-					))}
-				</div>
-				<p class="more">
-					<a href="/articles/">すべての記事を見る →</a>
-				</p>
-			</section>
-		)
-	}
-
-	{
-		featuredWorks.length > 0 && (
-			<section aria-labelledby="sec-works">
-				<h2 class="section-label" id="sec-works">
-					<span class="no" aria-hidden="true">
-						02
-					</span>
-					Featured Works
-				</h2>
-				<div class="rows">
-					{featuredWorks.map((work) => (
-						<WorkCard
-							name={work.data.name}
-							description={work.data.description}
-							url={work.data.url}
-							repo={work.data.repo}
-							tech={work.data.tech}
-						/>
-					))}
-				</div>
-				<p class="more">
-					<a href="/works/">すべての制作物を見る →</a>
-				</p>
-			</section>
-		)
-	}
-
-	<section aria-labelledby="sec-links">
-		<h2 class="section-label" id="sec-links">
-			<span class="no" aria-hidden="true">03</span>
-			Links
-		</h2>
-		<div class="rows">
-			<LinkCard title="About" href="/about/" description="プロフィール・スキル・経歴" />
-			<LinkCard
-				title="GitHub"
-				href="https://github.com/toshi-hm"
-				description="公開リポジトリはこちら"
-			/>
-		</div>
-	</section>
+  <HomeHero />
+  {latestArticles.length > 0 && (
+    <section aria-labelledby="latest-articles">
+      <SectionHeading id="latest-articles" index="01" title="Latest Articles" href="/articles/" linkLabel="All articles" />
+      <div class="article-grid">
+        {latestArticles.map((article) => (
+          <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} />
+        ))}
+      </div>
+    </section>
+  )}
+  {featuredWorks.length > 0 && (
+    <section aria-labelledby="featured-works">
+      <SectionHeading id="featured-works" index="02" title="Featured Works" href="/works/" linkLabel="All works" />
+      <div class="work-grid">
+        {featuredWorks.map((work) => (
+          <WorkCard name={work.data.name} description={work.data.description} url={work.data.url} repo={work.data.repo} tech={work.data.tech} />
+        ))}
+      </div>
+    </section>
+  )}
+  <section aria-labelledby="more-links">
+    <SectionHeading id="more-links" index="03" title="Keep Exploring" />
+    <div class="link-grid">
+      <LinkCard title="About" href="/about/" description="プロフィール・スキル・経歴" />
+      <LinkCard title="GitHub" href="https://github.com/toshi-hm" description="コードと公開リポジトリ" />
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-	.hero {
-		position: relative;
-		display: flex;
-		gap: 1.5rem;
-		padding: 2.5rem 0 3rem;
-	}
-
-	/* WebGL 演出は本文の背後に敷く(装飾のため pointer-events も切る) */
-	.hero :global(.hero-visual) {
-		position: absolute;
-		inset: 0;
-		z-index: -1;
-		pointer-events: none;
-	}
-
-	/* 縦書きのサイドラベル(純 CSS の装飾) */
-	.side-label {
-		writing-mode: vertical-rl;
-		margin: 0;
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		letter-spacing: 0.25em;
-		color: var(--color-text-muted);
-		border-left: 1px solid var(--color-border);
-		padding-left: 0.6rem;
-	}
-
-	.hero h1 {
-		margin: 0 0 1rem;
-		border-bottom: none;
-		padding-bottom: 0;
-		font-size: clamp(2.4rem, 1.4rem + 5vw, 4rem);
-		line-height: 1.1;
-	}
-
-	.kicker {
-		display: block;
-		font-size: 0.85rem;
-		font-weight: 400;
-		color: var(--color-accent);
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		margin-bottom: 0.4rem;
-	}
-
-	.lead {
-		color: var(--color-text-muted);
-		margin: 0;
-		max-width: 36rem;
-	}
-
-	.rows {
-		display: grid;
-	}
-
-	.more {
-		margin: 0.75rem 0 0;
-		font-size: 0.9rem;
-		text-align: right;
-	}
+  .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .article-grid :global(.article-card:nth-child(2)) { transform: translateY(1.5rem); }
+  .article-grid :global(.article-card:nth-child(2):hover) { transform: translateY(calc(1.5rem - 4px)); }
+  .work-grid, .link-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 760px) {
+    .article-grid, .work-grid, .link-grid { grid-template-columns: 1fr; }
+    .article-grid :global(.article-card:nth-child(2)) { transform: none; }
+  }
 </style>

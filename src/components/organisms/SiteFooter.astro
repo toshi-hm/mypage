@@ -1,0 +1,20 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div><p class="eyebrow">Let’s build something thoughtful.</p><p class="signoff">Ideas, code,<br />and a little <em>curiosity.</em></p></div>
+  <nav aria-label="フッターナビゲーション"><a href="/rss.xml">RSS</a><a href="/search/">Search</a><a href="https://github.com/toshi-hm">GitHub ↗</a></nav>
+  <p class="copyright mono">&copy; {year} Hama Toshiya</p>
+</footer>
+
+<style>
+  .site-footer { display: grid; grid-template-columns: 1fr auto; gap: 2rem; max-width: calc(var(--max-width) - 6rem); margin: 0 auto 1.5rem; padding: clamp(2rem, 5vw, 4rem); border-radius: var(--radius-lg); background: var(--color-footer); color: var(--color-footer-text); }
+  .eyebrow { color: var(--color-highlight); }
+  .signoff { margin: 0; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 750; line-height: 1.05; letter-spacing: -.04em; }
+  em { color: var(--color-highlight); font-style: normal; }
+  nav { display: flex; flex-direction: column; align-items: end; gap: .5rem; }
+  nav a { color: var(--color-footer-text); font-weight: 700; }
+  .copyright { grid-column: 1 / -1; margin: 2rem 0 0; padding-top: 1rem; border-top: 1px solid color-mix(in srgb, var(--color-footer-text) 25%, transparent); color: var(--color-footer-muted); font-size: .72rem; }
+  @media (max-width: 680px) { .site-footer { grid-template-columns: 1fr; margin-inline: .75rem; padding: 2rem 1.4rem; } nav { align-items: start; flex-direction: row; flex-wrap: wrap; gap: 1rem; } }
+</style>
