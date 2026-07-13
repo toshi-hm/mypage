@@ -41,4 +41,23 @@ const works = defineCollection({
   }),
 });
 
-export const collections = { articles, works };
+const career = defineCollection({
+  // CMS(file collection)が {"career": [...]} 形式で保存するため、parser で配列を取り出す
+  loader: file("src/content/career.json", {
+    parser: (text) => (JSON.parse(text) as { career: Array<Record<string, unknown>> }).career,
+  }),
+  schema: z.object({
+    id: z.string().regex(SLUG_PATTERN, "id は英数字ケバブケースのみ"),
+    role: z.string().min(1),
+    organization: z.string().min(1),
+    startDate: z.string().regex(/^\d{4}-\d{2}$/, "startDate は YYYY-MM 形式"),
+    endDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}$/, "endDate は YYYY-MM 形式")
+      .optional(),
+    description: z.string().min(1),
+    order: z.number().int().default(0),
+  }),
+});
+
+export const collections = { articles, works, career };

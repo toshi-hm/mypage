@@ -45,6 +45,46 @@ collections:
                   value_type: int,
                   required: false,
                 }
+  - name: career
+    label: Career
+    files:
+      - name: career
+        label: 経歴一覧
+        file: src/content/career.json
+        fields:
+          - name: career
+            label: 経歴
+            widget: list
+            fields:
+              - { name: id, label: ID(英数字ケバブケース), widget: string }
+              - { name: role, label: 役割・肩書き, widget: string }
+              - { name: organization, label: 組織・プロジェクト名, widget: string }
+              - {
+                  name: startDate,
+                  label: 開始年月(YYYY-MM),
+                  widget: datetime,
+                  time_format: false,
+                  date_format: "YYYY-MM",
+                  format: "YYYY-MM",
+                }
+              - {
+                  name: endDate,
+                  label: 終了年月(YYYY-MM、空欄は現在),
+                  widget: datetime,
+                  time_format: false,
+                  date_format: "YYYY-MM",
+                  format: "YYYY-MM",
+                  required: false,
+                }
+              - { name: description, label: 概要, widget: text }
+              - {
+                  name: order,
+                  label: 表示順,
+                  widget: number,
+                  default: 0,
+                  value_type: int,
+                  required: false,
+                }
   - name: articles
     label: Articles
     label_singular: Article
