@@ -11,6 +11,10 @@ updates:
       # マイナー・パッチはまとめて 1 PR にし、レビューコストを下げる
       minor-and-patch:
         update-types: ["minor", "patch"]
+    ignore:
+      # @astrojs/check 0.9.9 は TypeScript 7 を未サポート
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 5
 
   - package-ecosystem: github-actions
