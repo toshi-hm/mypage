@@ -37,14 +37,16 @@
 ## 3. Lighthouse CI(スコアのウォッチ)
 
 - `@lhci/cli` を devDependencies に追加し、`lighthouserc.json` で設定
-- `staticDistDir: dist`(LHCI 内蔵の静的サーバーで配信)、代表 4 URL を計測:
-  `/`(トップ)、`/articles/`(一覧)、記事詳細、`/works/`
+- `staticDistDir: dist`(LHCI 内蔵の静的サーバーで配信)で、固定ページと全公開記事を計測
+- `bun run lighthouse:prepare` がビルド済みの `dist/articles/**/index.html` を検出し、
+  `lighthouserc.json` の記事 URL を自動同期してから `oxfmt` で整形する。記事の追加・削除時に
+  設定ファイルを手動更新する必要はない
 - 各 URL を **3 回計測し median で評価**(共有ランナーの負荷ゆらぎを吸収)
 - **アサーション(これを下回ると CI が fail)**
   - performance: `>= 0.9`
   - accessibility / best-practices / seo: `= 1.0`
 - レポートは `filesystem` ターゲットで出力し、CI の artifact として保存(履歴を確認できる)
-- CI に `lighthouse` ジョブを追加(build → `lhci autorun`)。GitHub Actions の
+- CI に `lighthouse` ジョブを追加(build → URL 自動同期・整形 → `lhci autorun`)。GitHub Actions の
   ubuntu ランナー同梱の Chrome を使用
 - ローカル実行: `bun run lighthouse`(要 `bun run build`。CHROME_PATH で任意の Chromium を指定可)
 
