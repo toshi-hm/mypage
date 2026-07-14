@@ -8,8 +8,6 @@
   閾値割れで fail させる
 - **計測対象はロジックを持つ層に限定**: `src/utils/**` と `src/components/islands/**`
   - `.astro` コンポーネント: Container API テストで検証しているが v8 計測の対象外
-  - `src/lib/hero-scene.ts`: WebGL 依存で単体実行環境がないため対象外
-    (WebGL 非対応時のフォールバックは island テストと E2E で担保)
 - **閾値**: statements 90 / branches 85 / functions 90 / lines 90
   (導入時実測: statements 97.5 / branches 92 / functions 100 / lines 98.5。
   閾値は「劣化検知」目的で実測より低めに置く — Lighthouse ゲートと同じ思想)

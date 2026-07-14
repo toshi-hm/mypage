@@ -1,56 +1,66 @@
-# ヒーロー演出(Three.js) 設計ドキュメント
+# Topページ・ヒーロー背景の市場調査と設計
 
-トップページのヒーローに WebGL のリッチな演出を追加する。
-**前提: PR#8 の Lighthouse ゲート(perf >= 0.9 / a11y・bp・seo = 1.0)を維持すること。**
+調査日: 2026-07-14
 
-## 1. 方式の選定
+## 1. 市場調査
 
-| 候補                   | 判断                                                                  |
-| ---------------------- | --------------------------------------------------------------------- |
-| **Three.js**(採用)     | エコシステム・保守性が高い。tree-shaking + 遅延ロードでコスト制御可能 |
-| 素の WebGL シェーダ    | 最軽量(数 KB)だが保守性が低く、演出の発展性に乏しい                   |
-| CSS アニメーションのみ | 「リッチな表示」の要求を満たさない                                    |
+第三者SEOスコアは測定サービスごとに推計方法が異なるため、単純な順位付けはしない。
+ここでは、検索結果に継続的に現れる著名な国内外のメディア／SaaSを対象に、トップページの
+クロール可能な構造とファーストビューの見せ方を比較した。
 
-Three.js は初期バンドルに含めず、**アイドル時に動的 import** することで
-Lighthouse の計測ウィンドウ(LCP / TBT)への影響を避ける。
+| サイト                             | 種別         | Topページの主な構成                                                      | このサイトへの示唆                                                   |
+| ---------------------------------- | ------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| [note](https://note.com/)          | 国内メディア | 急上昇や記事を早い段階から並べるコンテンツ主導型。装飾より回遊を優先     | 記事一覧へ自然につなぎ、背景が本文を邪魔しないこと                   |
+| [Zenn](https://zenn.dev/)          | 国内メディア | Tech / Ideas / Booksなど検索意図に直結する見出しとコンテンツをHTMLで提示 | H1と記事コンテンツをアニメーションから独立させること                 |
+| [Studio](https://studio.design/ja) | 国内ツール   | ベネフィットを表す大型H1、短い説明、2つのCTA、製品画面のビジュアル       | 日本語の価値提案を主役にし、動きは理解を補助すること                 |
+| [SmartHR](https://smarthr.jp/)     | 国内SaaS     | サービス名・カテゴリを含むタイトル、明快なCTA、実績・機能への導線        | 抽象的な装飾だけで終わらず、プロフィール概要へ接続すること           |
+| [Notion](https://www.notion.com/)  | 海外アプリ   | 1つの価値提案、補足文、2つのCTA、製品デモ／利用実績                      | ファーストビューの情報階層を増やしすぎないこと                       |
+| [Linear](https://linear.app/)      | 海外ツール   | 簡潔なH1・説明の直後に、実製品に近いUIデモを大きく配置                   | エンジニアらしさは汎用グラデーションでなく「仕組み」の表現で出すこと |
+| [Stripe](https://stripe.com/)      | 海外SaaS     | 大型H1、CTA、ブランド色の動的な面、製品UIと実績値                        | 背景の動きは低コントラストにし、文字の可読性を固定すること           |
 
-## 2. 演出コンセプト: 「インクの粒子」
+共通しているのは、検索対象になるタイトル、説明、リンクを通常のHTMLとして先に成立させ、
+アニメーションを意味伝達の必須条件にしていない点である。GoogleもCore Web Vitalsとして
+LCP、INP、CLSをページ体験の指標に挙げているため、装飾のために初期表示やレイアウト安定性を
+犠牲にしない。
 
-「活版インデックス」テーマに合わせ、**紙の上を漂うインクの粒子**をヒーロー背景に描く。
+参考:
 
-- 数百点の粒子(`THREE.Points` + カスタムシェーダ)がゆっくり漂い、ポインタに緩やかに反応
-- 色はテーマの CSS 変数(`--color-accent` / `--color-text-muted`)から取得し、
-  `data-theme` の変化(テーマ切替)を `MutationObserver` で検知して追従
-- 派手なブルーム・グラデーションは使わない(テーマの品位を保つ)
+- [Google Search Central: Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals)
+- [web.dev: Animations and performance](https://web.dev/articles/animations-and-performance)
+- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/%40media/prefers-reduced-motion)
 
-## 3. パフォーマンス・アクセシビリティ予算(必須要件)
+## 2. 採用案: 「Idea to Product / シグナル軌道」
 
-| 項目                     | 対応                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| 初期バンドル             | Three.js 本体は `import()` による遅延ロード。island 自体は数 KB                |
-| ロードタイミング         | hydrate 後、`requestIdleCallback`(フォールバック `setTimeout`)まで遅延         |
-| `prefers-reduced-motion` | reduce 時は WebGL を一切初期化しない(静的表示のまま)                           |
-| タブ非表示               | `visibilitychange` でアニメーションループを停止                                |
-| ビューポート外           | `IntersectionObserver` で停止                                                  |
-| DPR                      | `min(devicePixelRatio, 2)` に制限                                              |
-| WebGL 不可環境           | 初期化失敗時は静かにフォールバック(装飾なし)。`aria-hidden` で AT からも不可視 |
-| 後始末                   | dispose / removeEventListener を確実に行う cleanup を返す                      |
+「ITで日常をより便利にしたい」を、アイデアが複数の経路を通りプロダクトへ収束する図として
+表現する。活版インデックスの罫線・座標図らしさを保ちながら、ヒーロー上部の余白を埋める。
 
-## 4. 実装構成
+- 2つの楕円軌道、経路、ノード、方眼をインラインSVGとCSSで描画
+- `01 / IDEA` と `02 / PRODUCT` の索引ラベルでサイトのテーマと接続
+- 軌道の回転、経路のドリフト、中心点の呼吸だけをゆっくり動かす
+- ライト／ダークテーマとも既存のCSSカスタムプロパティだけで配色
+- デスクトップでは上部から見出し背面へ広げ、モバイルでは縮小・低コントラスト化
 
-- `src/components/islands/HeroVisual.tsx` — island(`client:visible`)。
-  reduced-motion 判定・idle 待ち・cleanup 管理のみを担う薄いラッパー
-- `src/lib/hero-scene.ts` — Three.js シーン本体(`mountHeroScene(el): cleanup`)。
-  island から動的 import される(= Three.js がメインバンドルに入らない)
-- `src/pages/index.astro` — ヒーローに背景レイヤーとして配置(`position: absolute`、本文の後ろ)
+## 3. 方式選定
+
+| 候補                            | 判断                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| **インラインSVG + CSS（採用）** | 初期HTMLだけで表示でき、画像・追加JS・外部通信が不要。線画との相性が良い   |
+| Three.js / WebGL粒子            | リッチだが、遅延読込後まで上部が空白に見え、粒子が小さく意図が伝わりにくい |
+| 動画 / Animated WebP            | 表現力は高いが、転送量、LCP、テーマ追従、制作・更新コストで不利            |
+| CSSグラデーション               | 軽いが、既視感が強く「エンジニアが仕組みを作る」という個性が弱い           |
+
+## 4. パフォーマンスとアクセシビリティ
+
+- 文字、CTA、プロフィールは装飾から独立した通常のHTMLとし、SEOと操作性を維持する
+- アニメーション対象は原則 `transform` と `opacity` に限定し、layoutを発生させない
+- SVGには `aria-hidden="true"` 相当の親を置き、支援技術には読み上げさせない
+- `prefers-reduced-motion: reduce` では全アニメーションを停止し、静的な関係図として残す
+- 固定アスペクト比の絶対配置によりCLSを発生させない
+- JavaScript、Webフォント、画像、ネットワークリクエストを追加しない
 
 ## 5. 検証
 
-- `bun run build && bun run lighthouse` でスコア維持を実測(CI と同条件)
-- Vitest: island が reduced-motion を尊重すること・コンテナが `aria-hidden` であること
-- Storybook: HeroVisual のストーリーを追加(island 追加時の規約)
-
-## 6. 非スコープ
-
-- ヒーロー以外のページへの演出展開
-- スクロール連動・ポストプロセッシング
+- Astro ContainerテストでH1、CTA、装飾のアクセシビリティ属性を確認
+- `bun run check`でlint、format、型、単体テスト、buildを確認
+- `bun run build && bun run test:e2e`で主要導線とaxe監査を確認
+- `bun run lighthouse`でperformance 0.9以上、a11y / best-practices / SEO 1.0を確認
