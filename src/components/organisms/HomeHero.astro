@@ -1,9 +1,32 @@
----
-import HeroVisual from "../islands/HeroVisual";
----
-
 <section class="hero">
-  <HeroVisual client:media="(min-width: 821px)" />
+  <div class="signal-field" aria-hidden="true">
+    <div class="signal-grid"></div>
+    <svg viewBox="0 0 760 430" role="presentation">
+      <g class="signal-orbit signal-orbit-a">
+        <ellipse cx="455" cy="210" rx="242" ry="118"></ellipse>
+        <circle class="node node-solid" cx="684" cy="172" r="7"></circle>
+        <circle class="node" cx="250" cy="272" r="5"></circle>
+      </g>
+      <g class="signal-orbit signal-orbit-b">
+        <ellipse cx="455" cy="210" rx="174" ry="76"></ellipse>
+        <circle class="node node-highlight" cx="346" cy="151" r="8"></circle>
+        <circle class="node" cx="596" cy="253" r="4"></circle>
+      </g>
+      <g class="signal-route">
+        <path d="M64 308C172 230 215 109 350 106C492 102 515 319 696 286"></path>
+        <circle class="node node-coral" cx="64" cy="308" r="7"></circle>
+        <circle class="node node-solid" cx="350" cy="106" r="6"></circle>
+        <circle class="node node-highlight" cx="696" cy="286" r="8"></circle>
+      </g>
+      <g class="signal-core">
+        <circle class="core-ring core-ring-outer" cx="455" cy="210" r="42"></circle>
+        <circle class="core-ring" cx="455" cy="210" r="24"></circle>
+        <circle class="core-dot" cx="455" cy="210" r="8"></circle>
+      </g>
+    </svg>
+    <span class="signal-label signal-label-input">01 / IDEA</span>
+    <span class="signal-label signal-label-output">02 / PRODUCT</span>
+  </div>
   <div class="intro">
     <p class="eyebrow">Software Engineer · Tokyo</p>
     <h1><span>ITで日常を</span><br />より便利にしたい</h1>
@@ -18,8 +41,28 @@ import HeroVisual from "../islands/HeroVisual";
 
 <style>
   .hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 14rem; gap: 3rem; min-height: min(46rem, calc(100dvh - 6rem)); padding: clamp(3.5rem, 8vw, 7rem) 0 4rem; align-items: end; isolation: isolate; }
-  .hero :global(.hero-visual) { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .55; }
-  .intro { max-width: 58rem; }
+  .signal-field { position: absolute; z-index: -1; top: clamp(.5rem, 2vw, 2rem); right: clamp(-6rem, -4vw, -2rem); width: min(54rem, 72vw); aspect-ratio: 760 / 430; color: var(--color-accent); pointer-events: none; opacity: .82; }
+  .signal-field::before { content: ""; position: absolute; inset: 13% 5% 3% 22%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--color-accent-soft) 72%, transparent) 0, color-mix(in srgb, var(--color-accent-soft) 28%, transparent) 42%, transparent 70%); filter: blur(8px); }
+  .signal-grid { position: absolute; inset: 5% 0 0 12%; background-image: linear-gradient(color-mix(in srgb, var(--color-accent) 10%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 10%, transparent) 1px, transparent 1px); background-size: 2.4rem 2.4rem; mask-image: radial-gradient(ellipse at 64% 45%, black 0 30%, transparent 72%); opacity: .7; }
+  .signal-field svg { position: relative; display: block; width: 100%; overflow: visible; }
+  .signal-field ellipse, .signal-field path, .core-ring { fill: none; stroke: currentColor; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+  .signal-field ellipse { stroke-dasharray: 4 8; opacity: .48; }
+  .signal-field path { opacity: .3; }
+  .node { fill: var(--color-surface); stroke: currentColor; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .node-solid, .core-dot { fill: currentColor; }
+  .node-highlight { fill: var(--color-highlight); stroke: var(--color-text); }
+  .node-coral { fill: var(--color-coral); stroke: var(--color-text); }
+  .core-ring { opacity: .35; }
+  .core-ring-outer { stroke-dasharray: 2 7; }
+  .signal-orbit, .signal-route, .signal-core { transform-box: view-box; transform-origin: 455px 210px; will-change: transform; }
+  .signal-orbit-a { animation: orbit-a 32s linear infinite; }
+  .signal-orbit-b { animation: orbit-b 24s linear infinite reverse; }
+  .signal-route { animation: route-drift 9s ease-in-out infinite alternate; }
+  .signal-core { animation: core-breathe 4.8s ease-in-out infinite; will-change: transform, opacity; }
+  .signal-label { position: absolute; color: var(--color-text-muted); font: 700 .62rem/1 var(--font-mono); letter-spacing: .12em; opacity: .75; }
+  .signal-label-input { left: 7%; bottom: 20%; }
+  .signal-label-output { right: 2%; top: 24%; }
+  .intro { position: relative; max-width: 58rem; }
   h1 { font-size: clamp(3.3rem, 7vw, 6.4rem); line-height: .94; }
   h1 > span { position: relative; color: var(--color-accent); white-space: nowrap; }
   h1 > span::after { content: ""; position: absolute; left: -.03em; right: -.03em; bottom: -.06em; height: .09em; border-radius: 999px; background: var(--color-highlight); z-index: -1; transform: rotate(-1deg); }
@@ -36,6 +79,11 @@ import HeroVisual from "../islands/HeroVisual";
   dl { margin: 0; gap: 1rem; }
   dt { color: var(--color-text-muted); font: 700 .65rem/1 var(--font-mono); text-transform: uppercase; }
   dd { margin: 0; font-size: .85rem; font-weight: 700; line-height: 1.45; }
-  @media (max-width: 820px) { .hero { grid-template-columns: 1fr; min-height: auto; } .hero :global(.hero-visual), aside { display: none; } }
-  @media (max-width: 540px) { .hero { padding-top: 3rem; } h1 { font-size: clamp(2.55rem, 12vw, 3.25rem); } h1 > span { white-space: normal; } .lead { font-size: .95rem; } }
+  @keyframes orbit-a { to { transform: rotate(360deg); } }
+  @keyframes orbit-b { to { transform: rotate(360deg); } }
+  @keyframes route-drift { from { transform: translate3d(-.8rem, .35rem, 0) rotate(-1deg); } to { transform: translate3d(.8rem, -.35rem, 0) rotate(1deg); } }
+  @keyframes core-breathe { 0%, 100% { transform: scale(.94); opacity: .68; } 50% { transform: scale(1.08); opacity: 1; } }
+  @media (max-width: 820px) { .hero { grid-template-columns: 1fr; min-height: auto; overflow: clip; } .signal-field { top: -.5rem; right: -9rem; width: min(42rem, 96vw); opacity: .58; } aside { display: none; } }
+  @media (max-width: 540px) { .hero { padding-top: 5.5rem; } .signal-field { top: -.5rem; right: -10rem; width: 35rem; opacity: .42; } .signal-label { display: none; } h1 { font-size: clamp(2.45rem, 11vw, 3.1rem); } h1 > span { white-space: normal; } .lead { font-size: .95rem; } }
+  @media (prefers-reduced-motion: reduce) { .signal-orbit, .signal-route, .signal-core { animation: none; } }
 </style>
