@@ -18,7 +18,9 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "lighthouse": "lhci autorun",
+    "lighthouse:sync": "bun scripts/sync-lighthouse-urls.ts",
+    "lighthouse:prepare": "bun run lighthouse:sync && oxfmt lighthouserc.json",
+    "lighthouse": "bun run lighthouse:prepare && lhci autorun",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "check": "bun run lint && bun run format:check && bun run lint:md && bun run typecheck && bun run test && bun run build"

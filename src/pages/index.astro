@@ -49,6 +49,7 @@ const jsonLd = buildWebSiteLd({
     <div class="link-grid">
       <LinkCard title="About" href="/about/" description="プロフィール・スキル・経歴" />
       <LinkCard title="GitHub" href="https://github.com/toshi-hm" description="コードと公開リポジトリ" />
+      <LinkCard title="LinkedIn" href="https://www.linkedin.com/in/toshiyahama" description="経歴とプロフェッショナルプロフィール" />
     </div>
   </section>
 </BaseLayout>
@@ -57,7 +58,8 @@ const jsonLd = buildWebSiteLd({
   .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .article-grid :global(.article-card:nth-child(2)) { transform: translateY(1.5rem); }
   .article-grid :global(.article-card:nth-child(2):hover) { transform: translateY(calc(1.5rem - 4px)); }
-  .work-grid, .link-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   @media (max-width: 760px) {
     .article-grid, .work-grid, .link-grid { grid-template-columns: 1fr; }
     .article-grid :global(.article-card:nth-child(2)) { transform: none; }

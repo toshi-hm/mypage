@@ -3,6 +3,7 @@
 Hama Toshiya の個人ホームページ。Astro 7(静的出力)+ React islands 構成。将来 Cloudflare Workers (static assets) にデプロイ予定。
 
 設計の詳細は [docs/design.md](./docs/design.md) を参照。
+記事の追加・公開手順は [docs/article-authoring.md](./docs/article-authoring.md) を参照。
 
 ## 必要環境
 

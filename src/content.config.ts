@@ -50,12 +50,14 @@ const career = defineCollection({
     id: z.string().regex(SLUG_PATTERN, "id は英数字ケバブケースのみ"),
     role: z.string().min(1),
     organization: z.string().min(1),
+    track: z.enum(["education", "work"]),
     startDate: z.string().regex(/^\d{4}-\d{2}$/, "startDate は YYYY-MM 形式"),
     endDate: z
       .string()
       .regex(/^\d{4}-\d{2}$/, "endDate は YYYY-MM 形式")
       .optional(),
     description: z.string().min(1),
+    highlights: z.array(z.string().min(1)).default([]),
     order: z.number().int().default(0),
   }),
 });

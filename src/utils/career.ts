@@ -1,9 +1,11 @@
 export interface CareerData {
   role: string;
   organization: string;
+  track: "education" | "work";
   startDate: string;
   endDate?: string | undefined;
   description: string;
+  highlights: string[];
   order: number;
 }
 

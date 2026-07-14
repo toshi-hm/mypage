@@ -27,7 +27,7 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
 
   await page.getByRole("navigation").getByRole("link", { name: "About" }).click();
   await expect(page).toHaveURL(/\/about\/$/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Designing with intent");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("日常を少し便利にする");
 });
 
 test("存在しない URL では 404 ページが表示される", async ({ page }) => {
