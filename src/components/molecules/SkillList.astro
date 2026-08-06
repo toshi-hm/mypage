@@ -1,0 +1,70 @@
+---
+interface Skill {
+  name: string;
+  code: string;
+  featured?: boolean;
+}
+interface Props {
+  skills: Skill[];
+}
+const { skills } = Astro.props;
+---
+
+<ul class="skills">
+  {
+    skills.map((skill) => (
+      <li class={skill.featured ? "featured" : undefined}>
+        <span class="skill-icon mono" aria-hidden="true">
+          {skill.code}
+        </span>
+        <span class="skill-name">{skill.name}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 1.1rem 0 0;
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+  .skills li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.6rem 0.3rem 0.3rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    background: var(--color-surface);
+  }
+  .skill-icon {
+    display: grid;
+    min-width: 2.15rem;
+    height: 1.5rem;
+    padding: 0 0.3rem;
+    border-radius: 0.35rem;
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    place-items: center;
+  }
+  .skill-name {
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+  .skills li.featured {
+    border-color: var(--color-highlight);
+    background: var(--color-highlight-soft);
+  }
+  .skills li.featured .skill-icon {
+    background: var(--color-highlight);
+    color: var(--color-on-highlight);
+  }
+</style>
