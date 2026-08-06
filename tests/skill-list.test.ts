@@ -24,12 +24,12 @@ describe("SkillList", () => {
       },
     });
 
-    const items = result.split("</li>");
+    const items = result.split("<li").slice(1);
     const reactItem = items.find((item) => item.includes(">RE<"));
     const bunItem = items.find((item) => item.includes(">BUN<"));
 
-    expect(reactItem).toMatch(/<li class="featured"/);
-    expect(bunItem).not.toMatch(/<li class="featured"/);
+    expect(reactItem).toContain('class="featured"');
+    expect(bunItem).not.toContain('class="featured"');
   });
 
   test("アイコンは装飾として aria-hidden で隠す", async () => {
