@@ -6,6 +6,7 @@ const FIXED_URLS = [
   "http://localhost/index.html",
   "http://localhost/articles/index.html",
   "http://localhost/works/index.html",
+  "http://localhost/about/index.html",
 ];
 
 type LighthouseConfig = {

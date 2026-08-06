@@ -61,6 +61,7 @@ describe("syncLighthouseUrls", () => {
       "http://localhost/index.html",
       "http://localhost/articles/index.html",
       "http://localhost/works/index.html",
+      "http://localhost/about/index.html",
       "http://localhost/articles/hello-world/index.html",
     ]);
   });
