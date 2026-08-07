@@ -1,7 +1,7 @@
 ---
 interface Skill {
   name: string;
-  code: string;
+  iconUrl: string;
   featured?: boolean;
 }
 interface Props {
@@ -14,8 +14,8 @@ const { skills } = Astro.props;
   {
     skills.map((skill) => (
       <li class={skill.featured ? "featured" : undefined}>
-        <span class="skill-icon mono" aria-hidden="true">
-          {skill.code}
+        <span class="skill-icon" aria-hidden="true">
+          <img src={skill.iconUrl} alt="" width="24" height="24" loading="lazy" />
         </span>
         <span class="skill-name">{skill.name}</span>
       </li>
@@ -44,16 +44,15 @@ const { skills } = Astro.props;
   }
   .skill-icon {
     display: grid;
-    min-width: 2.15rem;
-    height: 1.5rem;
-    padding: 0 0.3rem;
+    width: 2.15rem;
+    height: 2.15rem;
     border-radius: 0.35rem;
     background: var(--color-accent-soft);
-    color: var(--color-accent);
-    font-size: 0.56rem;
-    font-weight: 800;
-    letter-spacing: 0.02em;
     place-items: center;
+  }
+  .skill-icon img {
+    width: 1.35rem;
+    height: 1.35rem;
   }
   .skill-name {
     font-size: 0.76rem;
@@ -63,8 +62,5 @@ const { skills } = Astro.props;
     border-color: var(--color-highlight);
     background: var(--color-highlight-soft);
   }
-  .skills li.featured .skill-icon {
-    background: var(--color-highlight);
-    color: var(--color-on-highlight);
-  }
+  .skills li.featured .skill-icon { background: var(--color-highlight); }
 </style>
