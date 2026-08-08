@@ -58,7 +58,7 @@ describe("SkillList", () => {
       props: { skills: [{ name: "CSS Modules", iconUrl: "https://example.com/css.svg" }] },
     });
 
-    expect(result).toContain('data-skill-icon');
+    expect(result).toContain("data-skill-icon");
     expect(result).toContain("CM");
     expect(result).toContain("skill-fallback");
   });

@@ -2,13 +2,14 @@
 interface Skill {
   name: string;
   iconUrl: string;
+  fallback?: string;
   featured?: boolean;
 }
 interface Props {
   skills: Skill[];
 }
 const { skills } = Astro.props;
-const getFallback = (name: string) => name.replace(/[^\p{L}\p{N}]+/gu, " ").trim().split(/\s+/).map((part) => part[0]).join("").slice(0, 3).toUpperCase();
+const getFallback = (name: string, fallback?: string) => fallback ?? name.replace(/[^\p{L}\p{N}]+/gu, " ").trim().split(/\s+/).map((part) => part[0]).join("").slice(0, 3).toUpperCase();
 ---
 
 <ul class="skills">
@@ -16,7 +17,7 @@ const getFallback = (name: string) => name.replace(/[^\p{L}\p{N}]+/gu, " ").trim
     skills.map((skill) => (
       <li class={skill.featured ? "featured" : undefined}>
         <span class="skill-icon" aria-hidden="true">
-          <span class="skill-fallback">{getFallback(skill.name)}</span>
+          <span class="skill-fallback">{getFallback(skill.name, skill.fallback)}</span>
           <img data-skill-icon src={skill.iconUrl} alt="" width="24" height="24" loading="lazy" />
         </span>
         <span class="skill-name">{skill.name}</span>
