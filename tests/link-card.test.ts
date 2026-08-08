@@ -32,6 +32,16 @@ test("外部リンクは新しいタブで開き rel を付与する", async () 
   expect(result).toContain('rel="noopener noreferrer"');
 });
 
+test("大文字のHTTPスキームも外部リンクとして扱う", async () => {
+  const container = await AstroContainer.create();
+  const result = await container.renderToString(LinkCard, {
+    props: { title: "GitHub", href: "HTTPS://github.com/toshi-hm" },
+  });
+
+  expect(result).toContain('target="_blank"');
+  expect(result).toContain('aria-label="GitHub（外部サイト・新しいタブ）"');
+});
+
 test("内部リンクには target を付与しない", async () => {
   const container = await AstroContainer.create();
   const result = await container.renderToString(LinkCard, {

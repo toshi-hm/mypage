@@ -2,7 +2,7 @@
 import ExternalLink from "../atoms/ExternalLink.astro";
 interface Props { title: string; href: string; description?: string; }
 const { title, href, description } = Astro.props;
-const isExternal = /^https?:\/\//.test(href);
+const isExternal = /^https?:\/\//i.test(href);
 ---
 
 {isExternal ? <ExternalLink class="link-card" href={href} label={title}>
