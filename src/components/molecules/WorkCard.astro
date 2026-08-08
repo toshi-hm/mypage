@@ -1,4 +1,5 @@
 ---
+import ExternalLink from "../atoms/ExternalLink.astro";
 interface Props { name: string; description: string; url?: string; repo?: string; tech?: string[]; }
 const { name, description, url, repo, tech = [] } = Astro.props;
 ---
@@ -9,8 +10,8 @@ const { name, description, url, repo, tech = [] } = Astro.props;
   <p class="description">{description}</p>
   {tech.length > 0 && <ul class="tech">{tech.map((item) => <li>{item}</li>)}</ul>}
   <div class="links">
-    {url && <a href={url} target="_blank" rel="noopener noreferrer">Visit site ↗</a>}
-    {repo && <a href={repo} target="_blank" rel="noopener noreferrer">Repository ↗</a>}
+    {url && <ExternalLink href={url} label="Visit site">Visit site ↗</ExternalLink>}
+    {repo && <ExternalLink href={repo} label="Repository">Repository ↗</ExternalLink>}
   </div>
 </article>
 

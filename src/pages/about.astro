@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import CareerItem from "../components/molecules/CareerItem.astro";
+import ExternalLink from "../components/atoms/ExternalLink.astro";
 import PageHeader from "../components/molecules/PageHeader.astro";
 import SectionHeading from "../components/molecules/SectionHeading.astro";
 import SkillList from "../components/molecules/SkillList.astro";
@@ -44,8 +45,8 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
   <PageHeader eyebrow="About me" title="日常を少し便利にする、プロダクトをつくる。" description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。" />
   <nav class="social-links" aria-label="ソーシャルリンク">
-    <a href="https://github.com/toshi-hm"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></a>
-    <a href="https://www.linkedin.com/in/toshiyahama"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></a>
+    <ExternalLink href="https://github.com/toshi-hm" label="GitHub"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink>
+    <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink>
   </nav>
   <div class="profile-grid">
     <section aria-labelledby="skills-heading"><SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} /></section>
