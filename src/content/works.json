@@ -10,11 +10,10 @@
       "order": 1
     },
     {
-      "id": "sample-tool",
-      "name": "サンプルツール",
-      "description": "Works のデータ構造を示すサンプルエントリ。実際の制作物に置き換えてください。",
-      "url": "https://example.com",
-      "tech": ["typescript"],
+      "id": "housekeeper",
+      "name": "housekeeper",
+      "description": "自宅の備品・食料品を管理するウェブアプリ。バーコードスキャンによる商品登録、在庫・保管場所・購入日・賞味期限の管理、期限が近い商品の確認をまとめて行えます。",
+      "tech": ["react", "typescript", "vite", "tanstack-router", "supabase", "tailwindcss"],
       "featured": false,
       "order": 2
     }

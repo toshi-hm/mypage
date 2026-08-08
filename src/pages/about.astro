@@ -71,13 +71,13 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 
       <div class="timeline-row parallel-row">
         {education.length > 0 && <div class="timeline-entry education-entry">
-          <p class="lane-label"><span aria-hidden="true">01</span> Education</p>
+          <p class="lane-label"><span aria-hidden="true">02</span> Education</p>
           <div class="career-stack">
             {education.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
           </div>
         </div>}
         {work.length > 0 && <div class="timeline-entry work-entry">
-          <p class="lane-label"><span aria-hidden="true">02</span> Professional</p>
+          <p class="lane-label"><span aria-hidden="true">01</span> Professional</p>
           <div class="career-stack">
             {work.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
           </div>
@@ -140,6 +140,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     .parallel-marker small { grid-column: 1 / -1; }
     .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0; }
     .education-entry, .work-entry { grid-column: 2; }
-    .work-entry { margin-top: 1.25rem; }
+    .work-entry { order: 1; margin-top: 0; }
+    .education-entry { order: 2; margin-top: 1.25rem; }
   }
 </style>
