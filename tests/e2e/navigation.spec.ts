@@ -30,6 +30,15 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toContainText("日常を少し便利にする");
 });
 
+test("スキルアイコンのCDN失敗時は略称へフォールバックする", async ({ page }) => {
+  await page.route("https://cdn.jsdelivr.net/**", (route) => route.abort());
+  await page.route("https://cdn.jsdelivr.net/gh/devicons/**", (route) => route.abort());
+  await page.goto("/about/");
+
+  await expect(page.locator(".skill-icon.is-fallback").first()).toBeVisible();
+  await expect(page.locator(".skill-fallback").first()).toHaveText("TS");
+});
+
 test("存在しない URL では 404 ページが表示される", async ({ page }) => {
   const response = await page.goto("/no-such-page/");
   expect(response?.status()).toBe(404);

@@ -18,7 +18,7 @@ describe("SkillList", () => {
 
     expect(result).toContain("TypeScript");
     expect(result).toContain(
-      '<img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/typescript.svg"',
+      '<img data-skill-icon src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/typescript.svg"',
     );
     expect(result).toContain('width="24" height="24" loading="lazy"');
   });
@@ -50,5 +50,16 @@ describe("SkillList", () => {
 
     expect(result).toContain('aria-hidden="true"');
     expect(result).toContain('alt=""');
+  });
+
+  test("画像の読み込みに失敗した場合の略称フォールバックを描画する", async () => {
+    const container = await AstroContainer.create();
+    const result = await container.renderToString(SkillList, {
+      props: { skills: [{ name: "CSS Modules", iconUrl: "https://example.com/css.svg" }] },
+    });
+
+    expect(result).toContain("data-skill-icon");
+    expect(result).toContain("CM");
+    expect(result).toContain("skill-fallback");
   });
 });
