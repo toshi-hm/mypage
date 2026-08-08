@@ -1,5 +1,5 @@
 import { readdir, readFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { statSync } from "node:fs";
 import { join } from "node:path";
 
 const HTTP_PROTOCOLS = new Set(["http:", "https:"]);
@@ -16,10 +16,17 @@ export function isValidHttpUrl(value: string): boolean {
   }
 }
 
-function toPathname(href: string): string | undefined {
-  if (!href.startsWith("/") || href.startsWith("//")) return undefined;
-  const pathname = href.split(/[?#]/, 1)[0];
-  return pathname || "/";
+function toPathname(href: string, basePath = "/"): string | undefined {
+  if (href.startsWith("#")) return undefined;
+
+  try {
+    const baseUrl = new URL(basePath, "https://mypage.local/");
+    const url = new URL(href, baseUrl);
+    if (url.origin !== baseUrl.origin) return undefined;
+    return url.pathname || "/";
+  } catch {
+    return undefined;
+  }
 }
 
 function getCandidates(distDir: string, pathname: string): string[] {
@@ -32,14 +39,35 @@ function getCandidates(distDir: string, pathname: string): string[] {
   ];
 }
 
-export function findBrokenInternalLinks(hrefs: string[], distDir: string): string[] {
+export function findBrokenInternalLinks(
+  hrefs: string[],
+  distDir: string,
+  basePath = "/",
+): string[] {
   return [
-    ...new Set(hrefs.map(toPathname).filter((pathname): pathname is string => Boolean(pathname))),
+    ...new Set(
+      hrefs
+        .map((href) => toPathname(href, basePath))
+        .filter((pathname): pathname is string => Boolean(pathname)),
+    ),
   ]
     .filter(
-      (pathname) => !getCandidates(distDir, pathname).some((candidate) => existsSync(candidate)),
+      (pathname) =>
+        !getCandidates(distDir, pathname).some((candidate) => {
+          try {
+            return statSync(candidate).isFile();
+          } catch {
+            return false;
+          }
+        }),
     )
     .toSorted();
+}
+
+function getRoutePath(htmlFile: string, distDir: string): string {
+  const relativePath = htmlFile.slice(distDir.length).replaceAll("\\", "/");
+  if (relativePath === "/index.html") return "/";
+  return relativePath.replace(/\/index\.html$/, "/");
 }
 
 async function collectHtmlFiles(directory: string): Promise<string[]> {
@@ -71,10 +99,33 @@ async function main() {
   );
 
   const htmlFiles = await collectHtmlFiles(distDir);
-  const hrefs = (await Promise.all(htmlFiles.map((file) => readFile(file, "utf8")))).flatMap(
-    extractHrefs,
+  const htmlContents = await Promise.all(
+    htmlFiles.map(async (file) => ({
+      file,
+      html: await readFile(file, "utf8"),
+    })),
   );
-  const brokenLinks = findBrokenInternalLinks(hrefs, distDir);
+  const hrefs = htmlContents.flatMap(({ html }) => extractHrefs(html));
+  const brokenLinks = [
+    ...new Set(
+      htmlContents.flatMap(({ file, html }) =>
+        extractHrefs(html)
+          .map((href) => ({ href, pathname: toPathname(href, getRoutePath(file, distDir)) }))
+          .filter(({ pathname }): pathname is string => Boolean(pathname))
+          .filter(
+            ({ pathname }) =>
+              !getCandidates(distDir, pathname).some((candidate) => {
+                try {
+                  return statSync(candidate).isFile();
+                } catch {
+                  return false;
+                }
+              }),
+          )
+          .map(({ href }) => href),
+      ),
+    ),
+  ].toSorted();
 
   if (invalidUrls.length > 0 || brokenLinks.length > 0) {
     if (invalidUrls.length > 0) console.error(`Invalid content URLs:\n${invalidUrls.join("\n")}`);

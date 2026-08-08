@@ -28,10 +28,28 @@ describe("content link validation", () => {
       await writeFile(join(distDir, "index.html"), "");
       await mkdir(join(distDir, "about"), { recursive: true });
       await writeFile(join(distDir, "about", "index.html"), "");
+      await mkdir(join(distDir, "empty"));
 
       expect(
-        findBrokenInternalLinks(["/", "/about/", "/missing/", "https://example.com"], distDir),
-      ).toEqual(["/missing/"]);
+        findBrokenInternalLinks(
+          ["/", "/about/", "/empty", "/missing/", "https://example.com"],
+          distDir,
+        ),
+      ).toEqual(["/empty", "/missing/"]);
+    } finally {
+      await rm(distDir, { recursive: true, force: true });
+    }
+  });
+
+  test("ページを基準に相対リンクを解決する", async () => {
+    const distDir = await mkdtemp(join(tmpdir(), "mypage-content-links-"));
+    try {
+      await mkdir(join(distDir, "articles", "hello"), { recursive: true });
+      await writeFile(join(distDir, "articles", "hello", "index.html"), "");
+
+      expect(
+        findBrokenInternalLinks(["./index.html", "../missing/"], distDir, "/articles/hello/"),
+      ).toEqual(["/articles/missing/"]);
     } finally {
       await rm(distDir, { recursive: true, force: true });
     }
