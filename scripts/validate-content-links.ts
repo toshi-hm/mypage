@@ -45,10 +45,12 @@ function toPathname(href: string, basePath = "/"): string | undefined {
   }
 }
 
+function getFragmentIds(html: string): Set<string> {
+  return new Set([...html.matchAll(/\b(?:id|name)=["']([^"']+)["']/g)].map((match) => match[1]));
+}
+
 export function findBrokenFragments(html: string): string[] {
-  const ids = new Set(
-    [...html.matchAll(/\b(?:id|name)=["']([^"']+)["']/g)].map((match) => match[1]),
-  );
+  const ids = getFragmentIds(html);
   return extractHrefs(html)
     .filter((href) => href.startsWith("#") && href.length > 1)
     .filter((href) => !ids.has(decodeURIComponent(href.slice(1))))
@@ -97,6 +99,37 @@ function getRoutePath(htmlFile: string, distDir: string): string {
   return relativePath.replace(/\/index\.html$/, "/");
 }
 
+async function findBrokenPageFragments(
+  htmlContents: Array<{ file: string; html: string }>,
+  distDir: string,
+): Promise<string[]> {
+  const broken: string[] = [];
+  for (const { file, html } of htmlContents) {
+    const baseUrl = new URL(getRoutePath(file, distDir), SITE_ORIGIN);
+    for (const href of extractHrefs(html).filter((value) => !value.startsWith("#"))) {
+      let url: URL;
+      try {
+        url = new URL(href, baseUrl);
+      } catch {
+        continue;
+      }
+      if (url.origin !== baseUrl.origin || !url.hash) continue;
+
+      const candidate = getCandidates(distDir, url.pathname).find((path) => {
+        try {
+          return statSync(path).isFile();
+        } catch {
+          return false;
+        }
+      });
+      if (!candidate) continue;
+      const targetIds = getFragmentIds(await readFile(candidate, "utf8"));
+      if (!targetIds.has(decodeURIComponent(url.hash.slice(1)))) broken.push(href);
+    }
+  }
+  return [...new Set(broken)].toSorted();
+}
+
 async function collectHtmlFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = await Promise.all(
@@ -138,18 +171,22 @@ async function main() {
     findBrokenInternalLinks(extractHrefs(html), distDir, getRoutePath(file, distDir)),
   );
   const brokenFragments = htmlContents.flatMap(({ html }) => findBrokenFragments(html));
+  const brokenPageFragments = await findBrokenPageFragments(htmlContents, distDir);
 
   if (
     invalidUrls.length > 0 ||
     invalidHrefs.length > 0 ||
     brokenLinks.length > 0 ||
-    brokenFragments.length > 0
+    brokenFragments.length > 0 ||
+    brokenPageFragments.length > 0
   ) {
     if (invalidUrls.length > 0) console.error(`Invalid content URLs:\n${invalidUrls.join("\n")}`);
     if (invalidHrefs.length > 0) console.error(`Invalid HTML hrefs:\n${invalidHrefs.join("\n")}`);
     if (brokenLinks.length > 0) console.error(`Broken internal links:\n${brokenLinks.join("\n")}`);
     if (brokenFragments.length > 0)
       console.error(`Broken fragments:\n${brokenFragments.join("\n")}`);
+    if (brokenPageFragments.length > 0)
+      console.error(`Broken page fragments:\n${brokenPageFragments.join("\n")}`);
     process.exitCode = 1;
     return;
   }
