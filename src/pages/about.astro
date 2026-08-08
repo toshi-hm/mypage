@@ -62,6 +62,12 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
         <small>今日まで続くキャリア</small>
       </div>
 
+      {parallelStartDate && <div class="parallel-marker" role="note">
+        <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
+        <strong>複数のキャリアを並行して開始</strong>
+        <small>Education × Professional</small>
+      </div>}
+
       <div class="timeline-row parallel-row">
         {education.length > 0 && <div class="timeline-entry education-entry">
           <p class="lane-label"><span aria-hidden="true">01</span> Education</p>
@@ -77,11 +83,6 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
         </div>}
       </div>
 
-      {parallelStartDate && <div class="parallel-marker">
-        <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
-        <strong>複数のキャリアを並行して開始</strong>
-        <small>Education × Professional</small>
-      </div>}
     </div>
   </section>}
 </BaseLayout>
@@ -138,7 +139,6 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     .parallel-marker small { grid-column: 1 / -1; }
     .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0; }
     .education-entry, .work-entry { grid-column: 2; }
-    .education-entry { grid-row: 1; }
-    .work-entry { grid-row: 2; margin-top: 1.25rem; }
+    .work-entry { margin-top: 1.25rem; }
   }
 </style>
