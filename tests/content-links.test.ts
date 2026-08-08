@@ -6,6 +6,7 @@ import {
   extractHrefs,
   findBrokenFragments,
   findBrokenInternalLinks,
+  findBrokenPageFragments,
   findInvalidHrefs,
   isValidHttpUrl,
 } from "../scripts/validate-content-links";
@@ -39,6 +40,28 @@ describe("content link validation", () => {
     expect(
       findBrokenFragments('<main id="main"><a href="#main">OK</a><a href="#missing">NG</a></main>'),
     ).toEqual(["#missing"]);
+  });
+
+  test("別ページの存在しないフラグメントを検出する", async () => {
+    const distDir = await mkdtemp(join(tmpdir(), "mypage-content-links-"));
+    try {
+      await mkdir(join(distDir, "about"), { recursive: true });
+      await writeFile(join(distDir, "about", "index.html"), '<section id="profile"></section>');
+
+      expect(
+        await findBrokenPageFragments(
+          [
+            {
+              file: join(distDir, "index.html"),
+              html: '<a href="/about/#profile">OK</a><a href="/about/#missing">NG</a>',
+            },
+          ],
+          distDir,
+        ),
+      ).toEqual(["/about/#missing"]);
+    } finally {
+      await rm(distDir, { recursive: true, force: true });
+    }
   });
 
   test("生成物に存在しないサイト内パスだけを検出する", async () => {

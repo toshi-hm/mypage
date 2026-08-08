@@ -99,7 +99,7 @@ function getRoutePath(htmlFile: string, distDir: string): string {
   return relativePath.replace(/\/index\.html$/, "/");
 }
 
-async function findBrokenPageFragments(
+export async function findBrokenPageFragments(
   htmlContents: Array<{ file: string; html: string }>,
   distDir: string,
 ): Promise<string[]> {
