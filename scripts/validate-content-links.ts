@@ -111,7 +111,7 @@ async function main() {
       htmlContents.flatMap(({ file, html }) =>
         extractHrefs(html)
           .map((href) => ({ href, pathname: toPathname(href, getRoutePath(file, distDir)) }))
-          .filter(({ pathname }): pathname is string => Boolean(pathname))
+          .filter((entry): entry is { href: string; pathname: string } => Boolean(entry.pathname))
           .filter(
             ({ pathname }) =>
               !getCandidates(distDir, pathname).some((candidate) => {
