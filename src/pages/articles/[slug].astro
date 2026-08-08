@@ -52,7 +52,14 @@ const jsonLd = buildBlogPostingLd({
 });
 ---
 
-<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+<BaseLayout
+	title={title}
+	description={description}
+	jsonLd={jsonLd}
+	ogType="article"
+	publishedTime={pubDate}
+	modifiedTime={updatedDate}
+>
 	<article>
 		<header class="article-header">
 			<p class="eyebrow">Journal entry</p>
