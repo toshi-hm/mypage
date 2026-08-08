@@ -5,6 +5,7 @@ export interface WorkData {
   repo?: string | undefined;
   tech: string[];
   featured: boolean;
+  showMark: boolean;
   order: number;
 }
 

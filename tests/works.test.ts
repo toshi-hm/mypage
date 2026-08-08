@@ -44,4 +44,14 @@ describe("WorkCard", () => {
 
     expect(result).not.toContain("href=");
   });
+
+  test("showMark を false にすると見出しの矢印を描画しない", async () => {
+    const container = await AstroContainer.create();
+    const result = await container.renderToString(WorkCard, {
+      props: { name: "housekeeper", description: "家庭用品管理", showMark: false },
+    });
+
+    expect(result).not.toContain('<span class="mark"');
+    expect(result).toContain("housekeeper");
+  });
 });

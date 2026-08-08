@@ -1,12 +1,12 @@
 ---
 import ExternalLink from "../atoms/ExternalLink.astro";
-interface Props { name: string; description: string; url?: string; repo?: string; tech?: string[]; }
-const { name, description, url, repo, tech = [] } = Astro.props;
+interface Props { name: string; description: string; url?: string; repo?: string; tech?: string[]; showMark?: boolean; }
+const { name, description, url, repo, tech = [], showMark = true } = Astro.props;
 ---
 
 <article class="work-card">
   <p class="label mono">Selected work</p>
-  <div class="head"><h2>{name}</h2><span class="mark" aria-hidden="true">↗</span></div>
+  <div class="head"><h2>{name}</h2>{showMark && <span class="mark" aria-hidden="true">↗</span>}</div>
   <p class="description">{description}</p>
   {tech.length > 0 && <ul class="tech">{tech.map((item) => <li>{item}</li>)}</ul>}
   <div class="links">
