@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import CareerItem from "../components/molecules/CareerItem.astro";
+import ExternalLink from "../components/atoms/ExternalLink.astro";
 import PageHeader from "../components/molecules/PageHeader.astro";
 import SectionHeading from "../components/molecules/SectionHeading.astro";
 import SkillList from "../components/molecules/SkillList.astro";
@@ -45,8 +46,8 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
   <PageHeader eyebrow="About me" title="日常を少し便利にする、プロダクトをつくる。" description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。" />
   <nav class="social-links" aria-label="ソーシャルリンク">
-    <a href="https://github.com/toshi-hm"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></a>
-    <a href="https://www.linkedin.com/in/toshiyahama"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></a>
+    <ExternalLink href="https://github.com/toshi-hm" label="GitHub"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink>
+    <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink>
   </nav>
   <div class="profile-grid">
     <section aria-labelledby="skills-heading"><SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} /></section>
@@ -101,9 +102,9 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 
 <style>
   .social-links { display: flex; flex-wrap: wrap; gap: .75rem; margin: -2rem 0 clamp(4rem, 8vw, 7rem); }
-  .social-links a { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 3rem; padding: .55rem .75rem .55rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-size: .8rem; font-weight: 750; text-decoration: none; box-shadow: var(--shadow-sm); }
-  .social-links a span:last-child { display: grid; place-items: center; width: 1.8rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); }
-  .social-links a:hover { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
+  .social-links :global(.external-link) { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 3rem; padding: .55rem .75rem .55rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-size: .8rem; font-weight: 750; text-decoration: none; box-shadow: var(--shadow-sm); }
+  .social-links :global(.external-link) span:last-child { display: grid; place-items: center; width: 1.8rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); }
+  .social-links :global(.external-link:hover) { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
   .profile-grid { display: grid; grid-template-columns: 1fr minmax(15rem, .45fr); gap: clamp(2rem, 6vw, 5rem); align-items: end; }
   aside { padding: 1.5rem; border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius); background: var(--color-highlight-soft); transform: rotate(1deg); }
   aside p:last-child { margin: 0; font-weight: 650; }
