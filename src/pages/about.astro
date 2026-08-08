@@ -30,7 +30,11 @@ const skills = [
   { name: "Storybook", iconUrl: simpleIcon("storybook"), fallback: "SB" },
   { name: "Vitest", iconUrl: simpleIcon("vitest"), fallback: "VI" },
   { name: "Playwright", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg", fallback: "PW" },
-  { name: "Codex", iconUrl: "/icons/codex.svg", fallback: "CX" },
+  {
+    name: "Codex",
+    iconUrl: "https://unpkg.com/@lobehub/icons-static-svg@1.91.0/icons/codex-color.svg",
+    fallback: "CX",
+  },
   { name: "Claude Code", iconUrl: simpleIcon("anthropic"), fallback: "CC" },
 ];
 const career = sortCareer(await getCollection("career"));
