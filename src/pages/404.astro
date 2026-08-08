@@ -7,7 +7,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 		<p class="eyebrow">Lost in the studio</p>
 		<h1>4<span>0</span>4</h1>
 		<p>お探しのページは見つかりませんでした。</p>
-		<a href="/">トップへ戻る</a>
+		<nav aria-label="404ページの移動先">
+			<a href="/">トップへ戻る</a>
+			<a href="/search/">記事を検索</a>
+			<a href="/articles/">記事一覧</a>
+			<a href="/works/">Works</a>
+			<a href="/about/">About</a>
+		</nav>
 	</section>
 </BaseLayout>
 
@@ -24,5 +30,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 	}
 
 	.not-found h1 span { color: var(--color-accent); }
-	.not-found a { display: inline-flex; margin-top: 1rem; padding: .7rem 1.2rem; border-radius: 999px; background: var(--color-text); color: var(--color-bg); font-weight: 700; text-decoration: none; }
+	.not-found nav { display: flex; justify-content: center; flex-wrap: wrap; gap: .65rem; margin-top: 1.5rem; }
+	.not-found a { display: inline-flex; padding: .7rem 1.2rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-weight: 700; text-decoration: none; }
+	.not-found a:first-child { border-color: var(--color-text); background: var(--color-text); color: var(--color-bg); }
 </style>
