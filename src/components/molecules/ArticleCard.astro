@@ -1,12 +1,12 @@
 ---
 import { formatDate } from "../../utils/articles";
 import TagList from "../atoms/TagList.astro";
-interface Props { slug: string; title: string; summary: string; pubDate: Date; tags?: string[]; }
-const { slug, title, summary, pubDate, tags = [] } = Astro.props;
+interface Props { slug: string; title: string; summary: string; pubDate: Date; tags?: string[]; readingMinutes?: number; }
+const { slug, title, summary, pubDate, tags = [], readingMinutes } = Astro.props;
 ---
 
 <article class="article-card">
-  <div class="meta"><time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time><span aria-hidden="true">Read</span></div>
+  <div class="meta"><time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time><span>{readingMinutes ? `約${readingMinutes}分で読めます` : "Read"}</span></div>
   <h2><a href={`/articles/${slug}/`}>{title}</a></h2>
   {summary && <p>{summary}</p>}
   <TagList tags={tags} />

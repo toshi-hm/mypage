@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import ArticleCard from "../../components/molecules/ArticleCard.astro";
 import PageHeader from "../../components/molecules/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { excerpt, isPublishable, sortByPubDateDesc } from "../../utils/articles";
+import { estimateReadingMinutes, excerpt, isPublishable, sortByPubDateDesc } from "../../utils/articles";
 const articles = sortByPubDateDesc(await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)));
 ---
 
@@ -11,7 +11,7 @@ const articles = sortByPubDateDesc(await getCollection("articles", ({ data }) =>
   <PageHeader eyebrow="Notes & discoveries" title="Articles" description="設計、実装、試行錯誤。日々の仕事で見つけた知見を、次に使える形で記録しています。" />
   <div class="toolbar"><p class="mono">{String(articles.length).padStart(2, "0")} stories</p><a href="/search/">Search articles <span aria-hidden="true">⌕</span></a></div>
   {articles.length === 0 && <p>まだ記事がありません。</p>}
-  <div class="list">{articles.map((article) => <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} />)}</div>
+  <div class="list">{articles.map((article) => <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} readingMinutes={estimateReadingMinutes(article.body)} />)}</div>
 </BaseLayout>
 
 <style>

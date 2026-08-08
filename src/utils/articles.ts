@@ -43,6 +43,27 @@ export function excerpt(
   return plain.length > maxLength ? `${plain.slice(0, maxLength)}…` : plain;
 }
 
+/** Markdown本文から日本語・英数字の量をもとに概算読了時間(分)を返す。 */
+export function estimateReadingMinutes(body: string | undefined): number {
+  if (!body) return 1;
+
+  const plain = body
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[#>*_~]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!plain) return 1;
+
+  const japaneseCharacters =
+    plain.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0;
+  const latinWords = plain.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0;
+  return Math.max(1, Math.ceil(japaneseCharacters / 500 + latinWords / 200));
+}
+
 /** pubDate 降順(新しい順)で並べ替える */
 export function sortByPubDateDesc<T extends { data: Pick<ArticleData, "pubDate"> }>(
   entries: T[],
