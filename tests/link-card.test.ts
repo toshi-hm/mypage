@@ -28,7 +28,7 @@ test("外部リンクは新しいタブで開き rel を付与する", async () 
   });
 
   expect(result).toContain('target="_blank"');
-  expect(result).toContain('aria-label="GitHub（外部サイト）"');
+  expect(result).toContain('aria-label="GitHub（外部サイト・新しいタブ）"');
   expect(result).toContain('rel="noopener noreferrer"');
 });
 

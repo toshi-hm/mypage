@@ -27,5 +27,5 @@ const { name, description, url, repo, tech = [] } = Astro.props;
   .tech { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 0 0 1.5rem; padding: 0; color: var(--color-text-muted); font: 600 .72rem/1 var(--font-mono); }
   .tech li { padding: .35rem .6rem; border: 1px solid var(--color-border); border-radius: 999px; background: color-mix(in srgb, var(--color-surface) 65%, transparent); }
   .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: auto; }
-  .links a { color: var(--color-text); font: 700 .78rem/1.4 var(--font-mono); }
+  .links :global(.external-link) { color: var(--color-text); font: 700 .78rem/1.4 var(--font-mono); }
 </style>

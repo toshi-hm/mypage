@@ -15,7 +15,7 @@ const year = new Date().getFullYear();
   .signoff { margin: 0; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 750; line-height: 1.05; letter-spacing: -.04em; }
   em { color: var(--color-highlight); font-style: normal; }
   nav { display: flex; flex-direction: column; align-items: end; gap: .5rem; }
-  nav a { color: var(--color-footer-text); font-weight: 700; }
+  nav a, nav :global(.external-link) { color: var(--color-footer-text); font-weight: 700; }
   .copyright { grid-column: 1 / -1; margin: 2rem 0 0; padding-top: 1rem; border-top: 1px solid color-mix(in srgb, var(--color-footer-text) 25%, transparent); color: var(--color-footer-muted); font-size: .72rem; }
   @media (max-width: 680px) { .site-footer { grid-template-columns: 1fr; margin-inline: .75rem; padding: 2rem 1.4rem; } nav { align-items: start; flex-direction: row; flex-wrap: wrap; gap: 1rem; } }
 </style>
