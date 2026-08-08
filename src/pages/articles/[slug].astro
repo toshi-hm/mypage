@@ -6,6 +6,7 @@ import SectionHeading from "../../components/molecules/SectionHeading.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
 	excerpt,
+	estimateReadingMinutes,
 	formatDate,
 	getAdjacentArticles,
 	isPublishable,
@@ -31,6 +32,7 @@ export async function getStaticPaths() {
 					summary: excerpt(entry.data, entry.body),
 					pubDate: entry.data.pubDate,
 					tags: entry.data.tags,
+					readingMinutes: estimateReadingMinutes(entry.body),
 				})),
 			},
 		};
@@ -59,6 +61,7 @@ const jsonLd = buildBlogPostingLd({
 			<h1>{title}</h1>
 			<p class="meta">
 				<time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+				<span>約{estimateReadingMinutes(article.body)}分で読めます</span>
 				{
 					updatedDate && (
 						<span>
@@ -103,6 +106,7 @@ const jsonLd = buildBlogPostingLd({
 									summary={item.summary}
 									pubDate={item.pubDate}
 									tags={item.tags}
+									readingMinutes={item.readingMinutes}
 								/>
 							))}
 						</div>
