@@ -34,8 +34,21 @@ test("存在しない URL では 404 ページが表示される", async ({ page
   const response = await page.goto("/no-such-page/");
   expect(response?.status()).toBe(404);
   await expect(page.getByText("お探しのページは見つかりませんでした。")).toBeVisible();
-  await expect(page.getByRole("link", { name: "記事を検索" })).toHaveAttribute("href", "/search/");
-  await expect(page.getByRole("link", { name: "記事一覧" })).toHaveAttribute("href", "/articles/");
-  await expect(page.getByRole("link", { name: "Works" })).toHaveAttribute("href", "/works/");
-  await expect(page.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about/");
+  const notFoundNavigation = page.getByRole("navigation", { name: "404ページの移動先" });
+  await expect(notFoundNavigation.getByRole("link", { name: "記事を検索" })).toHaveAttribute(
+    "href",
+    "/search/",
+  );
+  await expect(notFoundNavigation.getByRole("link", { name: "記事一覧" })).toHaveAttribute(
+    "href",
+    "/articles/",
+  );
+  await expect(notFoundNavigation.getByRole("link", { name: "Works" })).toHaveAttribute(
+    "href",
+    "/works/",
+  );
+  await expect(notFoundNavigation.getByRole("link", { name: "About" })).toHaveAttribute(
+    "href",
+    "/about/",
+  );
 });
