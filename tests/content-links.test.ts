@@ -4,7 +4,9 @@ import { tmpdir } from "node:os";
 import { describe, expect, test } from "vitest";
 import {
   extractHrefs,
+  findBrokenFragments,
   findBrokenInternalLinks,
+  findInvalidHrefs,
   isValidHttpUrl,
 } from "../scripts/validate-content-links";
 
@@ -20,6 +22,23 @@ describe("content link validation", () => {
     expect(isValidHttpUrl("http://localhost:4321")).toBe(true);
     expect(isValidHttpUrl("javascript:alert(1)")).toBe(false);
     expect(isValidHttpUrl("not a url")).toBe(false);
+  });
+
+  test("危険なスキームをHTMLリンクから検出する", () => {
+    expect(
+      findInvalidHrefs([
+        "/about/",
+        "https://example.com",
+        "javascript:alert(1)",
+        "data:text/plain,x",
+      ]),
+    ).toEqual(["data:text/plain,x", "javascript:alert(1)"]);
+  });
+
+  test("存在しない同一ページのフラグメントを検出する", () => {
+    expect(
+      findBrokenFragments('<main id="main"><a href="#main">OK</a><a href="#missing">NG</a></main>'),
+    ).toEqual(["#missing"]);
   });
 
   test("生成物に存在しないサイト内パスだけを検出する", async () => {

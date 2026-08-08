@@ -3,6 +3,7 @@ import { statSync } from "node:fs";
 import { join } from "node:path";
 
 const HTTP_PROTOCOLS = new Set(["http:", "https:"]);
+const SITE_ORIGIN = "https://mypage.example.com";
 
 export function extractHrefs(html: string): string[] {
   return [...html.matchAll(/\bhref=["']([^"']+)["']/g)].map((match) => match[1]);
@@ -16,11 +17,26 @@ export function isValidHttpUrl(value: string): boolean {
   }
 }
 
+export function findInvalidHrefs(hrefs: string[]): string[] {
+  return [
+    ...new Set(
+      hrefs.filter((href) => {
+        if (/^(?:#|\/|\.\.?\/|\?)/.test(href)) return false;
+        try {
+          return !HTTP_PROTOCOLS.has(new URL(href).protocol);
+        } catch {
+          return false;
+        }
+      }),
+    ),
+  ].toSorted();
+}
+
 function toPathname(href: string, basePath = "/"): string | undefined {
   if (href.startsWith("#")) return undefined;
 
   try {
-    const baseUrl = new URL(basePath, "https://mypage.local/");
+    const baseUrl = new URL(basePath, SITE_ORIGIN);
     const url = new URL(href, baseUrl);
     if (url.origin !== baseUrl.origin) return undefined;
     return url.pathname || "/";
@@ -29,8 +45,19 @@ function toPathname(href: string, basePath = "/"): string | undefined {
   }
 }
 
+export function findBrokenFragments(html: string): string[] {
+  const ids = new Set(
+    [...html.matchAll(/\b(?:id|name)=["']([^"']+)["']/g)].map((match) => match[1]),
+  );
+  return extractHrefs(html)
+    .filter((href) => href.startsWith("#") && href.length > 1)
+    .filter((href) => !ids.has(decodeURIComponent(href.slice(1))))
+    .toSorted();
+}
+
 function getCandidates(distDir: string, pathname: string): string[] {
   if (pathname === "/") return [join(distDir, "index.html")];
+  if (pathname === "/404/") return [join(distDir, "404.html")];
   if (pathname.endsWith("/")) return [join(distDir, pathname, "index.html")];
   return [
     join(distDir, pathname),
@@ -106,30 +133,23 @@ async function main() {
     })),
   );
   const hrefs = htmlContents.flatMap(({ html }) => extractHrefs(html));
-  const brokenLinks = [
-    ...new Set(
-      htmlContents.flatMap(({ file, html }) =>
-        extractHrefs(html)
-          .map((href) => ({ href, pathname: toPathname(href, getRoutePath(file, distDir)) }))
-          .filter((entry): entry is { href: string; pathname: string } => Boolean(entry.pathname))
-          .filter(
-            ({ pathname }) =>
-              !getCandidates(distDir, pathname).some((candidate) => {
-                try {
-                  return statSync(candidate).isFile();
-                } catch {
-                  return false;
-                }
-              }),
-          )
-          .map(({ href }) => href),
-      ),
-    ),
-  ].toSorted();
+  const invalidHrefs = findInvalidHrefs(hrefs);
+  const brokenLinks = htmlContents.flatMap(({ file, html }) =>
+    findBrokenInternalLinks(extractHrefs(html), distDir, getRoutePath(file, distDir)),
+  );
+  const brokenFragments = htmlContents.flatMap(({ html }) => findBrokenFragments(html));
 
-  if (invalidUrls.length > 0 || brokenLinks.length > 0) {
+  if (
+    invalidUrls.length > 0 ||
+    invalidHrefs.length > 0 ||
+    brokenLinks.length > 0 ||
+    brokenFragments.length > 0
+  ) {
     if (invalidUrls.length > 0) console.error(`Invalid content URLs:\n${invalidUrls.join("\n")}`);
+    if (invalidHrefs.length > 0) console.error(`Invalid HTML hrefs:\n${invalidHrefs.join("\n")}`);
     if (brokenLinks.length > 0) console.error(`Broken internal links:\n${brokenLinks.join("\n")}`);
+    if (brokenFragments.length > 0)
+      console.error(`Broken fragments:\n${brokenFragments.join("\n")}`);
     process.exitCode = 1;
     return;
   }
