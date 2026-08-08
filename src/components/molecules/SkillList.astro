@@ -27,6 +27,7 @@ const getFallback = (name: string, fallback?: string) => fallback ?? name.replac
 </ul>
 
 <script>
+  const boundSkillIcons = new WeakSet<HTMLImageElement>();
   const showSkillFallback = (image: HTMLImageElement) => {
     image.hidden = true;
     image.closest(".skill-icon")?.classList.add("is-fallback");
@@ -34,6 +35,8 @@ const getFallback = (name: string, fallback?: string) => fallback ?? name.replac
 
   const bindSkillIconFallbacks = () => {
     document.querySelectorAll<HTMLImageElement>("[data-skill-icon]").forEach((image) => {
+      if (boundSkillIcons.has(image)) return;
+      boundSkillIcons.add(image);
       image.addEventListener("error", () => showSkillFallback(image), { once: true });
       if (image.complete && image.naturalWidth === 0) showSkillFallback(image);
     });
