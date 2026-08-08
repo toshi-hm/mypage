@@ -7,7 +7,8 @@ Hama Toshiya の個人ホームページ。Astro 7(静的出力)+ React islands 
 
 ## 必要環境
 
-- [Bun](https://bun.sh/) 1.x(Node.js / npm は使用しない)
+- [Bun](https://bun.sh/) 1.x(アプリの実行・依存管理)
+- Node.js 22(カバレッジ計測時のVitest実行に使用)
 
 ## セットアップ
 
