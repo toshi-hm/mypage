@@ -1,27 +1,30 @@
 import { describe, expect, test } from "vitest";
-import { SLUG_PATTERN } from "../src/utils/articles";
+import { articleSchema } from "../src/content.config";
 
-// content.config.ts と同じ規約の正を直接検証する。
-// astro:content のスキーマ実装や、Bun/Vitest間のZod named import互換性には依存しない。
-const isValidTag = (tag: string) => SLUG_PATTERN.test(tag);
-const isValidTagList = (value: unknown): value is string[] =>
-  Array.isArray(value) && value.every((tag) => typeof tag === "string" && isValidTag(tag));
+const parseArticle = (tags: unknown) =>
+  articleSchema.safeParse({ title: "Test", pubDate: "2026-01-01", tags });
 
 describe("タグ規約(英数字ケバブケース)", () => {
   test("正しいタグは受理される", () => {
-    expect(isValidTagList(["astro", "cloud-flare", "web3"])).toBe(true);
-    expect(isValidTagList([])).toBe(true);
+    expect(parseArticle(["astro", "cloud-flare", "web3"]).success).toBe(true);
+    expect(parseArticle([]).success).toBe(true);
   });
 
   test("日本語・大文字・空文字は拒否される", () => {
-    expect(isValidTag("日記")).toBe(false);
-    expect(isValidTag("Astro")).toBe(false);
-    expect(isValidTag("")).toBe(false);
+    expect(parseArticle(["日記"]).success).toBe(false);
+    expect(parseArticle(["Astro"]).success).toBe(false);
+    expect(parseArticle([""]).success).toBe(false);
   });
 
   test("タグ全体は配列でなければならず、非文字列を拒否する", () => {
-    expect(isValidTagList("astro")).toBe(false);
-    expect(isValidTagList(["astro", 42])).toBe(false);
-    expect(isValidTagList(["astro", "invalid_tag"])).toBe(false);
+    expect(parseArticle("astro").success).toBe(false);
+    expect(parseArticle(["astro", 42]).success).toBe(false);
+    expect(parseArticle(["astro", "invalid_tag"]).success).toBe(false);
+  });
+
+  test("タグ未指定時は空配列になる", () => {
+    const result = articleSchema.safeParse({ title: "Test", pubDate: "2026-01-01" });
+
+    expect(result.success && result.data.tags).toEqual([]);
   });
 });
