@@ -58,7 +58,8 @@ export function estimateReadingMinutes(body: string | undefined): number {
 
   if (!plain) return 1;
 
-  const japaneseCharacters = plain.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0;
+  const japaneseCharacters =
+    plain.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0;
   const latinWords = plain.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0;
   return Math.max(1, Math.ceil(japaneseCharacters / 500 + latinWords / 200));
 }
