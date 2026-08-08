@@ -8,6 +8,7 @@ interface Props {
   skills: Skill[];
 }
 const { skills } = Astro.props;
+const getFallback = (name: string) => name.replace(/[^\p{L}\p{N}]+/gu, " ").trim().split(/\s+/).map((part) => part[0]).join("").slice(0, 3).toUpperCase();
 ---
 
 <ul class="skills">
@@ -15,13 +16,31 @@ const { skills } = Astro.props;
     skills.map((skill) => (
       <li class={skill.featured ? "featured" : undefined}>
         <span class="skill-icon" aria-hidden="true">
-          <img src={skill.iconUrl} alt="" width="24" height="24" loading="lazy" />
+          <span class="skill-fallback">{getFallback(skill.name)}</span>
+          <img data-skill-icon src={skill.iconUrl} alt="" width="24" height="24" loading="lazy" />
         </span>
         <span class="skill-name">{skill.name}</span>
       </li>
     ))
   }
 </ul>
+
+<script>
+  const showSkillFallback = (image: HTMLImageElement) => {
+    image.hidden = true;
+    image.closest(".skill-icon")?.classList.add("is-fallback");
+  };
+
+  const bindSkillIconFallbacks = () => {
+    document.querySelectorAll<HTMLImageElement>("[data-skill-icon]").forEach((image) => {
+      image.addEventListener("error", () => showSkillFallback(image), { once: true });
+      if (image.complete && image.naturalWidth === 0) showSkillFallback(image);
+    });
+  };
+
+  bindSkillIconFallbacks();
+  document.addEventListener("astro:page-load", bindSkillIconFallbacks);
+</script>
 
 <style>
   .skills {
@@ -50,6 +69,8 @@ const { skills } = Astro.props;
     background: var(--color-accent-soft);
     place-items: center;
   }
+  .skill-fallback { display: none; color: var(--color-accent); font: 800 .62rem/1 var(--font-mono); letter-spacing: 0; }
+  .skill-icon.is-fallback .skill-fallback { display: inline; }
   .skill-icon img {
     width: 1.35rem;
     height: 1.35rem;
