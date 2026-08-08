@@ -39,6 +39,7 @@ const works = defineCollection({
       .optional(),
     tech: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
+    showMark: z.boolean().default(true),
     order: z.number().int().default(0),
   }),
 });

@@ -12,10 +12,10 @@ const simpleIcon = (slug: string) => `${simpleIconsCdn}/${slug}.svg`;
 const skills = [
   { name: "TypeScript", iconUrl: simpleIcon("typescript"), fallback: "TS" },
   { name: "React", iconUrl: simpleIcon("react"), fallback: "RE", featured: true },
+  { name: "LIFF", iconUrl: simpleIcon("line"), fallback: "LIFF" },
   { name: "Next.js", iconUrl: simpleIcon("nextdotjs"), fallback: "NX" },
   { name: "Vue.js", iconUrl: simpleIcon("vuedotjs"), fallback: "VUE", featured: true },
   { name: "Nuxt", iconUrl: simpleIcon("nuxt"), fallback: "NUX" },
-  { name: "LIFF", iconUrl: simpleIcon("line"), fallback: "LIFF" },
   { name: "Astro.js", iconUrl: simpleIcon("astro"), fallback: "AST" },
   { name: "Node.js", iconUrl: simpleIcon("nodedotjs"), fallback: "NODE" },
   { name: "Express.js", iconUrl: simpleIcon("express"), fallback: "EXP" },
@@ -30,6 +30,12 @@ const skills = [
   { name: "Storybook", iconUrl: simpleIcon("storybook"), fallback: "SB" },
   { name: "Vitest", iconUrl: simpleIcon("vitest"), fallback: "VI" },
   { name: "Playwright", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg", fallback: "PW" },
+  {
+    name: "Codex",
+    iconUrl: "https://unpkg.com/@lobehub/icons-static-svg@1.91.0/icons/codex-color.svg",
+    fallback: "CX",
+  },
+  { name: "Claude Code", iconUrl: simpleIcon("anthropic"), fallback: "CC" },
 ];
 const career = sortCareer(await getCollection("career"));
 const education = career.filter((item) => item.data.track === "education");
@@ -71,13 +77,13 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 
       <div class="timeline-row parallel-row">
         {education.length > 0 && <div class="timeline-entry education-entry">
-          <p class="lane-label"><span aria-hidden="true">01</span> Education</p>
+          <p class="lane-label"><span aria-hidden="true">02</span> Education</p>
           <div class="career-stack">
             {education.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
           </div>
         </div>}
         {work.length > 0 && <div class="timeline-entry work-entry">
-          <p class="lane-label"><span aria-hidden="true">02</span> Professional</p>
+          <p class="lane-label"><span aria-hidden="true">01</span> Professional</p>
           <div class="career-stack">
             {work.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
           </div>
@@ -140,6 +146,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     .parallel-marker small { grid-column: 1 / -1; }
     .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0; }
     .education-entry, .work-entry { grid-column: 2; }
-    .work-entry { margin-top: 1.25rem; }
+    .work-entry { order: 1; margin-top: 0; }
+    .education-entry { order: 2; margin-top: 1.25rem; }
   }
 </style>
