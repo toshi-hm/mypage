@@ -21,6 +21,7 @@
     "lighthouse:sync": "bun scripts/sync-lighthouse-urls.ts",
     "lighthouse:prepare": "bun run lighthouse:sync && oxfmt lighthouserc.json",
     "lighthouse": "bun run lighthouse:prepare && lhci autorun",
+    "content:validate": "bun scripts/validate-content-links.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "check": "bun run lint && bun run format:check && bun run lint:md && bun run typecheck && bun run test && bun run build"
