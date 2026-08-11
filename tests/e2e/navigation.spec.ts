@@ -30,8 +30,34 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toContainText("日常を少し便利にする");
 });
 
+test("スキルアイコンのCDN失敗時は略称へフォールバックする", async ({ page }) => {
+  await page.route("https://cdn.jsdelivr.net/**", (route) => route.abort());
+  await page.route("https://cdn.jsdelivr.net/gh/devicons/**", (route) => route.abort());
+  await page.goto("/about/");
+
+  await expect(page.locator(".skill-icon.is-fallback").first()).toBeVisible();
+  await expect(page.locator(".skill-fallback").first()).toHaveText("TS");
+});
+
 test("存在しない URL では 404 ページが表示される", async ({ page }) => {
   const response = await page.goto("/no-such-page/");
   expect(response?.status()).toBe(404);
   await expect(page.getByText("お探しのページは見つかりませんでした。")).toBeVisible();
+  const notFoundNavigation = page.getByRole("navigation", { name: "404ページの移動先" });
+  await expect(notFoundNavigation.getByRole("link", { name: "記事を検索" })).toHaveAttribute(
+    "href",
+    "/search/",
+  );
+  await expect(notFoundNavigation.getByRole("link", { name: "記事一覧" })).toHaveAttribute(
+    "href",
+    "/articles/",
+  );
+  await expect(notFoundNavigation.getByRole("link", { name: "Works" })).toHaveAttribute(
+    "href",
+    "/works/",
+  );
+  await expect(notFoundNavigation.getByRole("link", { name: "About" })).toHaveAttribute(
+    "href",
+    "/about/",
+  );
 });

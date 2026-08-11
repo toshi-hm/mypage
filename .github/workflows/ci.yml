@@ -42,10 +42,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
       - run: bun install --frozen-lockfile
+      - name: "Vitest (Bun runtime)"
+        run: bun run test
       - name: "Vitest (coverage thresholds: stmts 90 / branch 85 / funcs 90 / lines 90)"
         run: bun run test:coverage
       - uses: actions/upload-artifact@v7
@@ -64,6 +69,8 @@ jobs:
           bun-version: latest
       - run: bun install --frozen-lockfile
       - run: bun run build
+      - name: Validate generated content links
+        run: bun run content:validate
       - name: Validate wrangler config (dry-run)
         run: bun run deploy:dry-run
       - uses: actions/upload-artifact@v7

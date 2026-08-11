@@ -41,7 +41,9 @@ describe("CareerItem", () => {
 
     expect(result).toContain("ソフトウェアエンジニア");
     expect(result).toContain("mypage");
-    expect(result).toContain("2026-01 〜 現在");
+    expect(result).toContain("2026-01");
+    expect(result).toContain("現在");
+    expect(result).toContain('datetime="2026-01-01"');
     expect(result).toContain("本サイトを設計・実装");
     expect(result).toContain("React");
     expect(result).toContain("Bun");

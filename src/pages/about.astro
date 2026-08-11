@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import CareerItem from "../components/molecules/CareerItem.astro";
+import ExternalLink from "../components/atoms/ExternalLink.astro";
 import PageHeader from "../components/molecules/PageHeader.astro";
 import SectionHeading from "../components/molecules/SectionHeading.astro";
 import SkillList from "../components/molecules/SkillList.astro";
@@ -8,44 +9,53 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { sortCareer } from "../utils/career";
 const simpleIconsCdn = "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons";
 const simpleIcon = (slug: string) => `${simpleIconsCdn}/${slug}.svg`;
+const lobeIconsCdn = "https://unpkg.com/@lobehub/icons-static-svg@1.91.0/icons";
+const lobeIcon = (slug: string) => `${lobeIconsCdn}/${slug}.svg`;
 const skills = [
-  { name: "TypeScript", iconUrl: simpleIcon("typescript") },
-  { name: "React", iconUrl: simpleIcon("react"), featured: true },
-  { name: "Next.js", iconUrl: simpleIcon("nextdotjs") },
-  { name: "Vue.js", iconUrl: simpleIcon("vuedotjs"), featured: true },
-  { name: "Nuxt", iconUrl: simpleIcon("nuxt") },
-  { name: "LIFF", iconUrl: simpleIcon("line") },
-  { name: "Astro.js", iconUrl: simpleIcon("astro") },
-  { name: "Node.js", iconUrl: simpleIcon("nodedotjs") },
-  { name: "Express.js", iconUrl: simpleIcon("express") },
-  { name: "Hono", iconUrl: simpleIcon("hono") },
-  { name: "Bun", iconUrl: simpleIcon("bun") },
-  { name: "Prisma", iconUrl: simpleIcon("prisma") },
-  { name: "Supabase", iconUrl: simpleIcon("supabase") },
-  { name: "MySQL", iconUrl: simpleIcon("mysql") },
-  { name: "SCSS", iconUrl: simpleIcon("sass") },
-  { name: "CSS Modules", iconUrl: simpleIcon("cssmodules") },
-  { name: "Tailwind", iconUrl: simpleIcon("tailwindcss") },
-  { name: "Storybook", iconUrl: simpleIcon("storybook") },
-  { name: "Vitest", iconUrl: simpleIcon("vitest") },
-  { name: "Playwright", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg" },
+  { name: "TypeScript", iconUrl: simpleIcon("typescript"), fallback: "TS" },
+  { name: "React", iconUrl: simpleIcon("react"), fallback: "RE", featured: true },
+  { name: "LIFF", iconUrl: simpleIcon("line"), fallback: "LIFF" },
+  { name: "Next.js", iconUrl: simpleIcon("nextdotjs"), fallback: "NX" },
+  { name: "Vue.js", iconUrl: simpleIcon("vuedotjs"), fallback: "VUE", featured: true },
+  { name: "Nuxt", iconUrl: simpleIcon("nuxt"), fallback: "NUX" },
+  { name: "Astro.js", iconUrl: simpleIcon("astro"), fallback: "AST" },
+  { name: "Node.js", iconUrl: simpleIcon("nodedotjs"), fallback: "NODE" },
+  { name: "Express.js", iconUrl: simpleIcon("express"), fallback: "EXP" },
+  { name: "Hono", iconUrl: simpleIcon("hono"), fallback: "HONO" },
+  { name: "Bun", iconUrl: simpleIcon("bun"), fallback: "BUN" },
+  { name: "Prisma", iconUrl: simpleIcon("prisma"), fallback: "PR" },
+  { name: "Supabase", iconUrl: simpleIcon("supabase"), fallback: "SUPA" },
+  { name: "MySQL", iconUrl: simpleIcon("mysql"), fallback: "SQL" },
+  { name: "SCSS", iconUrl: simpleIcon("sass"), fallback: "SCSS" },
+  { name: "CSS Modules", iconUrl: simpleIcon("cssmodules"), fallback: "CSSM" },
+  { name: "Tailwind", iconUrl: simpleIcon("tailwindcss"), fallback: "TW" },
+  { name: "Storybook", iconUrl: simpleIcon("storybook"), fallback: "SB" },
+  { name: "Vitest", iconUrl: simpleIcon("vitest"), fallback: "VI" },
+  { name: "Playwright", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg", fallback: "PW" },
+  {
+    name: "Codex",
+    iconUrl: lobeIcon("codex-color"),
+    fallback: "CX",
+  },
+  { name: "Claude Code", iconUrl: lobeIcon("claudecode-color"), fallback: "CC" },
 ];
 const career = sortCareer(await getCollection("career"));
 const education = career.filter((item) => item.data.track === "education");
 const work = career.filter((item) => item.data.track === "work");
-const graduateSchool = education.find((item) => item.data.startDate === "2024-04");
-const undergraduate = education.find((item) => item.data.startDate === "2020-04");
-const currentWork = work.find((item) => !item.data.endDate);
+const parallelStartDate = education.find((educationEntry) =>
+	work.some((workEntry) => workEntry.data.startDate === educationEntry.data.startDate),
+)?.data.startDate;
 const now = new Date();
 const initialVisitDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
+const formatMonthLabel = (month: string) => month.replace("-", ".");
 ---
 
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
   <PageHeader eyebrow="About me" title="日常を少し便利にする、プロダクトをつくる。" description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。" />
   <nav class="social-links" aria-label="ソーシャルリンク">
-    <a href="https://github.com/toshi-hm"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></a>
-    <a href="https://www.linkedin.com/in/toshiyahama"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></a>
+    <ExternalLink href="https://github.com/toshi-hm" label="GitHub"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink>
+    <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink>
   </nav>
   <div class="profile-grid">
     <section aria-labelledby="skills-heading"><SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} /></section>
@@ -61,36 +71,27 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
         <small>今日まで続くキャリア</small>
       </div>
 
-      <div class="timeline-row parallel-row">
-        {graduateSchool && <div class="timeline-entry education-entry">
-          <p class="lane-label"><span aria-hidden="true">01</span> Education</p>
-          <CareerItem role={graduateSchool.data.role} organization={graduateSchool.data.organization} track={graduateSchool.data.track} startDate={graduateSchool.data.startDate} endDate={graduateSchool.data.endDate} description={graduateSchool.data.description} highlights={graduateSchool.data.highlights} />
-        </div>}
-        <div class="education-duration" role="img" aria-label="2024年4月入学、2026年3月修了">
-          <span class="duration-point duration-end"><span class="mono">2026.03 修了</span></span>
-          <span class="duration-point duration-start"><span class="mono">2024.04 入学</span></span>
-        </div>
-        {currentWork && <div class="timeline-entry work-entry">
-          <p class="lane-label"><span aria-hidden="true">02</span> Professional</p>
-          <CareerItem role={currentWork.data.role} organization={currentWork.data.organization} track={currentWork.data.track} startDate={currentWork.data.startDate} endDate={currentWork.data.endDate} description={currentWork.data.description} highlights={currentWork.data.highlights} />
-        </div>}
-      </div>
-
-      <div class="parallel-marker">
-        <span class="mono">2024.04</span>
-        <strong>大学院進学 × 新卒入社</strong>
-        <small>2つのキャリアを同時にスタート</small>
-      </div>
-
-      {undergraduate && <div class="timeline-row undergraduate-row">
-        <div class="timeline-entry education-entry">
-          <CareerItem role={undergraduate.data.role} organization={undergraduate.data.organization} track={undergraduate.data.track} startDate={undergraduate.data.startDate} endDate={undergraduate.data.endDate} description={undergraduate.data.description} highlights={undergraduate.data.highlights} />
-        </div>
-        <div class="education-duration" role="img" aria-label="2020年4月入学、2024年3月卒業">
-          <span class="duration-point duration-end"><span class="mono">2024.03 卒業</span></span>
-          <span class="duration-point duration-start"><span class="mono">2020.04 入学</span></span>
-        </div>
+      {parallelStartDate && <div class="parallel-marker" role="note">
+        <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
+        <strong>複数のキャリアを並行して開始</strong>
+        <small>Education × Professional</small>
       </div>}
+
+      <div class="timeline-row parallel-row">
+        {education.length > 0 && <div class="timeline-entry education-entry">
+          <p class="lane-label"><span aria-hidden="true">02</span> Education</p>
+          <div class="career-stack">
+            {education.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
+          </div>
+        </div>}
+        {work.length > 0 && <div class="timeline-entry work-entry">
+          <p class="lane-label"><span aria-hidden="true">01</span> Professional</p>
+          <div class="career-stack">
+            {work.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
+          </div>
+        </div>}
+      </div>
+
     </div>
   </section>}
 </BaseLayout>
@@ -109,9 +110,9 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
 
 <style>
   .social-links { display: flex; flex-wrap: wrap; gap: .75rem; margin: -2rem 0 clamp(4rem, 8vw, 7rem); }
-  .social-links a { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 3rem; padding: .55rem .75rem .55rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-size: .8rem; font-weight: 750; text-decoration: none; box-shadow: var(--shadow-sm); }
-  .social-links a span:last-child { display: grid; place-items: center; width: 1.8rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); }
-  .social-links a:hover { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
+  .social-links :global(.external-link) { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 3rem; padding: .55rem .75rem .55rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-size: .8rem; font-weight: 750; text-decoration: none; box-shadow: var(--shadow-sm); }
+  .social-links :global(.external-link) span:last-child { display: grid; place-items: center; width: 1.8rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); }
+  .social-links :global(.external-link:hover) { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
   .profile-grid { display: grid; grid-template-columns: 1fr minmax(15rem, .45fr); gap: clamp(2rem, 6vw, 5rem); align-items: end; }
   aside { padding: 1.5rem; border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius); background: var(--color-highlight-soft); transform: rotate(1deg); }
   aside p:last-child { margin: 0; font-weight: 650; }
@@ -129,19 +130,9 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
   .parallel-marker .mono { font-size: .72rem; font-weight: 800; }
   .parallel-marker strong { font-size: .88rem; }
   .parallel-marker small { color: color-mix(in srgb, var(--color-on-highlight) 72%, transparent); font-size: .75rem; }
-  .timeline-row { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) 5rem minmax(0, 1fr); align-items: start; }
+  .timeline-row { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
   .timeline-entry { min-width: 0; }
-  .education-entry { grid-column: 1; }
-  .work-entry { grid-column: 3; }
-  .education-duration { position: relative; grid-column: 2; grid-row: 1; justify-self: stretch; align-self: stretch; min-height: 12rem; }
-  .education-duration::before { content: ""; position: absolute; top: .65rem; bottom: .65rem; left: 50%; width: .3rem; border-radius: 999px; background: var(--color-accent); transform: translateX(-50%); box-shadow: 0 0 0 3px var(--color-bg); }
-  .duration-point { position: absolute; z-index: 2; left: 50%; width: 1rem; aspect-ratio: 1; border: 3px solid var(--color-bg); border-radius: 50%; background: var(--color-highlight); box-shadow: 0 0 0 2px var(--color-accent); transform: translateX(-50%); transition: transform .2s ease, box-shadow .2s ease; }
-  .duration-point > span { position: absolute; left: 1.15rem; padding: .2rem .35rem; border-radius: .4rem; background: var(--color-bg); color: var(--color-accent); font-size: .58rem; font-weight: 800; line-height: 1.3; white-space: nowrap; }
-  .duration-end { top: .25rem; }
-  .duration-start { bottom: .25rem; }
-  .duration-end > span { top: -.15rem; }
-  .duration-start > span { bottom: -.15rem; }
-  .education-duration:hover .duration-point { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); transform: translateX(-50%) scale(1.18); }
+  .career-stack { display: grid; gap: 1.25rem; }
   .lane-label { display: flex; align-items: center; gap: .6rem; margin: 0 0 .75rem; color: var(--color-accent); font: 800 .76rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
   .lane-label span { display: grid; place-items: center; width: 1.75rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent-soft); font-size: .62rem; }
   .work-entry .lane-label { color: color-mix(in srgb, var(--color-coral) 64%, var(--color-text)); }
@@ -155,11 +146,9 @@ const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
     .visit-marker::after { left: -1.8rem; width: 1.8rem; height: 2px; top: 50%; border: 0; background: var(--color-accent); }
     .parallel-marker { grid-template-columns: auto 1fr; margin: 0 0 0 2.75rem; border-radius: var(--radius); }
     .parallel-marker small { grid-column: 1 / -1; }
-    .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0 0; }
+    .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0; }
     .education-entry, .work-entry { grid-column: 2; }
-    .education-entry { grid-row: 1; }
-    .work-entry { grid-row: 2; margin-top: 1.25rem; }
-    .education-duration { grid-column: 1; grid-row: 1; min-height: 100%; }
-    .duration-point > span { left: .85rem; writing-mode: vertical-rl; font-size: .52rem; }
+    .work-entry { order: 1; margin-top: 0; }
+    .education-entry { order: 2; margin-top: 1.25rem; }
   }
 </style>

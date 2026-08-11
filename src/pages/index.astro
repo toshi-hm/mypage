@@ -7,7 +7,7 @@ import WorkCard from "../components/molecules/WorkCard.astro";
 import HomeHero from "../components/organisms/HomeHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-import { excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
+import { estimateReadingMinutes, excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
 import { buildWebSiteLd } from "../utils/structured-data";
 import { sortWorks } from "../utils/works";
 
@@ -29,7 +29,7 @@ const jsonLd = buildWebSiteLd({
       <SectionHeading id="latest-articles" index="01" title="Latest Articles" href="/articles/" linkLabel="All articles" />
       <div class="article-grid">
         {latestArticles.map((article) => (
-          <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} />
+          <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} readingMinutes={estimateReadingMinutes(article.body)} />
         ))}
       </div>
     </section>

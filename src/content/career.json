@@ -6,8 +6,19 @@
       "organization": "LINEヤフー株式会社",
       "track": "work",
       "startDate": "2024-04",
-      "description": "新卒で入社し、フロントエンドエンジニアとしてプロダクト開発に従事。Vue.js / Nuxt 4、React / Next.jsを中心に、Bun、Express.js、Honoを用いた開発も経験しています。",
-      "highlights": ["Vue.js", "Nuxt 4", "React", "Next.js", "Bun", "Express.js", "Hono"],
+      "description": "新卒で入社し、フロントエンドエンジニアとしてプロダクト開発に従事しています。Vue.js / Nuxt 4、React / Next.jsを中心に、Bun、Express.js、Honoを用いた開発も経験しています。近年では実装だけでなく、ビジネス要件をプロダクトの仕様へ落とし込むシステム設計を主に担当しています。また、部署内で生成AIを活用して生産性向上を目指す取り組みも推進しています。",
+      "highlights": [
+        "Vue.js",
+        "Nuxt 4",
+        "React",
+        "LIFF",
+        "Next.js",
+        "Bun",
+        "Express.js",
+        "Hono",
+        "Codex",
+        "Claude Code"
+      ],
       "order": 3
     },
     {

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   excerpt,
+  estimateReadingMinutes,
   formatDate,
   isPublishable,
   SLUG_PATTERN,
@@ -43,6 +44,23 @@ describe("excerpt", () => {
 
   test("本文がなければ空文字", () => {
     expect(excerpt({}, undefined)).toBe("");
+  });
+});
+
+describe("estimateReadingMinutes", () => {
+  test("空本文でも最低1分を返す", () => {
+    expect(estimateReadingMinutes(undefined)).toBe(1);
+    expect(estimateReadingMinutes("```ts\nconst value = 1;\n```\n")).toBe(1);
+  });
+
+  test("日本語本文の量から読了時間を概算する", () => {
+    expect(estimateReadingMinutes("あ".repeat(500))).toBe(1);
+    expect(estimateReadingMinutes("あ".repeat(501))).toBe(2);
+  });
+
+  test("英数字は単語単位で概算する", () => {
+    expect(estimateReadingMinutes(Array.from({ length: 200 }, () => "word").join(" "))).toBe(1);
+    expect(estimateReadingMinutes(Array.from({ length: 201 }, () => "word").join(" "))).toBe(2);
   });
 });
 
