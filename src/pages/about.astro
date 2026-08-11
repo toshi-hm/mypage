@@ -31,7 +31,12 @@ const skills = [
   { name: "Tailwind", iconUrl: simpleIcon("tailwindcss"), fallback: "TW" },
   { name: "Storybook", iconUrl: simpleIcon("storybook"), fallback: "SB" },
   { name: "Vitest", iconUrl: simpleIcon("vitest"), fallback: "VI" },
-  { name: "Playwright", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg", fallback: "PW" },
+  {
+    name: "Playwright",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg",
+    fallback: "PW",
+  },
   {
     name: "Codex",
     iconUrl: lobeIcon("codex-color"),
@@ -43,7 +48,7 @@ const career = sortCareer(await getCollection("career"));
 const education = career.filter((item) => item.data.track === "education");
 const work = career.filter((item) => item.data.track === "work");
 const parallelStartDate = education.find((educationEntry) =>
-	work.some((workEntry) => workEntry.data.startDate === educationEntry.data.startDate),
+  work.some((workEntry) => workEntry.data.startDate === educationEntry.data.startDate),
 )?.data.startDate;
 const now = new Date();
 const initialVisitDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -52,48 +57,99 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 ---
 
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
-  <PageHeader eyebrow="About me" title="日常を少し便利にする、プロダクトをつくる。" description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。" />
+  <PageHeader
+    eyebrow="About me"
+    title="日常を少し便利にする、プロダクトをつくる。"
+    description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。"
+  />
   <nav class="social-links" aria-label="ソーシャルリンク">
-    <ExternalLink href="https://github.com/toshi-hm" label="GitHub"><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink>
-    <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink>
+    <ExternalLink href="https://github.com/toshi-hm" label="GitHub"
+      ><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink
+    >
+    <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"
+      ><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink
+    >
   </nav>
   <div class="profile-grid">
-    <section aria-labelledby="skills-heading"><SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} /></section>
-    <aside><p class="eyebrow">Currently</p><p>TypeScript をベースに、React・Vue.js を中心としたフロントエンド開発を探求しています。</p></aside>
+    <section aria-labelledby="skills-heading">
+      <SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} />
+    </section>
+    <aside>
+      <p class="eyebrow">Currently</p><p>
+        TypeScript をベースに、React・Vue.js を中心としたフロントエンド開発を探求しています。
+      </p>
+    </aside>
   </div>
-  {career.length > 0 && <section class="career-section" aria-labelledby="career-heading">
-    <SectionHeading id="career-heading" index="02" title="Career" />
-    <p class="career-lead">理学から人工知能科学へ学びを広げながら、ソフトウェアエンジニアとしてプロダクト開発に取り組んできました。</p>
-    <div class="career-timeline">
-      <div class="visit-marker">
-        <span class="visit-label mono">SITE VISIT</span>
-        <time class="visit-date mono" datetime={initialVisitDate}>{initialVisitLabel}</time>
-        <small>今日まで続くキャリア</small>
-      </div>
-
-      {parallelStartDate && <div class="parallel-marker" role="note">
-        <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
-        <strong>複数のキャリアを並行して開始</strong>
-        <small>Education × Professional</small>
-      </div>}
-
-      <div class="timeline-row parallel-row">
-        {education.length > 0 && <div class="timeline-entry education-entry">
-          <p class="lane-label"><span aria-hidden="true">02</span> Education</p>
-          <div class="career-stack">
-            {education.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
+  {
+    career.length > 0 && (
+      <section class="career-section" aria-labelledby="career-heading">
+        <SectionHeading id="career-heading" index="02" title="Career" />
+        <p class="career-lead">
+          理学から人工知能科学へ学びを広げながら、ソフトウェアエンジニアとしてプロダクト開発に取り組んできました。
+        </p>
+        <div class="career-timeline">
+          <div class="visit-marker">
+            <span class="visit-label mono">SITE VISIT</span>
+            <time class="visit-date mono" datetime={initialVisitDate}>
+              {initialVisitLabel}
+            </time>
+            <small>今日まで続くキャリア</small>
           </div>
-        </div>}
-        {work.length > 0 && <div class="timeline-entry work-entry">
-          <p class="lane-label"><span aria-hidden="true">01</span> Professional</p>
-          <div class="career-stack">
-            {work.map((entry) => <CareerItem role={entry.data.role} organization={entry.data.organization} track={entry.data.track} startDate={entry.data.startDate} endDate={entry.data.endDate} description={entry.data.description} highlights={entry.data.highlights} />)}
-          </div>
-        </div>}
-      </div>
 
-    </div>
-  </section>}
+          {parallelStartDate && (
+            <div class="parallel-marker" role="note">
+              <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
+              <strong>複数のキャリアを並行して開始</strong>
+              <small>Education × Professional</small>
+            </div>
+          )}
+
+          <div class="timeline-row parallel-row">
+            {education.length > 0 && (
+              <div class="timeline-entry education-entry">
+                <p class="lane-label">
+                  <span aria-hidden="true">02</span> Education
+                </p>
+                <div class="career-stack">
+                  {education.map((entry) => (
+                    <CareerItem
+                      role={entry.data.role}
+                      organization={entry.data.organization}
+                      track={entry.data.track}
+                      startDate={entry.data.startDate}
+                      endDate={entry.data.endDate}
+                      description={entry.data.description}
+                      highlights={entry.data.highlights}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            {work.length > 0 && (
+              <div class="timeline-entry work-entry">
+                <p class="lane-label">
+                  <span aria-hidden="true">01</span> Professional
+                </p>
+                <div class="career-stack">
+                  {work.map((entry) => (
+                    <CareerItem
+                      role={entry.data.role}
+                      organization={entry.data.organization}
+                      track={entry.data.track}
+                      startDate={entry.data.startDate}
+                      endDate={entry.data.endDate}
+                      description={entry.data.description}
+                      highlights={entry.data.highlights}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
 
 <script>
@@ -109,46 +165,254 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 </script>
 
 <style>
-  .social-links { display: flex; flex-wrap: wrap; gap: .75rem; margin: -2rem 0 clamp(4rem, 8vw, 7rem); }
-  .social-links :global(.external-link) { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 3rem; padding: .55rem .75rem .55rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-text); font-size: .8rem; font-weight: 750; text-decoration: none; box-shadow: var(--shadow-sm); }
-  .social-links :global(.external-link) span:last-child { display: grid; place-items: center; width: 1.8rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-highlight); color: var(--color-on-highlight); }
-  .social-links :global(.external-link:hover) { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
-  .profile-grid { display: grid; grid-template-columns: 1fr minmax(15rem, .45fr); gap: clamp(2rem, 6vw, 5rem); align-items: end; }
-  aside { padding: 1.5rem; border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius); background: var(--color-highlight-soft); transform: rotate(1deg); }
-  aside p:last-child { margin: 0; font-weight: 650; }
-  .career-section { position: relative; }
-  .career-lead { max-width: 43rem; margin: 0 0 2rem; color: var(--color-text-muted); font-size: 1.05rem; }
-  .career-timeline { position: relative; display: grid; gap: 2.5rem; padding: 1.25rem 0 1rem; }
-  .career-timeline::before { content: ""; position: absolute; z-index: 0; top: .7rem; bottom: 0; left: 50%; width: 2px; background: linear-gradient(to bottom, var(--color-accent), color-mix(in srgb, var(--color-accent) 45%, var(--color-border)) 68%, var(--color-border)); transform: translateX(-50%); }
-  .career-timeline::after { content: ""; position: absolute; top: .25rem; left: 50%; width: .7rem; height: .7rem; border: solid var(--color-accent); border-width: 2px 0 0 2px; transform: translateX(-50%) rotate(45deg); }
-  .visit-marker { position: relative; z-index: 2; display: grid; grid-template-columns: auto auto; align-items: center; gap: .15rem .75rem; width: fit-content; margin: 0 auto 2rem; padding: .8rem 1.1rem; border: 1px solid var(--color-accent); border-radius: var(--radius); background: var(--color-surface); box-shadow: var(--shadow-sm); }
-  .visit-marker::after { content: ""; position: absolute; top: 100%; left: 50%; height: 2rem; border-left: 2px solid var(--color-accent); transform: translateX(-50%); }
-  .visit-label { color: var(--color-accent); font-size: .62rem; font-weight: 800; letter-spacing: .1em; }
-  .visit-date { font-size: .9rem; font-weight: 850; }
-  .visit-marker small { grid-column: 1 / -1; color: var(--color-text-muted); font-size: .7rem; text-align: center; }
-  .parallel-marker { position: relative; z-index: 2; display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: .8rem 1rem; width: fit-content; max-width: 100%; margin: 0 auto; padding: .8rem 1.2rem; border: 1px solid color-mix(in srgb, var(--color-highlight) 65%, var(--color-border)); border-radius: 999px; background: var(--color-highlight); color: var(--color-on-highlight); box-shadow: var(--shadow-sm); }
-  .parallel-marker .mono { font-size: .72rem; font-weight: 800; }
-  .parallel-marker strong { font-size: .88rem; }
-  .parallel-marker small { color: color-mix(in srgb, var(--color-on-highlight) 72%, transparent); font-size: .75rem; }
-  .timeline-row { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
-  .timeline-entry { min-width: 0; }
-  .career-stack { display: grid; gap: 1.25rem; }
-  .lane-label { display: flex; align-items: center; gap: .6rem; margin: 0 0 .75rem; color: var(--color-accent); font: 800 .76rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
-  .lane-label span { display: grid; place-items: center; width: 1.75rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent-soft); font-size: .62rem; }
-  .work-entry .lane-label { color: color-mix(in srgb, var(--color-coral) 64%, var(--color-text)); }
-  .work-entry .lane-label span { background: color-mix(in srgb, var(--color-coral) 14%, var(--color-surface)); }
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: -2rem 0 clamp(4rem, 8vw, 7rem);
+  }
+  .social-links :global(.external-link) {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 3rem;
+    padding: 0.55rem 0.75rem 0.55rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.8rem;
+    font-weight: 750;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+  }
+  .social-links :global(.external-link) span:last-child {
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--color-highlight);
+    color: var(--color-on-highlight);
+  }
+  .social-links :global(.external-link:hover) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(15rem, 0.45fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+  aside {
+    padding: 1.5rem;
+    border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius);
+    background: var(--color-highlight-soft);
+    transform: rotate(1deg);
+  }
+  aside p:last-child {
+    margin: 0;
+    font-weight: 650;
+  }
+  .career-section {
+    position: relative;
+  }
+  .career-lead {
+    margin: 0 0 2rem;
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+  }
+  .career-timeline {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    padding: 1.25rem 0 1rem;
+  }
+  .career-timeline::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 0.7rem;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent),
+      color-mix(in srgb, var(--color-accent) 45%, var(--color-border)) 68%,
+      var(--color-border)
+    );
+    transform: translateX(-50%);
+  }
+  .career-timeline::after {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    left: 50%;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: solid var(--color-accent);
+    border-width: 2px 0 0 2px;
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .visit-marker {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0.15rem 0.75rem;
+    width: fit-content;
+    margin: 0 auto 2rem;
+    padding: 0.8rem 1.1rem;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .visit-marker::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    height: 2rem;
+    border-left: 2px solid var(--color-accent);
+    transform: translateX(-50%);
+  }
+  .visit-label {
+    color: var(--color-accent);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .visit-date {
+    font-size: 0.9rem;
+    font-weight: 850;
+  }
+  .visit-marker small {
+    grid-column: 1 / -1;
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+    text-align: center;
+  }
+  .parallel-marker {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 0.8rem 1rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid color-mix(in srgb, var(--color-highlight) 65%, var(--color-border));
+    border-radius: 999px;
+    background: var(--color-highlight);
+    color: var(--color-on-highlight);
+    box-shadow: var(--shadow-sm);
+  }
+  .parallel-marker .mono {
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .parallel-marker strong {
+    font-size: 0.88rem;
+  }
+  .parallel-marker small {
+    color: color-mix(in srgb, var(--color-on-highlight) 72%, transparent);
+    font-size: 0.75rem;
+  }
+  .timeline-row {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+  .timeline-entry {
+    min-width: 0;
+  }
+  .career-stack {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .lane-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+    font: 800 0.76rem/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lane-label span {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--color-accent-soft);
+    font-size: 0.62rem;
+  }
+  .work-entry .lane-label {
+    color: color-mix(in srgb, var(--color-coral) 64%, var(--color-text));
+  }
+  .work-entry .lane-label span {
+    background: color-mix(in srgb, var(--color-coral) 14%, var(--color-surface));
+  }
   @media (max-width: 700px) {
-    .profile-grid { grid-template-columns: 1fr; }
-    .career-timeline { gap: 2rem; padding-left: 0; }
-    .career-timeline::before { left: 1rem; }
-    .career-timeline::after { left: 1rem; }
-    .visit-marker { margin: 0 0 1.5rem 2.75rem; }
-    .visit-marker::after { left: -1.8rem; width: 1.8rem; height: 2px; top: 50%; border: 0; background: var(--color-accent); }
-    .parallel-marker { grid-template-columns: auto 1fr; margin: 0 0 0 2.75rem; border-radius: var(--radius); }
-    .parallel-marker small { grid-column: 1 / -1; }
-    .timeline-row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0; }
-    .education-entry, .work-entry { grid-column: 2; }
-    .work-entry { order: 1; margin-top: 0; }
-    .education-entry { order: 2; margin-top: 1.25rem; }
+    .profile-grid {
+      grid-template-columns: 1fr;
+    }
+    .career-timeline {
+      gap: 2rem;
+      padding-left: 0;
+    }
+    .career-timeline::before {
+      left: 1rem;
+    }
+    .career-timeline::after {
+      left: 1rem;
+    }
+    .visit-marker {
+      margin: 0 0 1.5rem 2.75rem;
+    }
+    .visit-marker::after {
+      left: -1.8rem;
+      width: 1.8rem;
+      height: 2px;
+      top: 50%;
+      border: 0;
+      background: var(--color-accent);
+    }
+    .parallel-marker {
+      grid-template-columns: auto 1fr;
+      margin: 0 0 0 2.75rem;
+      border-radius: var(--radius);
+    }
+    .parallel-marker small {
+      grid-column: 1 / -1;
+    }
+    .timeline-row {
+      grid-template-columns: 2.75rem minmax(0, 1fr);
+      gap: 0;
+    }
+    .education-entry,
+    .work-entry {
+      grid-column: 2;
+    }
+    .work-entry {
+      order: 1;
+      margin-top: 0;
+    }
+    .education-entry {
+      order: 2;
+      margin-top: 1.25rem;
+    }
   }
 </style>

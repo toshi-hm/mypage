@@ -4,7 +4,7 @@
 
 - `strict` 前提(`astro/tsconfigs/strict` を継承)。`any` は使わない
 - `noUnusedLocals` / `noUnusedParameters` が有効。未使用コードを残さない
-- フォーマットは oxfmt に完全に委ねる。手動で整形スタイルを議論しない
+- フォーマットは `oxfmt`(JS/TS/CSS/MD)と Prettier(`.astro`)に完全に委ねる。手動で整形スタイルを議論しない
 
 ## Astro / React の使い分け
 
@@ -20,5 +20,5 @@
 
 ## ツールの対象範囲(重要)
 
-- oxlint / oxfmt は JS/TS/JSX/TSX/JSON/CSS/MD を対象とする。`.astro` ファイルは対象外
-- `.astro` の品質は `astro check` と Vitest でカバーする
+- oxlint / oxfmt は JS/TS/JSX/TSX/JSON/CSS/MD を対象とし、Prettier + `prettier-plugin-astro` は `.astro` を対象とする
+- `.astro` 内の CSS は Stylelint(`postcss-html`)で検査し、構文・型の品質は `astro check` と Vitest でカバーする

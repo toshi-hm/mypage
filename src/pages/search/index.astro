@@ -5,23 +5,29 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Search" description="サイト内検索">
-	<PageHeader eyebrow="Find anything" title="Search" description="キーワードから記事本文を全文検索できます。" />
-	<Search className="pagefind-ui" searchboxOptions={{ showSubResults: true }} />
+  <PageHeader
+    eyebrow="Find anything"
+    title="Search"
+    description="キーワードから記事本文を全文検索できます。"
+  />
+  <Search className="pagefind-ui" searchboxOptions={{ showSubResults: true }} />
 </BaseLayout>
 
 <style is:global>
-	/* Pagefind UI をサイトのテーマ(CSS カスタムプロパティ)に追従させる */
-	.pagefind-ui {
-		--pagefind-ui-primary: var(--color-accent);
-		--pagefind-ui-text: var(--color-text);
-		--pagefind-ui-background: var(--color-surface);
-		--pagefind-ui-border: var(--color-border);
-		--pagefind-ui-tag: var(--color-accent-soft);
-		--pagefind-ui-border-radius: var(--radius-sm);
-		--pagefind-ui-font: inherit;
-	}
+  /* Pagefind UI をサイトのテーマ(CSS カスタムプロパティ)に追従させる */
+  .pagefind-ui {
+    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-text: var(--color-text);
+    --pagefind-ui-background: var(--color-surface);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-tag: var(--color-accent-soft);
+    --pagefind-ui-border-radius: var(--radius-sm);
+    --pagefind-ui-font: inherit;
+  }
 </style>
 
 <style>
-	.pagefind-ui { max-width: var(--content-width); }
+  .pagefind-ui {
+    width: 100%;
+  }
 </style>
