@@ -59,7 +59,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
   </nav>
   <div class="profile-grid">
     <section aria-labelledby="skills-heading"><SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} /></section>
-    <aside><p class="eyebrow">Currently</p><p>TypeScript をベースに、React・Vue.js を中心としたフロントエンド開発を探求しています。</p></aside>
+    <aside><p class="eyebrow">Currently</p><p>TypeScript をベースに、React・Vue.js を中心としたフロントエンド開発・設計を中心に行っています。</p></aside>
   </div>
   {career.length > 0 && <section class="career-section" aria-labelledby="career-heading">
     <SectionHeading id="career-heading" index="02" title="Career" />
@@ -117,7 +117,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
   aside { padding: 1.5rem; border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius); background: var(--color-highlight-soft); transform: rotate(1deg); }
   aside p:last-child { margin: 0; font-weight: 650; }
   .career-section { position: relative; }
-  .career-lead { max-width: 43rem; margin: 0 0 2rem; color: var(--color-text-muted); font-size: 1.05rem; }
+  .career-lead { margin: 0 0 2rem; color: var(--color-text-muted); font-size: 1.05rem; }
   .career-timeline { position: relative; display: grid; gap: 2.5rem; padding: 1.25rem 0 1rem; }
   .career-timeline::before { content: ""; position: absolute; z-index: 0; top: .7rem; bottom: 0; left: 50%; width: 2px; background: linear-gradient(to bottom, var(--color-accent), color-mix(in srgb, var(--color-accent) 45%, var(--color-border)) 68%, var(--color-border)); transform: translateX(-50%); }
   .career-timeline::after { content: ""; position: absolute; top: .25rem; left: 50%; width: .7rem; height: .7rem; border: solid var(--color-accent); border-width: 2px 0 0 2px; transform: translateX(-50%) rotate(45deg); }
