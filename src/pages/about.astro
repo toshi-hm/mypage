@@ -6,27 +6,29 @@ import SectionHeading from "../components/molecules/SectionHeading.astro";
 import SkillList from "../components/molecules/SkillList.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { sortCareer } from "../utils/career";
+const simpleIconsCdn = "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons";
+const simpleIcon = (slug: string) => `${simpleIconsCdn}/${slug}.svg`;
 const skills = [
-  { name: "TypeScript", code: "TS" },
-  { name: "React", code: "RE", featured: true },
-  { name: "Next.js", code: "NX" },
-  { name: "Vue.js", code: "VUE", featured: true },
-  { name: "Nuxt", code: "NUX" },
-  { name: "LIFF", code: "LIFF" },
-  { name: "Astro.js", code: "AST" },
-  { name: "Node.js", code: "NODE" },
-  { name: "Express.js", code: "EXP" },
-  { name: "Hono", code: "HONO" },
-  { name: "Bun", code: "BUN" },
-  { name: "Prisma", code: "PR" },
-  { name: "Supabase", code: "SUPA" },
-  { name: "MySQL", code: "SQL" },
-  { name: "SCSS", code: "SCSS" },
-  { name: "CSS Modules", code: "CSSM" },
-  { name: "Tailwind", code: "TW" },
-  { name: "Storybook", code: "SB" },
-  { name: "Vitest", code: "VI" },
-  { name: "Playwright", code: "PW" },
+  { name: "TypeScript", iconUrl: simpleIcon("typescript") },
+  { name: "React", iconUrl: simpleIcon("react"), featured: true },
+  { name: "Next.js", iconUrl: simpleIcon("nextdotjs") },
+  { name: "Vue.js", iconUrl: simpleIcon("vuedotjs"), featured: true },
+  { name: "Nuxt", iconUrl: simpleIcon("nuxt") },
+  { name: "LIFF", iconUrl: simpleIcon("line") },
+  { name: "Astro.js", iconUrl: simpleIcon("astro") },
+  { name: "Node.js", iconUrl: simpleIcon("nodedotjs") },
+  { name: "Express.js", iconUrl: simpleIcon("express") },
+  { name: "Hono", iconUrl: simpleIcon("hono") },
+  { name: "Bun", iconUrl: simpleIcon("bun") },
+  { name: "Prisma", iconUrl: simpleIcon("prisma") },
+  { name: "Supabase", iconUrl: simpleIcon("supabase") },
+  { name: "MySQL", iconUrl: simpleIcon("mysql") },
+  { name: "SCSS", iconUrl: simpleIcon("sass") },
+  { name: "CSS Modules", iconUrl: simpleIcon("cssmodules") },
+  { name: "Tailwind", iconUrl: simpleIcon("tailwindcss") },
+  { name: "Storybook", iconUrl: simpleIcon("storybook") },
+  { name: "Vitest", iconUrl: simpleIcon("vitest") },
+  { name: "Playwright", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/playwright/playwright-original.svg" },
 ];
 const career = sortCareer(await getCollection("career"));
 const education = career.filter((item) => item.data.track === "education");
