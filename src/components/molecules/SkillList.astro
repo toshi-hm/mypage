@@ -9,7 +9,16 @@ interface Props {
   skills: Skill[];
 }
 const { skills } = Astro.props;
-const getFallback = (name: string, fallback?: string) => fallback ?? name.replace(/[^\p{L}\p{N}]+/gu, " ").trim().split(/\s+/).map((part) => part[0]).join("").slice(0, 3).toUpperCase();
+const getFallback = (name: string, fallback?: string) =>
+  fallback ??
+  name
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim()
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 3)
+    .toUpperCase();
 ---
 
 <ul class="skills">
@@ -73,8 +82,15 @@ const getFallback = (name: string, fallback?: string) => fallback ?? name.replac
     background: var(--color-accent-soft);
     place-items: center;
   }
-  .skill-fallback { display: none; color: var(--color-accent); font: 800 .62rem/1 var(--font-mono); letter-spacing: 0; }
-  .skill-icon.is-fallback .skill-fallback { display: inline; }
+  .skill-fallback {
+    display: none;
+    color: var(--color-accent);
+    font: 800 0.62rem/1 var(--font-mono);
+    letter-spacing: 0;
+  }
+  .skill-icon.is-fallback .skill-fallback {
+    display: inline;
+  }
   .skill-icon img {
     width: 1.35rem;
     height: 1.35rem;
@@ -87,5 +103,7 @@ const getFallback = (name: string, fallback?: string) => fallback ?? name.replac
     border-color: var(--color-highlight);
     background: var(--color-highlight-soft);
   }
-  .skills li.featured .skill-icon { background: var(--color-highlight); }
+  .skills li.featured .skill-icon {
+    background: var(--color-highlight);
+  }
 </style>

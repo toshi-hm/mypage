@@ -1,6 +1,13 @@
 {
   "globs": ["**/*.md"],
-  "ignores": ["node_modules/**", "dist/**", "storybook-static/**", ".astro/**", ".wrangler/**"],
+  "ignores": [
+    "node_modules/**",
+    "dist/**",
+    "storybook-static/**",
+    ".astro/**",
+    ".wrangler/**",
+    "test-results/**",
+  ],
   "config": {
     "default": true,
     // 行長制限は無効化(日本語文章・テーブルで実用的でないため)

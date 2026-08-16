@@ -5,38 +5,38 @@ import ArticleCard from "../../components/molecules/ArticleCard.astro";
 import SectionHeading from "../../components/molecules/SectionHeading.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-	excerpt,
-	estimateReadingMinutes,
-	formatDate,
-	getAdjacentArticles,
-	isPublishable,
-	relatedArticles,
+  excerpt,
+  estimateReadingMinutes,
+  formatDate,
+  getAdjacentArticles,
+  isPublishable,
+  relatedArticles,
 } from "../../utils/articles";
 import { buildBlogPostingLd } from "../../utils/structured-data";
 
 export async function getStaticPaths() {
-	const articles = await getCollection("articles", ({ data }) =>
-		isPublishable(data, import.meta.env.PROD),
-	);
-	return articles.map((article) => {
-		const { newer, older } = getAdjacentArticles(articles, article.id);
-		return {
-			params: { slug: article.id },
-			props: {
-				article,
-				newer: newer && { slug: newer.id, title: newer.data.title },
-				older: older && { slug: older.id, title: older.data.title },
-				related: relatedArticles(articles, article.id).map((entry) => ({
-					slug: entry.id,
-					title: entry.data.title,
-					summary: excerpt(entry.data, entry.body),
-					pubDate: entry.data.pubDate,
-					tags: entry.data.tags,
-					readingMinutes: estimateReadingMinutes(entry.body),
-				})),
-			},
-		};
-	});
+  const articles = await getCollection("articles", ({ data }) =>
+    isPublishable(data, import.meta.env.PROD),
+  );
+  return articles.map((article) => {
+    const { newer, older } = getAdjacentArticles(articles, article.id);
+    return {
+      params: { slug: article.id },
+      props: {
+        article,
+        newer: newer && { slug: newer.id, title: newer.data.title },
+        older: older && { slug: older.id, title: older.data.title },
+        related: relatedArticles(articles, article.id).map((entry) => ({
+          slug: entry.id,
+          title: entry.data.title,
+          summary: excerpt(entry.data, entry.body),
+          pubDate: entry.data.pubDate,
+          tags: entry.data.tags,
+          readingMinutes: estimateReadingMinutes(entry.body),
+        })),
+      },
+    };
+  });
 }
 
 const { article, newer, older, related } = Astro.props;
@@ -44,163 +44,164 @@ const { Content } = await render(article);
 const { title, pubDate, updatedDate, tags } = article.data;
 const description = excerpt(article.data, article.body);
 const jsonLd = buildBlogPostingLd({
-	title,
-	description,
-	url: new URL(`/articles/${article.id}/`, Astro.site ?? "https://mypage.example.com").href,
-	pubDate,
-	updatedDate,
-	tags,
-	authorName: "Hama Toshiya",
+  title,
+  description,
+  url: new URL(`/articles/${article.id}/`, Astro.site ?? "https://mypage.example.com").href,
+  pubDate,
+  updatedDate,
+  tags,
+  authorName: "Hama Toshiya",
 });
 ---
 
 <BaseLayout
-	title={title}
-	description={description}
-	jsonLd={jsonLd}
-	ogType="article"
-	publishedTime={pubDate}
-	modifiedTime={updatedDate}
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  ogType="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
 >
-	<article>
-		<header class="article-header">
-			<p class="eyebrow">Journal entry</p>
-			<h1>{title}</h1>
-			<p class="meta">
-				<time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
-				<span>約{estimateReadingMinutes(article.body)}分で読めます</span>
-				{
-					updatedDate && (
-						<span>
-							(更新: <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>)
-						</span>
-					)
-				}
-			</p>
-			<div class="article-tags">
-				<TagList tags={tags} />
-			</div>
-		</header>
-		<div class="body" data-pagefind-body>
-			<Content />
-		</div>
-		<footer>
-			<nav class="adjacent" aria-label="前後の記事">
-				{
-					newer && (
-						<a class="newer" href={`/articles/${newer.slug}/`}>
-							← {newer.title}
-						</a>
-					)
-				}
-				{
-					older && (
-						<a class="older" href={`/articles/${older.slug}/`}>
-							{older.title} →
-						</a>
-					)
-				}
-			</nav>
-			{
-				related.length > 0 && (
-					<section class="related">
-						<SectionHeading index="More" title="Related Articles" />
-						<div class="related-grid">
-							{related.map((item) => (
-								<ArticleCard
-									slug={item.slug}
-									title={item.title}
-									summary={item.summary}
-									pubDate={item.pubDate}
-									tags={item.tags}
-									readingMinutes={item.readingMinutes}
-								/>
-							))}
-						</div>
-					</section>
-				)
-			}
-			<a href="/articles/">記事一覧へ</a>
-		</footer>
-	</article>
+  <article>
+    <header class="article-header">
+      <p class="eyebrow">Journal entry</p>
+      <h1>{title}</h1>
+      <p class="meta">
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        <span>約{estimateReadingMinutes(article.body)}分で読めます</span>
+        {
+          updatedDate && (
+            <span>
+              (更新: <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>)
+            </span>
+          )
+        }
+      </p>
+      <div class="article-tags">
+        <TagList tags={tags} />
+      </div>
+    </header>
+    <div class="body" data-pagefind-body>
+      <Content />
+    </div>
+    <footer>
+      <nav class="adjacent" aria-label="前後の記事">
+        {
+          newer && (
+            <a class="newer" href={`/articles/${newer.slug}/`}>
+              ← {newer.title}
+            </a>
+          )
+        }
+        {
+          older && (
+            <a class="older" href={`/articles/${older.slug}/`}>
+              {older.title} →
+            </a>
+          )
+        }
+      </nav>
+      {
+        related.length > 0 && (
+          <section class="related">
+            <SectionHeading index="More" title="Related Articles" />
+            <div class="related-grid">
+              {related.map((item) => (
+                <ArticleCard
+                  slug={item.slug}
+                  title={item.title}
+                  summary={item.summary}
+                  pubDate={item.pubDate}
+                  tags={item.tags}
+                  readingMinutes={item.readingMinutes}
+                />
+              ))}
+            </div>
+          </section>
+        )
+      }
+      <a href="/articles/">記事一覧へ</a>
+    </footer>
+  </article>
 </BaseLayout>
 
 <style>
-	article {
-		max-width: var(--content-width);
-		margin: 0 auto;
-	}
+  article {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
 
-	.article-header {
-		padding: clamp(2rem, 6vw, 5rem) 0 2rem;
-	}
+  .article-header {
+    padding: clamp(2rem, 6vw, 5rem) 0 2rem;
+  }
 
-	header h1 {
-		margin-bottom: 1rem;
-		font-size: clamp(2.5rem, 7vw, 5.5rem);
-	}
+  header h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+  }
 
-	.meta {
-		margin: 0 0 0.5rem;
-		font-size: 0.85rem;
-		color: var(--color-text-muted);
-	}
+  .meta {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
 
-	.article-tags {
-		margin: 0 0 1rem;
-		font-size: 0.8rem;
-	}
+  .article-tags {
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+  }
 
-	.body :global(pre) {
-		padding: 1rem;
-		border-radius: var(--radius);
-		overflow-x: auto;
-	}
+  .body :global(pre) {
+    padding: 1rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+  }
 
-	.body :global(h2) {
-		margin-top: 3rem;
-	}
+  .body :global(h2) {
+    margin-top: 3rem;
+  }
 
-	.body :global(p),
-	.body :global(li) {
-		color: var(--color-text-muted);
-	}
+  .body :global(p),
+  .body :global(li) {
+    color: var(--color-text-muted);
+  }
 
-	.body :global(img) {
-		max-width: 100%;
-	}
+  .body :global(img) {
+    max-width: 100%;
+  }
 
-	footer {
-		margin-top: 4rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--color-border);
-	}
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
 
-	.adjacent {
-		display: flex;
-		justify-content: space-between;
-		gap: 1rem;
-		margin-bottom: 1rem;
-		font-size: 0.9rem;
-	}
+  .adjacent {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
 
-	.adjacent .older {
-		margin-left: auto;
-		text-align: right;
-	}
+  .adjacent .older {
+    margin-left: auto;
+    text-align: right;
+  }
 
-	.related {
-		margin-bottom: 1.5rem;
-	}
+  .related {
+    margin-bottom: 1.5rem;
+  }
 
-	.related-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1rem;
-	}
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
 
-	@media (max-width: 600px) {
-		.related-grid { grid-template-columns: 1fr; }
-	}
-
+  @media (max-width: 600px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

@@ -3,22 +3,77 @@ import { getCollection } from "astro:content";
 import ArticleCard from "../../components/molecules/ArticleCard.astro";
 import PageHeader from "../../components/molecules/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { estimateReadingMinutes, excerpt, isPublishable, sortByPubDateDesc } from "../../utils/articles";
-const articles = sortByPubDateDesc(await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)));
+import {
+  estimateReadingMinutes,
+  excerpt,
+  isPublishable,
+  sortByPubDateDesc,
+} from "../../utils/articles";
+const articles = sortByPubDateDesc(
+  await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
+);
 ---
 
 <BaseLayout title="Articles" description="Hama Toshiya の記事一覧">
-  <PageHeader eyebrow="Notes & discoveries" title="Articles" description="設計、実装、試行錯誤。日々の仕事で見つけた知見を、次に使える形で記録しています。" />
-  <div class="toolbar"><p class="mono">{String(articles.length).padStart(2, "0")} stories</p><a href="/search/">Search articles <span aria-hidden="true">⌕</span></a></div>
+  <PageHeader
+    eyebrow="Notes & discoveries"
+    title="Articles"
+    description="設計、実装、試行錯誤。日々の仕事で見つけた知見を、次に使える形で記録しています。"
+  />
+  <div class="toolbar">
+    <p class="mono">{String(articles.length).padStart(2, "0")} stories</p><a href="/search/"
+      >Search articles <span aria-hidden="true">⌕</span></a
+    >
+  </div>
   {articles.length === 0 && <p>まだ記事がありません。</p>}
-  <div class="list">{articles.map((article) => <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} readingMinutes={estimateReadingMinutes(article.body)} />)}</div>
+  <div class="list">
+    {
+      articles.map((article) => (
+        <ArticleCard
+          slug={article.id}
+          title={article.data.title}
+          summary={excerpt(article.data, article.body)}
+          pubDate={article.data.pubDate}
+          tags={article.data.tags}
+          readingMinutes={estimateReadingMinutes(article.body)}
+        />
+      ))
+    }
+  </div>
 </BaseLayout>
 
 <style>
-  .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--color-rule); }
-  .toolbar p { margin: 0; color: var(--color-text-muted); font-size: .72rem; text-transform: uppercase; }
-  .toolbar a { font-weight: 700; }
-  .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  @media (max-width: 900px) { .list { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .list { grid-template-columns: 1fr; } }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .toolbar p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+  }
+  .toolbar a {
+    font-weight: 700;
+  }
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 900px) {
+    .list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .list {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

@@ -3,19 +3,69 @@ import { getCollection } from "astro:content";
 import PageHeader from "../../components/molecules/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { collectTags, isPublishable } from "../../utils/articles";
-const tags = collectTags(await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)));
+const tags = collectTags(
+  await getCollection("articles", ({ data }) => isPublishable(data, import.meta.env.PROD)),
+);
 ---
 
 <BaseLayout title="Tags" description="タグ一覧">
-  <PageHeader eyebrow="Browse by topic" title="Tags" description="興味のあるテーマから、記事を横断して探索できます。" />
+  <PageHeader
+    eyebrow="Browse by topic"
+    title="Tags"
+    description="興味のあるテーマから、記事を横断して探索できます。"
+  />
   {tags.length === 0 && <p>まだタグがありません。</p>}
-  <ul class="tag-list">{tags.map(({ tag, count }, index) => <li><a href={`/tags/${tag}/`}><span class="mono">{String(index + 1).padStart(2, "0")}</span><strong>#{tag}</strong><small>{count} articles</small></a></li>)}</ul>
+  <ul class="tag-list">
+    {
+      tags.map(({ tag, count }, index) => (
+        <li>
+          <a href={`/tags/${tag}/`}>
+            <>
+              <span class="mono">{String(index + 1).padStart(2, "0")}</span>
+              <strong>#{tag}</strong>
+              <small>{count} articles</small>
+            </>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </BaseLayout>
 
 <style>
-  .tag-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; list-style: none; margin: 0; padding: 0; }
-  .tag-list a { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1.2rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); color: var(--color-text); text-decoration: none; }
-  .tag-list a:hover { border-color: var(--color-accent); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-  .tag-list span, small { color: var(--color-text-muted); font-size: .7rem; }
-  @media (max-width: 600px) { .tag-list { grid-template-columns: 1fr; } }
+  .tag-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tag-list a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .tag-list a:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  .tag-list span,
+  small {
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+  }
+  @media (max-width: 600px) {
+    .tag-list {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

@@ -22,8 +22,8 @@
 | 言語                   | TypeScript                         | 6.x                            | 型安全。`strict` 前提                                                                         |
 | ランタイム / PM        | Bun                                | 1.x                            | 高速なインストール・スクリプト実行。Node.js は使わない                                        |
 | UI islands             | React                              | 19.x                           | インタラクティブ部品(テーマ切替等)に限定して使用。Storybook 公式サポートがあるため採用        |
-| Lint                   | oxlint                             | 1.x                            | Rust 製で高速。ESLint 代替                                                                    |
-| Format                 | oxfmt                              | 0.x                            | Rust 製 formatter。JS/TS/JSX/TSX を対象                                                       |
+| Lint                   | oxlint + Stylelint                 | 1.x / 17.x                     | JS/TS と Astro 内 CSS を分担して検査                                                          |
+| Format                 | oxfmt + Prettier                   | 0.x / 3.x                      | JS/TS 系と Astro (`prettier-plugin-astro`) を分担して整形                                     |
 | Markdown lint          | markdownlint-cli2                  | 0.x                            | oxlint/oxfmt が対象としない Markdown を補完                                                   |
 | Typecheck              | astro check + tsc                  | -                              | `.astro` 含むプロジェクト全体の型検査                                                         |
 | 単体テスト             | Vitest                             | 4.x                            | Vite ネイティブ。Astro の `getViteConfig()` で統合                                            |
@@ -40,9 +40,9 @@
    そのため Storybook 公式サポートのある React (`@storybook/react-vite`) を採用し、
    インタラクティブなコンポーネントを React island として実装・カタログ化する。
    `.astro` コンポーネントのカタログ化は行わず、Vitest の Container API でテストする。
-3. **oxlint / oxfmt は JS/TS 系ファイルのみ対象**
-   `.astro` ファイルのフロントマターは対象外(ツール側が未対応)。`.astro` の品質は
-   `astro check`(型検査)と Vitest でカバーする。Markdown は markdownlint-cli2 が担当。
+3. **ファイル種別ごとに linter / formatter を分担**
+   oxlint / oxfmt は JS/TS 系、Prettier + `prettier-plugin-astro` は `.astro`、Stylelint +
+   `postcss-html` は `.astro` 内の `<style>`、Markdown は markdownlint-cli2 が担当する。
 4. **ランタイムは Bun に統一**
    ローカル・CI ともに `bun` / `bunx` を使用。lockfile は `bun.lock`(テキスト形式)。
 
@@ -65,7 +65,7 @@
 
 - ページ・レイアウトは `.astro`。JS を出荷しない
 - インタラクションが必要な箇所だけ React island(`client:*` ディレクティブ)で hydrate
-- スタイルは Astro のスコープ付き `<style>` + `src/styles/global.css`(CSS カスタムプロパティでテーマ管理)
+- スタイルは Astro のスコープ付き `<style>` + `src/styles/global.css`(CSS カスタムプロパティでテーマ管理)。Astro内CSSはPrettierで整形し、Stylelintで検査する
 
 ## 4. ディレクトリ構成
 
@@ -116,9 +116,10 @@
 | `bun run build`           | `astro build`                 | 本番ビルド → `dist/`                 |
 | `bun run preview`         | `astro preview`               | ビルド成果物のプレビュー             |
 | `bun run preview:cf`      | `wrangler dev`                | Cloudflare 互換環境で `dist/` を配信 |
-| `bun run lint`            | `oxlint`                      | Lint                                 |
-| `bun run format`          | `oxfmt`                       | フォーマット(書き込み)               |
-| `bun run format:check`    | `oxfmt --check`               | フォーマット検査                     |
+| `bun run lint`            | `oxlint`                      | JS/TS の lint                        |
+| `bun run lint:styles`     | `stylelint`                   | Astro 内 CSS の lint                 |
+| `bun run format`          | `oxfmt` + `prettier`          | フォーマット(書き込み)               |
+| `bun run format:check`    | `oxfmt --check` + `prettier`  | フォーマット検査                     |
 | `bun run lint:md`         | `markdownlint-cli2`           | Markdown lint                        |
 | `bun run typecheck`       | `astro check && tsc --noEmit` | 型検査                               |
 | `bun run test`            | `vitest run`                  | 単体テスト                           |
@@ -139,7 +140,7 @@
 
 ```text
 ci.yml
-├── lint        : oxlint / oxfmt --check / markdownlint-cli2
+├── lint        : oxlint / Stylelint / oxfmt --check / Prettier / markdownlint-cli2
 ├── typecheck   : astro check + tsc --noEmit
 ├── test        : vitest run
 ├── build       : astro build(dist/ を artifact 保存)
@@ -164,4 +165,4 @@ ci.yml
 - `.claude/skills/`: `check`(全チェック実行)などのプロジェクトスキル
 - hooks:
   - `SessionStart`: 依存が未インストールなら `bun install`
-  - `PostToolUse`(Edit/Write): 編集した JS/TS ファイルに `oxfmt` を自動適用
+  - `PostToolUse`(Edit/Write): 編集した `.astro` に Prettier、それ以外の対応ファイルに `oxfmt` を自動適用

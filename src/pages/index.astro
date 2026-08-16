@@ -7,7 +7,12 @@ import WorkCard from "../components/molecules/WorkCard.astro";
 import HomeHero from "../components/organisms/HomeHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-import { estimateReadingMinutes, excerpt, isPublishable, sortByPubDateDesc } from "../utils/articles";
+import {
+  estimateReadingMinutes,
+  excerpt,
+  isPublishable,
+  sortByPubDateDesc,
+} from "../utils/articles";
 import { buildWebSiteLd } from "../utils/structured-data";
 import { sortWorks } from "../utils/works";
 
@@ -24,44 +29,103 @@ const jsonLd = buildWebSiteLd({
 
 <BaseLayout title="Home" jsonLd={jsonLd}>
   <HomeHero />
-  {latestArticles.length > 0 && (
-    <section aria-labelledby="latest-articles">
-      <SectionHeading id="latest-articles" index="01" title="Latest Articles" href="/articles/" linkLabel="All articles" />
-      <div class="article-grid">
-        {latestArticles.map((article) => (
-          <ArticleCard slug={article.id} title={article.data.title} summary={excerpt(article.data, article.body)} pubDate={article.data.pubDate} tags={article.data.tags} readingMinutes={estimateReadingMinutes(article.body)} />
-        ))}
-      </div>
-    </section>
-  )}
-  {featuredWorks.length > 0 && (
-    <section aria-labelledby="featured-works">
-      <SectionHeading id="featured-works" index="02" title="Featured Works" href="/works/" linkLabel="All works" />
-      <div class="work-grid">
-        {featuredWorks.map((work) => (
-          <WorkCard name={work.data.name} description={work.data.description} url={work.data.url} repo={work.data.repo} tech={work.data.tech} />
-        ))}
-      </div>
-    </section>
-  )}
+  {
+    latestArticles.length > 0 && (
+      <section aria-labelledby="latest-articles">
+        <SectionHeading
+          id="latest-articles"
+          index="01"
+          title="Latest Articles"
+          href="/articles/"
+          linkLabel="All articles"
+        />
+        <div class="article-grid">
+          {latestArticles.map((article) => (
+            <ArticleCard
+              slug={article.id}
+              title={article.data.title}
+              summary={excerpt(article.data, article.body)}
+              pubDate={article.data.pubDate}
+              tags={article.data.tags}
+              readingMinutes={estimateReadingMinutes(article.body)}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+  {
+    featuredWorks.length > 0 && (
+      <section aria-labelledby="featured-works">
+        <SectionHeading
+          id="featured-works"
+          index="02"
+          title="Featured Works"
+          href="/works/"
+          linkLabel="All works"
+        />
+        <div class="work-grid">
+          {featuredWorks.map((work) => (
+            <WorkCard
+              name={work.data.name}
+              description={work.data.description}
+              url={work.data.url}
+              repo={work.data.repo}
+              tech={work.data.tech}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
   <section aria-labelledby="more-links">
     <SectionHeading id="more-links" index="03" title="Keep Exploring" />
     <div class="link-grid">
       <LinkCard title="About" href="/about/" description="プロフィール・スキル・経歴" />
-      <LinkCard title="GitHub" href="https://github.com/toshi-hm" description="コードと公開リポジトリ" />
-      <LinkCard title="LinkedIn" href="https://www.linkedin.com/in/toshiyahama" description="経歴とプロフェッショナルプロフィール" />
+      <LinkCard
+        title="GitHub"
+        href="https://github.com/toshi-hm"
+        description="コードと公開リポジトリ"
+      />
+      <LinkCard
+        title="LinkedIn"
+        href="https://www.linkedin.com/in/toshiyahama"
+        description="経歴とプロフェッショナルプロフィール"
+      />
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  .article-grid :global(.article-card:nth-child(2)) { transform: translateY(1.5rem); }
-  .article-grid :global(.article-card:nth-child(2):hover) { transform: translateY(calc(1.5rem - 4px)); }
-  .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-  .link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .article-grid :global(.article-card:nth-child(2)) {
+    transform: translateY(1.5rem);
+  }
+  .article-grid :global(.article-card:nth-child(2):hover) {
+    transform: translateY(calc(1.5rem - 4px));
+  }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
   @media (max-width: 760px) {
-    .article-grid, .work-grid, .link-grid { grid-template-columns: 1fr; }
-    .article-grid :global(.article-card:nth-child(2)) { transform: none; }
+    .article-grid,
+    .work-grid,
+    .link-grid {
+      grid-template-columns: 1fr;
+    }
+    .article-grid :global(.article-card:nth-child(2)) {
+      transform: none;
+    }
   }
 </style>
