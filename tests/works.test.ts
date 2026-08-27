@@ -35,7 +35,8 @@ describe("WorkCard", () => {
     expect(result).toContain('href="https://example.com"');
     expect(result).toContain('href="https://github.com/toshi-hm/mypage"');
     expect(result).toContain('href="/works/mypage/"');
-    expect(result).toContain("View details");
+    expect(result).toContain("mypageの詳細ページ");
+    expect(result).not.toContain("View details");
     expect(result).toContain('rel="noopener noreferrer"');
   });
 
