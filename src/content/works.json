@@ -24,6 +24,7 @@
       "id": "pagelink-copy-button",
       "name": "PageLink Copy Button",
       "description": "ページタイトルとURLをハイパーリンクにしてコピーできるChrome拡張機能。画面上のボタンや右クリックメニューからページリンクをコピーでき、ボタンの位置もドラッグして保存できます。",
+      "detailUrl": "/works/pagelink-copy-button/",
       "repo": "https://github.com/toshi-hm/pagelink-copy-button",
       "tech": ["bun", "typescript", "wxt"],
       "featured": true,

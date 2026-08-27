@@ -1,0 +1,226 @@
+---
+import ExternalLink from "../../components/atoms/ExternalLink.astro";
+import SectionHeading from "../../components/molecules/SectionHeading.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "PageLink Copy Button";
+const description =
+  "PageLink Copy Buttonは、WebページのタイトルとURLをハイパーリンクとしてコピーできるChrome拡張機能です。リンク共有や情報整理に活用できる機能を紹介します。";
+const repository = "https://github.com/toshi-hm/pagelink-copy-button";
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="work-detail">
+    <header class="detail-header">
+      <p class="eyebrow">Featured work / Chrome extension</p>
+      <h1>{title}</h1>
+      <p class="lead">気になったページを、タイトル付きのリンクとしてすぐ共有する。</p>
+      <div class="actions">
+        <ExternalLink href={repository} label="GitHubリポジトリ">
+          GitHubリポジトリ <span aria-hidden="true">↗</span>
+        </ExternalLink>
+        <a href="/works/">Works一覧へ</a>
+      </div>
+    </header>
+
+    <section aria-labelledby="about-pagelink-copy-button">
+      <SectionHeading id="about-pagelink-copy-button" index="01" title="どのようなツールなのか" />
+      <p>
+        PageLink Copy
+        Buttonは、現在開いているWebページのタイトルとURLを、ハイパーリンクとしてコピーできるChrome拡張機能です。
+      </p>
+      <p>
+        URLだけをコピーしてからページ名を入力する手間を省き、ページを見つけた瞬間に、内容が伝わるリンクとして共有・記録できます。
+      </p>
+    </section>
+
+    <section aria-labelledby="pagelink-copy-button-features">
+      <SectionHeading
+        id="pagelink-copy-button-features"
+        index="02"
+        title="どのようなことができるのか"
+      />
+      <ul class="feature-grid">
+        <li>
+          <h3>タイトル付きリンクをコピー</h3>
+          <p>
+            ページタイトルを表示文字列にしたリンクを、ボタンを押すだけでクリップボードへコピーできます。
+          </p>
+        </li>
+        <li>
+          <h3>画面上のボタンから操作</h3>
+          <p>
+            ページ右下に表示されるボタンから、現在開いているページのリンクをすぐにコピーできます。
+          </p>
+        </li>
+        <li>
+          <h3>ボタンを好きな位置へ移動</h3>
+          <p>
+            ボタンはドラッグして移動できます。配置した位置は保存され、次回も同じ場所で使えます。
+          </p>
+        </li>
+        <li>
+          <h3>右クリックメニューにも対応</h3>
+          <p>
+            ページ上の右クリックメニューから、リンクのコピーやボタンの表示・非表示を切り替えられます。
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="pagelink-copy-button-usage">
+      <SectionHeading id="pagelink-copy-button-usage" index="03" title="どのように活用できるか" />
+      <div class="usage-list">
+        <article>
+          <p class="usage-number mono">01 / SHARE</p>
+          <h3>タイトルを添えてリンクを共有する</h3>
+          <p>
+            チャットやメールで記事を紹介するときに、URLとページ名を別々に入力する必要がありません。リンク先の内容が伝わる形で、すばやく共有できます。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">02 / ORGANIZE</p>
+          <h3>参考ページを整理する</h3>
+          <p>
+            調べものをしている途中で見つけたページを、タイトル付きリンクとしてメモやドキュメントに残せます。あとから見返すときも、リンク先を判断しやすくなります。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">03 / RESEARCH</p>
+          <h3>調査・開発のリンク集をつくる</h3>
+          <p>
+            技術記事や仕様書、解決策を見つけたときに、その場でリンクを記録できます。調査結果の共有や、後から参照する資料の整理に活用できます。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="pagelink-copy-button-start">
+      <SectionHeading id="pagelink-copy-button-start" index="04" title="使い始めるには" />
+      <p>
+        現在はChromeウェブストア未公開のため、GitHubリポジトリを取得してビルドした拡張機能をChromeへ読み込んで使用します。セットアップ手順とソースコードはリポジトリで公開しています。
+      </p>
+    </section>
+
+    <footer class="detail-footer">
+      <a href="/works/">← Works一覧へ</a>
+      <ExternalLink href={repository} label="Repository">
+        Repository <span aria-hidden="true">↗</span>
+      </ExternalLink>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .work-detail {
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+
+  .detail-header {
+    padding: clamp(2rem, 6vw, 5rem) 0 1rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(3rem, 9vw, 7rem);
+  }
+
+  .lead {
+    margin: 1.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .actions a {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+    text-decoration: none;
+  }
+
+  .actions a:first-child {
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  section > p,
+  .usage-list p {
+    color: var(--color-text-muted);
+  }
+
+  .feature-grid,
+  .usage-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .feature-grid li,
+  .usage-list article {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-sm) var(--radius-lg) var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .feature-grid li:nth-child(even),
+  .usage-list article:nth-child(3) {
+    border-radius: var(--radius-sm) var(--radius-lg) var(--radius-lg) var(--radius-lg);
+    background: var(--color-highlight-soft);
+  }
+
+  h3 {
+    margin: 0 0 0.6rem;
+  }
+
+  .feature-grid p,
+  .usage-list p:last-child {
+    margin: 0;
+  }
+
+  .usage-number {
+    margin: 0 0 1rem;
+    color: var(--color-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .detail-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .detail-footer a {
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+  }
+
+  @media (max-width: 680px) {
+    .feature-grid,
+    .usage-list {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-footer {
+      flex-direction: column;
+    }
+  }
+</style>

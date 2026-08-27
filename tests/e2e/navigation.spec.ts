@@ -40,6 +40,16 @@ test("Featured Works から housekeeper の詳細ページへ遷移できる", a
   await expect(page.getByText("Supabase MCPとChatGPT")).toBeVisible();
 });
 
+test("Featured Works から PageLink Copy Button の詳細ページへ遷移できる", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "PageLink Copy Buttonの詳細ページ" }).click();
+
+  await expect(page).toHaveURL(/\/works\/pagelink-copy-button\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: "PageLink Copy Button" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "どのようなツールなのか" })).toBeVisible();
+  await expect(page.getByText("タイトル付きリンクをコピー")).toBeVisible();
+});
+
 test("スキルアイコンのCDN失敗時は略称へフォールバックする", async ({ page }) => {
   await page.route("https://cdn.jsdelivr.net/**", (route) => route.abort());
   await page.route("https://cdn.jsdelivr.net/gh/devicons/**", (route) => route.abort());
