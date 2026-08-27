@@ -32,7 +32,7 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
 
 test("Featured Works から housekeeper の詳細ページへ遷移できる", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "View details ↗" }).click();
+  await page.getByRole("link", { name: "housekeeperの詳細ページ" }).click();
 
   await expect(page).toHaveURL(/\/works\/housekeeper\/$/);
   await expect(page.getByRole("heading", { level: 1, name: "housekeeper" })).toBeVisible();

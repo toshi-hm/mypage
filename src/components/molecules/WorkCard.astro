@@ -12,7 +12,8 @@ interface Props {
 const { name, description, detailUrl, url, repo, tech = [], showMark = true } = Astro.props;
 ---
 
-<article class="work-card">
+<article class:list={["work-card", detailUrl && "has-detail"]}>
+  {detailUrl && <a class="card-link" href={detailUrl} aria-label={`${name}の詳細ページ`} />}
   <p class="label mono">Selected work</p>
   <div class="head">
     <h2>{name}</h2>{
@@ -35,23 +36,16 @@ const { name, description, detailUrl, url, repo, tech = [], showMark = true } = 
   }
   <div class="links">
     {
-      detailUrl && (
-        <a class="detail-link" href={detailUrl}>
-          View details ↗
-        </a>
-      )
-    }
-    {
       url && (
         <ExternalLink href={url} label="Visit site">
-          Visit site ↗
+          Visit site <span aria-hidden="true">↗</span>
         </ExternalLink>
       )
     }
     {
       repo && (
         <ExternalLink href={repo} label="Repository">
-          Repository ↗
+          Repository <span aria-hidden="true">↗</span>
         </ExternalLink>
       )
     }
@@ -60,6 +54,7 @@ const { name, description, detailUrl, url, repo, tech = [], showMark = true } = 
 
 <style>
   .work-card {
+    position: relative;
     min-height: 19rem;
     padding: clamp(1.4rem, 3vw, 2rem);
     border: 1px solid var(--color-border);
@@ -73,6 +68,19 @@ const { name, description, detailUrl, url, repo, tech = [], showMark = true } = 
   }
   .work-card:hover {
     transform: rotate(-0.5deg) translateY(-3px);
+  }
+  .has-detail {
+    cursor: pointer;
+  }
+  .card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+  .card-link:focus-visible {
+    outline: 3px solid var(--color-coral);
+    outline-offset: 3px;
   }
   .label {
     margin: 0 0 2.5rem;
@@ -125,12 +133,17 @@ const { name, description, detailUrl, url, repo, tech = [], showMark = true } = 
     flex-wrap: wrap;
     gap: 1rem;
     margin-top: auto;
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .links :global(a) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    pointer-events: auto;
   }
   .links :global(.external-link) {
-    color: var(--color-text);
-    font: 700 0.78rem/1.4 var(--font-mono);
-  }
-  .detail-link {
     color: var(--color-text);
     font: 700 0.78rem/1.4 var(--font-mono);
   }

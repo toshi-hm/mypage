@@ -7,11 +7,12 @@ interface Props {
 }
 const { title, href, description } = Astro.props;
 const isExternal = /^https?:\/\//i.test(href);
+const accessibleLabel = description ? `${title} ${description}` : title;
 ---
 
 {
   isExternal ? (
-    <ExternalLink class="link-card" href={href} label={title}>
+    <ExternalLink class="link-card" href={href} label={accessibleLabel}>
       <span class="copy">
         <strong>{title}</strong>
         {description && <small>{description}</small>}
