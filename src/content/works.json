@@ -6,7 +6,7 @@
       "description": "Astro 7 + React islands + Bun で構築した個人ホームページ。Git ベース CMS で記事を管理し、Cloudflare Workers で配信予定。",
       "repo": "https://github.com/toshi-hm/mypage",
       "tech": ["astro", "react", "typescript", "bun", "cloudflare"],
-      "featured": true,
+      "featured": false,
       "order": 1
     },
     {
@@ -16,8 +16,17 @@
       "repo": "https://github.com/toshi-hm/housekeeper",
       "tech": ["react", "typescript", "vite", "tanstack-router", "supabase", "tailwindcss"],
       "showMark": false,
-      "featured": false,
+      "featured": true,
       "order": 2
+    },
+    {
+      "id": "pagelink-copy-button",
+      "name": "PageLink Copy Button",
+      "description": "ページタイトルとURLをハイパーリンクにしてコピーできるChrome拡張機能。画面上のボタンや右クリックメニューからページリンクをコピーでき、ボタンの位置もドラッグして保存できます。",
+      "repo": "https://github.com/toshi-hm/pagelink-copy-button",
+      "tech": ["bun", "typescript", "wxt"],
+      "featured": true,
+      "order": 3
     }
   ]
 }
