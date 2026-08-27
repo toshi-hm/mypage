@@ -20,6 +20,7 @@ const works = sortWorks(await getCollection("works"));
         <WorkCard
           name={work.data.name}
           description={work.data.description}
+          detailUrl={work.data.detailUrl}
           url={work.data.url}
           repo={work.data.repo}
           tech={work.data.tech}

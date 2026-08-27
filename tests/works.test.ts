@@ -22,6 +22,7 @@ describe("WorkCard", () => {
       props: {
         name: "mypage",
         description: "個人ホームページ",
+        detailUrl: "/works/mypage/",
         url: "https://example.com",
         repo: "https://github.com/toshi-hm/mypage",
         tech: ["astro", "bun"],
@@ -33,6 +34,8 @@ describe("WorkCard", () => {
     expect(result).toContain("astro");
     expect(result).toContain('href="https://example.com"');
     expect(result).toContain('href="https://github.com/toshi-hm/mypage"');
+    expect(result).toContain('href="/works/mypage/"');
+    expect(result).toContain("View details");
     expect(result).toContain('rel="noopener noreferrer"');
   });
 

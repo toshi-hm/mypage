@@ -3,12 +3,13 @@ import ExternalLink from "../atoms/ExternalLink.astro";
 interface Props {
   name: string;
   description: string;
+  detailUrl?: string;
   url?: string;
   repo?: string;
   tech?: string[];
   showMark?: boolean;
 }
-const { name, description, url, repo, tech = [], showMark = true } = Astro.props;
+const { name, description, detailUrl, url, repo, tech = [], showMark = true } = Astro.props;
 ---
 
 <article class="work-card">
@@ -33,6 +34,13 @@ const { name, description, url, repo, tech = [], showMark = true } = Astro.props
     )
   }
   <div class="links">
+    {
+      detailUrl && (
+        <a class="detail-link" href={detailUrl}>
+          View details ↗
+        </a>
+      )
+    }
     {
       url && (
         <ExternalLink href={url} label="Visit site">
@@ -119,6 +127,10 @@ const { name, description, url, repo, tech = [], showMark = true } = Astro.props
     margin-top: auto;
   }
   .links :global(.external-link) {
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+  }
+  .detail-link {
     color: var(--color-text);
     font: 700 0.78rem/1.4 var(--font-mono);
   }
