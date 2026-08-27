@@ -13,6 +13,7 @@
       "id": "housekeeper",
       "name": "housekeeper",
       "description": "自宅の備品・食料品を管理するウェブアプリ。バーコードスキャンによる商品登録、在庫・保管場所・購入日・賞味期限の管理、期限が近い商品の確認をまとめて行えます。",
+      "detailUrl": "/works/housekeeper/",
       "repo": "https://github.com/toshi-hm/housekeeper",
       "tech": ["react", "typescript", "vite", "tanstack-router", "supabase", "tailwindcss"],
       "showMark": false,
