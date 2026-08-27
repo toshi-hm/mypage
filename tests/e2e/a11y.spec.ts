@@ -8,6 +8,7 @@ const pages = [
   { name: "記事詳細", path: "/articles/hello-world/" },
   { name: "Works", path: "/works/" },
   { name: "housekeeper詳細", path: "/works/housekeeper/" },
+  { name: "PageLink Copy Button詳細", path: "/works/pagelink-copy-button/" },
   { name: "About", path: "/about/" },
   { name: "タグ一覧", path: "/tags/" },
   { name: "検索", path: "/search/" },
