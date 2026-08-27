@@ -16,7 +16,9 @@ const repository = "https://github.com/toshi-hm/housekeeper";
       <h1>{title}</h1>
       <p class="lead">家にあるものを把握して、買い物から献立づくりまでを少し便利にする。</p>
       <div class="actions">
-        <ExternalLink href={repository} label="GitHubリポジトリ"> GitHubリポジトリ ↗ </ExternalLink>
+        <ExternalLink href={repository} label="GitHubリポジトリ">
+          GitHubリポジトリ <span aria-hidden="true">↗</span>
+        </ExternalLink>
         <a href="/works/">Works一覧へ</a>
       </div>
     </header>
@@ -95,7 +97,9 @@ const repository = "https://github.com/toshi-hm/housekeeper";
 
     <footer class="detail-footer">
       <a href="/works/">← Works一覧へ</a>
-      <ExternalLink href={repository} label="GitHubリポジトリ">Repository ↗</ExternalLink>
+      <ExternalLink href={repository} label="Repository">
+        Repository <span aria-hidden="true">↗</span>
+      </ExternalLink>
     </footer>
   </article>
 </BaseLayout>

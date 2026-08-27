@@ -38,14 +38,14 @@ const { name, description, detailUrl, url, repo, tech = [], showMark = true } = 
     {
       url && (
         <ExternalLink href={url} label="Visit site">
-          Visit site ↗
+          Visit site <span aria-hidden="true">↗</span>
         </ExternalLink>
       )
     }
     {
       repo && (
         <ExternalLink href={repo} label="Repository">
-          Repository ↗
+          Repository <span aria-hidden="true">↗</span>
         </ExternalLink>
       )
     }
@@ -138,8 +138,9 @@ const { name, description, detailUrl, url, repo, tech = [], showMark = true } = 
     pointer-events: none;
   }
   .links :global(a) {
-    position: relative;
-    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
     pointer-events: auto;
   }
   .links :global(.external-link) {
