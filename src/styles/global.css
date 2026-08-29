@@ -173,9 +173,6 @@ code {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-.content-narrow {
-  max-width: var(--content-width);
-}
 .stack {
   display: grid;
   gap: 1rem;
@@ -191,7 +188,6 @@ code {
 }
 
 .page-lead {
-  max-width: 42rem;
   margin: 1rem 0 0;
   color: var(--color-text-muted);
   font-size: clamp(1rem, 2vw, 1.2rem);

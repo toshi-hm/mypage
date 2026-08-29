@@ -1,6 +1,7 @@
 export interface WorkData {
   name: string;
   description: string;
+  detailUrl?: string | undefined;
   url?: string | undefined;
   repo?: string | undefined;
   tech: string[];

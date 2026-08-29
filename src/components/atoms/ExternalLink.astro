@@ -8,8 +8,16 @@ interface Props {
 const { href, label, class: className } = Astro.props;
 ---
 
-<a href={href} class:list={["external-link", className]} target="_blank" rel="noopener noreferrer" aria-label={`${label}（外部サイト・新しいタブ）`}><slot /></a>
+<a
+  href={href}
+  class:list={["external-link", className]}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={`${label}（外部サイト・新しいタブ）`}><slot /></a
+>
 
 <style>
-  .external-link { color: inherit; }
+  .external-link {
+    color: inherit;
+  }
 </style>

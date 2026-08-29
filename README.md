@@ -34,7 +34,8 @@ bun run check      # lint / format / markdown / typecheck / test / build を一�
 | コマンド                                  | 内容              |
 | ----------------------------------------- | ----------------- |
 | `bun run lint`                            | oxlint            |
-| `bun run format` / `bun run format:check` | oxfmt             |
+| `bun run lint:styles`                     | Stylelint         |
+| `bun run format` / `bun run format:check` | oxfmt + Prettier  |
 | `bun run lint:md`                         | markdownlint-cli2 |
 | `bun run typecheck`                       | astro check + tsc |
 | `bun run test`                            | Vitest            |

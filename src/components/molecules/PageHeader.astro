@@ -1,5 +1,9 @@
 ---
-interface Props { eyebrow?: string; title: string; description?: string; }
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+}
 const { eyebrow = "Explore", title, description } = Astro.props;
 ---
 
@@ -10,6 +14,21 @@ const { eyebrow = "Explore", title, description } = Astro.props;
 </header>
 
 <style>
-  .page-header { position: relative; padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2.5rem, 6vw, 4.5rem); }
-  .page-header::after { content: ""; position: absolute; right: 3%; top: 0; width: clamp(4rem, 10vw, 7rem); aspect-ratio: 1; border: 1px solid var(--color-border); border-radius: 50% 50% 8% 50%; background: var(--color-highlight-soft); transform: rotate(12deg); z-index: -1; }
+  .page-header {
+    position: relative;
+    padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .page-header::after {
+    content: "";
+    position: absolute;
+    right: 3%;
+    top: 0;
+    width: clamp(4rem, 10vw, 7rem);
+    aspect-ratio: 1;
+    border: 1px solid var(--color-border);
+    border-radius: 50% 50% 8% 50%;
+    background: var(--color-highlight-soft);
+    transform: rotate(12deg);
+    z-index: -1;
+  }
 </style>

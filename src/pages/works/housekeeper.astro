@@ -1,0 +1,237 @@
+---
+import ExternalLink from "../../components/atoms/ExternalLink.astro";
+import SectionHeading from "../../components/molecules/SectionHeading.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "housekeeper";
+const description =
+  "housekeeperは、自宅の備品・食料品を管理するWebアプリです。バーコード登録、在庫・賞味期限管理、Alexa連携、SupabaseとChatGPTを活用した献立づくりについて紹介します。";
+const repository = "https://github.com/toshi-hm/housekeeper";
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="work-detail">
+    <header class="detail-header">
+      <p class="eyebrow">Featured work / housekeeper</p>
+      <h1>{title}</h1>
+      <p class="lead">家にあるものを把握して、買い物から献立づくりまでを少し便利にする。</p>
+      <div class="actions">
+        <ExternalLink href={repository} label="GitHubリポジトリ">
+          GitHubリポジトリ <span aria-hidden="true">↗</span>
+        </ExternalLink>
+        <a href="/works/">Works一覧へ</a>
+      </div>
+    </header>
+
+    <section aria-labelledby="about-housekeeper">
+      <SectionHeading id="about-housekeeper" index="01" title="housekeeperとは" />
+      <p>
+        housekeeperは、自宅の備品や食料品を管理するためのWebアプリです。家に何があるのか、どこに保管しているのか、いつ買ったのか、いつまでに使うべきなのかをまとめて確認できます。
+      </p>
+      <p>
+        日々の買い物で増えていく食料品を記録し、在庫と賞味期限を見えるようにすることで、買い忘れや使い忘れを減らすことを目指しています。
+      </p>
+    </section>
+
+    <section aria-labelledby="housekeeper-features">
+      <SectionHeading id="housekeeper-features" index="02" title="何ができるのか" />
+      <ul class="feature-grid">
+        <li>
+          <h3>バーコードで登録</h3>
+          <p>商品のバーコードをカメラで読み込み、買ってきたものを素早く登録できます。</p>
+        </li>
+        <li>
+          <h3>在庫を管理</h3>
+          <p>数量、保管場所、購入日、賞味期限、メモを商品ごとに記録できます。</p>
+        </li>
+        <li>
+          <h3>期限を確認</h3>
+          <p>賞味期限が近いものや期限切れのものを見つけやすくし、使うタイミングを判断できます。</p>
+        </li>
+        <li>
+          <h3>家の外からも把握</h3>
+          <p>Alexaと連携し、家にある在庫を声で確認できるようにしています。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="housekeeper-usage">
+      <SectionHeading id="housekeeper-usage" index="03" title="どのように活用しているか" />
+      <div class="usage-list">
+        <article>
+          <p class="usage-number mono">01 / SHOPPING</p>
+          <h3>買ってきた食料品をその場で登録</h3>
+          <p>
+            スーパーから帰ったら、買ってきた食料品をすべてバーコードで読み込ませて登録します。在庫と賞味期限を一緒に管理することで、冷蔵庫や食品棚を開けなくても家にあるものを確認できます。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">02 / ALEXA</p>
+          <h3>声で家の在庫を確認</h3>
+          <p>
+            Alexaと連携しているため、手が離せないときや買い物中でも、家に何が残っているかを声で確認できます。買い足すものを思い出すための補助として活用しています。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">03 / AI MENU</p>
+          <h3>在庫をもとに献立を考える</h3>
+          <p>
+            在庫データはSupabaseに保存しています。Supabase
+            MCPとChatGPTを使ってデータを参照し、家にある食材をもとに献立を考えてもらっています。何を作るか迷ったときに、今あるものを活かすための相談相手になります。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="housekeeper-stack">
+      <SectionHeading id="housekeeper-stack" index="04" title="技術構成" />
+      <ul class="tech-list">
+        <li>React</li>
+        <li>TypeScript</li>
+        <li>Vite</li>
+        <li>TanStack Router</li>
+        <li>Supabase</li>
+        <li>Tailwind CSS</li>
+      </ul>
+    </section>
+
+    <footer class="detail-footer">
+      <a href="/works/">← Works一覧へ</a>
+      <ExternalLink href={repository} label="Repository">
+        Repository <span aria-hidden="true">↗</span>
+      </ExternalLink>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .work-detail {
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+
+  .detail-header {
+    padding: clamp(2rem, 6vw, 5rem) 0 1rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+  }
+
+  .lead {
+    margin: 1.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .actions a {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+    text-decoration: none;
+  }
+
+  .actions a:first-child {
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  section > p,
+  .usage-list p {
+    color: var(--color-text-muted);
+  }
+
+  .feature-grid,
+  .usage-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .feature-grid li,
+  .usage-list article {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-sm) var(--radius-lg) var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .feature-grid li:nth-child(even),
+  .usage-list article:nth-child(3) {
+    border-radius: var(--radius-sm) var(--radius-lg) var(--radius-lg) var(--radius-lg);
+    background: var(--color-highlight-soft);
+  }
+
+  h3 {
+    margin: 0 0 0.6rem;
+  }
+
+  .feature-grid p,
+  .usage-list p:last-child {
+    margin: 0;
+  }
+
+  .usage-number {
+    margin: 0 0 1rem;
+    color: var(--color-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tech-list li {
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font: 600 0.78rem/1.2 var(--font-mono);
+  }
+
+  .detail-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .detail-footer a {
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+  }
+
+  @media (max-width: 680px) {
+    .feature-grid,
+    .usage-list {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-footer {
+      flex-direction: column;
+    }
+  }
+</style>
