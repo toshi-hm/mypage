@@ -1,3 +1,7 @@
+---
+import ExternalLink from "../atoms/ExternalLink.astro";
+---
+
 <section class="home-profile" aria-labelledby="home-profile-heading">
   <div class="profile-photo-wrap">
     <div class="profile-photo-frame">
@@ -32,6 +36,14 @@
     <a class="profile-link" href="/about/"
       >プロフィール・スキル・経歴を見る <span aria-hidden="true">↗</span></a
     >
+    <nav class="profile-social-links" aria-label="プロフィールのソーシャルリンク">
+      <ExternalLink href="https://github.com/toshi-hm" label="GitHub">
+        <span class="mono">GitHub</span><span aria-hidden="true">↗</span>
+      </ExternalLink>
+      <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn">
+        <span class="mono">LinkedIn</span><span aria-hidden="true">↗</span>
+      </ExternalLink>
+    </nav>
   </div>
 </section>
 
@@ -154,6 +166,41 @@
   }
   .profile-link:hover span {
     transform: translate(2px, -2px);
+  }
+  .profile-social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+  .profile-social-links :global(.external-link) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 2.35rem;
+    padding: 0.35rem 0.45rem 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.72rem;
+    font-weight: 750;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+  }
+  .profile-social-links :global(.external-link) span:last-child {
+    display: grid;
+    place-items: center;
+    width: 1.45rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--color-highlight);
+    color: var(--color-on-highlight);
+  }
+  .profile-social-links :global(.external-link:hover) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-2px);
   }
   @media (max-width: 700px) {
     .home-profile {
