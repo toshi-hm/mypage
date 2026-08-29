@@ -12,6 +12,8 @@ test("トップページにプロフィール情報と写真を描画する", as
   expect(result).toContain("修士（人工知能科学）");
   expect(result).toContain('src="/images/profile.webp"');
   expect(result).toContain('alt="濱俊也のプロフィール写真"');
+  expect(result).toContain('loading="eager"');
+  expect(result).toContain('fetchpriority="high"');
   expect(result).toContain('href="/about/"');
   expect(result).toContain('href="https://github.com/toshi-hm"');
   expect(result).toContain('href="https://www.linkedin.com/in/toshiyahama"');
