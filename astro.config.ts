@@ -2,11 +2,11 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import pagefind from "astro-pagefind";
+import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: デプロイ時に実際の URL へ変更する
-  site: "https://mypage.example.com",
+  site: SITE_URL,
   integrations: [
     react(),
     sitemap({
