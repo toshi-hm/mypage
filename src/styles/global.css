@@ -77,7 +77,8 @@
 
 html {
   font-family:
-    "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, system-ui, sans-serif;
+    "LINE Seed JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo,
+    system-ui, sans-serif;
   font-feature-settings: "palt";
   background: var(--color-bg);
   color: var(--color-text);

@@ -56,7 +56,7 @@ LCP、INP、CLSをページ体験の指標に挙げているため、装飾の�
 - SVGには `aria-hidden="true"` 相当の親を置き、支援技術には読み上げさせない
 - `prefers-reduced-motion: reduce` では全アニメーションを停止し、静的な関係図として残す
 - 固定アスペクト比の絶対配置によりCLSを発生させない
-- JavaScript、Webフォント、画像、ネットワークリクエストを追加しない
+- ヒーロー固有のJavaScript・画像・ネットワークリクエストは追加しない。標準フォントはBaseLayoutで共通管理する
 
 ## 5. 検証
 
