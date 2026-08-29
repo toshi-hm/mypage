@@ -5,6 +5,7 @@ import LinkCard from "../components/molecules/LinkCard.astro";
 import SectionHeading from "../components/molecules/SectionHeading.astro";
 import WorkCard from "../components/molecules/WorkCard.astro";
 import HomeHero from "../components/organisms/HomeHero.astro";
+import HomeProfile from "../components/organisms/HomeProfile.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import {
@@ -29,6 +30,7 @@ const jsonLd = buildWebSiteLd({
 
 <BaseLayout title="Home" jsonLd={jsonLd}>
   <HomeHero />
+  <HomeProfile />
   {
     latestArticles.length > 0 && (
       <section aria-labelledby="latest-articles">
