@@ -3,6 +3,7 @@ import ExternalLink from "../atoms/ExternalLink.astro";
 ---
 
 <section class="home-profile" aria-labelledby="home-profile-heading">
+  <p class="eyebrow profile-eyebrow">About me</p>
   <div class="profile-photo-wrap">
     <div class="profile-photo-frame">
       <img
@@ -19,7 +20,6 @@ import ExternalLink from "../atoms/ExternalLink.astro";
   </div>
 
   <div class="profile-copy">
-    <p class="eyebrow">About me</p>
     <h2 id="home-profile-heading"><span>濱 俊也</span><small>Hama Toshiya</small></h2>
     <div class="profile-description">
       <p>
@@ -53,8 +53,13 @@ import ExternalLink from "../atoms/ExternalLink.astro";
     position: relative;
     display: grid;
     grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
-    gap: clamp(2rem, 7vw, 7rem);
-    align-items: center;
+    grid-template-areas:
+      "photo eyebrow"
+      "photo copy";
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(2rem, 7vw, 7rem);
+    row-gap: 0;
+    align-items: stretch;
     margin: 0 0 clamp(5rem, 10vw, 9rem);
     padding: clamp(1.25rem, 3vw, 2.5rem);
     border: 1px solid var(--color-border);
@@ -75,9 +80,11 @@ import ExternalLink from "../atoms/ExternalLink.astro";
     transform: translate(-1.5rem, -1.5rem);
   }
   .profile-photo-wrap {
+    grid-area: photo;
     position: relative;
     max-width: 22rem;
     margin: 0 auto;
+    align-self: center;
   }
   .profile-photo-frame {
     position: relative;
@@ -119,7 +126,14 @@ import ExternalLink from "../atoms/ExternalLink.astro";
     transform: rotate(3deg);
   }
   .profile-copy {
+    grid-area: copy;
     min-width: 0;
+    align-self: start;
+  }
+  .profile-eyebrow {
+    grid-area: eyebrow;
+    align-self: end;
+    margin-bottom: 0.75rem;
   }
   .profile-copy h2 {
     display: flex;
@@ -205,11 +219,65 @@ import ExternalLink from "../atoms/ExternalLink.astro";
   }
   @media (max-width: 700px) {
     .home-profile {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
+      grid-template-columns: minmax(5.75rem, 6rem) minmax(0, 1fr);
+      grid-template-areas:
+        "eyebrow eyebrow"
+        "photo copy"
+        "description description"
+        "profile-link profile-link"
+        "social social";
+      grid-template-rows: auto auto auto auto auto;
+      gap: 0.75rem 1rem;
+      align-items: center;
+      padding: 1rem;
+    }
+    .profile-eyebrow {
+      align-self: start;
+      margin-bottom: 0.1rem;
     }
     .profile-photo-wrap {
-      width: min(70vw, 19rem);
+      width: 100%;
+      max-width: 6rem;
+      margin: 0;
+      align-self: start;
+    }
+    .profile-photo-caption {
+      right: -0.35rem;
+      bottom: -0.6rem;
+      padding: 0.3rem 0.5rem;
+      font-size: 0.55rem;
+    }
+    .profile-copy {
+      display: contents;
+    }
+    .profile-copy h2 {
+      grid-area: copy;
+      align-self: center;
+      gap: 0.3rem 0.6rem;
+      font-size: clamp(1.35rem, 6.5vw, 1.9rem);
+    }
+    .profile-description {
+      grid-area: description;
+      margin: 0.45rem 0 0;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+    .profile-description p + p {
+      margin-top: 0.45rem;
+    }
+    .profile-link {
+      grid-area: profile-link;
+      margin-top: 0.1rem;
+    }
+    .profile-social-links {
+      grid-area: social;
+      gap: 0.4rem;
+      margin-top: 0.1rem;
+    }
+    .profile-social-links :global(.external-link) {
+      min-height: 2.1rem;
+      padding: 0.3rem 0.35rem 0.3rem 0.65rem;
+      font-size: 0.68rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
