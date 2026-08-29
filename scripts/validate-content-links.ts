@@ -1,9 +1,10 @@
 import { readdir, readFile } from "node:fs/promises";
 import { statSync } from "node:fs";
 import { join } from "node:path";
+import { SITE_URL } from "../src/consts";
 
 const HTTP_PROTOCOLS = new Set(["http:", "https:"]);
-const SITE_ORIGIN = "https://mypage.example.com";
+const SITE_ORIGIN = SITE_URL;
 
 export function extractHrefs(html: string): string[] {
   return [...html.matchAll(/\bhref=["']([^"']+)["']/g)].map((match) => match[1]);

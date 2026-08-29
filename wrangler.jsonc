@@ -1,5 +1,6 @@
 // Cloudflare Workers (static assets) 配信設定。
-// デプロイはまだ行わない。ローカル確認: bun run preview:cf
+// 本番: https://toshi-page.mayabase.workers.dev
+// ローカル確認: bun run preview:cf
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "toshi-page",
