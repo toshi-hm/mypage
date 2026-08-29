@@ -1,3 +1,6 @@
+@import "@fontsource/line-seed-jp/japanese-400.css";
+@import "@fontsource/line-seed-jp/latin-400.css";
+
 /* Bright Studio design system
    Atomic components consume these shared tokens; pages only compose them. */
 :root {

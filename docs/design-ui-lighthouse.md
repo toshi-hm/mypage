@@ -21,7 +21,7 @@
 ### 制約(スコアを落とさないための決め事)
 
 - **JS を 1 バイトも追加しない**(island は既存の ThemeToggle のみ)
-- **LINE Seed JP を標準フォントにする**(Google Fonts経由、`font-display: swap` とローカルフォールバックで表示安定性を確保)
+- **LINE Seed JP を標準フォントにする**（`@fontsource/line-seed-jp` でセルフホストし、外部フォントリクエストなしで表示安定性を確保）
 - 画像・背景テクスチャを追加しない(装飾は罫線・タイポグラフィ・CSS のみで構成)
 
 ## 2. Lighthouse 監査対応
