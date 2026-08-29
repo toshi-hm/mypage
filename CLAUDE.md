@@ -1,6 +1,6 @@
 # mypage
 
-Hama Toshiya の個人ホームページ。Astro 7(静的出力)+ React islands 構成で、Cloudflare Workers (static assets) にデプロイしている。本番サイトは <https://toshi-page.mayabase.workers.dev/>。設計の全体像は `docs/design.md` を参照。
+Hama Toshiya の個人ホームページ。Astro 7(静的出力)+ React islands 構成で、将来 Cloudflare Workers (static assets) にデプロイする。設計の全体像は `docs/design.md` を参照。
 
 ## ランタイム
 

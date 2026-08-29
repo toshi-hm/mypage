@@ -1,7 +1,7 @@
 import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { isPublishable, toFeedItems } from "../utils/articles";
 
 export const GET: APIRoute = async (context) => {
@@ -12,7 +12,7 @@ export const GET: APIRoute = async (context) => {
   return rss({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    site: context.site ?? SITE_URL,
+    site: context.site ?? "https://mypage.example.com",
     items: toFeedItems(articles),
     customData: "<language>ja</language>",
   });

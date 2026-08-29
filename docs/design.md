@@ -1,36 +1,34 @@
 # mypage 設計ドキュメント
 
-個人ホームページ(HP)を構築し、Cloudflare Workersへデプロイして運用するためのプロジェクト設計書。
-
-本番サイト: <https://toshi-page.mayabase.workers.dev/>
+個人ホームページ(HP)を構築し、最終的に Cloudflare にデプロイするためのプロジェクト設計書。
 
 ## 1. 目的とスコープ
 
 - 自分のプロフィール・活動を紹介する静的な個人ホームページを作る
-- ローカルで開発・確認できる状態を整備し、Cloudflare Workersへ継続的にデプロイする
+- ローカルで開発・確認できる状態を最優先で整備する(デプロイは後続フェーズ)
 - CI で品質チェック(lint / format / typecheck / test / build)を自動化する
 
 ### 非スコープ(現時点)
 
-- main マージ時の自動デプロイ(現時点では手動トリガー)
+- Cloudflare への実デプロイ(設定・手順の準備のみ行う)
 - DB などの動的バックエンド(記事は Git ベース CMS で管理する。`docs/design-articles.md` 参照)
 - 多言語対応
 
 ## 2. 技術選定
 
-| 領域                   | 採用技術                           | バージョン                        | 選定理由                                                                                 |
-| ---------------------- | ---------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------- |
-| フレームワーク         | Astro                              | 7.x                               | コンテンツ中心サイトに最適。ゼロJSデフォルトで高速。静的出力で Cloudflare にそのまま載る |
-| 言語                   | TypeScript                         | 6.x                               | 型安全。`strict` 前提                                                                    |
-| ランタイム / PM        | Bun                                | 1.x                               | 高速なインストール・スクリプト実行。Node.js は使わない                                   |
-| UI islands             | React                              | 19.x                              | インタラクティブ部品(テーマ切替等)に限定して使用。Storybook 公式サポートがあるため採用   |
-| Lint                   | oxlint + Stylelint                 | 1.x / 17.x                        | JS/TS と Astro 内 CSS を分担して検査                                                     |
-| Format                 | oxfmt + Prettier                   | 0.x / 3.x                         | JS/TS 系と Astro (`prettier-plugin-astro`) を分担して整形                                |
-| Markdown lint          | markdownlint-cli2                  | 0.x                               | oxlint/oxfmt が対象としない Markdown を補完                                              |
-| Typecheck              | astro check + tsc                  | -                                 | `.astro` 含むプロジェクト全体の型検査                                                    |
-| 単体テスト             | Vitest                             | 4.x                               | Vite ネイティブ。Astro の `getViteConfig()` で統合                                       |
-| コンポーネントカタログ | Storybook                          | 10.x (`@storybook/react-vite`)    | React islands のカタログ・ドキュメント化                                                 |
-| デプロイ先             | Cloudflare Workers (static assets) | `toshi-page.mayabase.workers.dev` | `wrangler` で `dist/` を配信。Pages ではなく Workers の静的アセット配信を採用            |
+| 領域                   | 採用技術                           | バージョン                     | 選定理由                                                                                      |
+| ---------------------- | ---------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------- |
+| フレームワーク         | Astro                              | 7.x                            | コンテンツ中心サイトに最適。ゼロJSデフォルトで高速。静的出力で Cloudflare にそのまま載る      |
+| 言語                   | TypeScript                         | 6.x                            | 型安全。`strict` 前提                                                                         |
+| ランタイム / PM        | Bun                                | 1.x                            | 高速なインストール・スクリプト実行。Node.js は使わない                                        |
+| UI islands             | React                              | 19.x                           | インタラクティブ部品(テーマ切替等)に限定して使用。Storybook 公式サポートがあるため採用        |
+| Lint                   | oxlint + Stylelint                 | 1.x / 17.x                     | JS/TS と Astro 内 CSS を分担して検査                                                          |
+| Format                 | oxfmt + Prettier                   | 0.x / 3.x                      | JS/TS 系と Astro (`prettier-plugin-astro`) を分担して整形                                     |
+| Markdown lint          | markdownlint-cli2                  | 0.x                            | oxlint/oxfmt が対象としない Markdown を補完                                                   |
+| Typecheck              | astro check + tsc                  | -                              | `.astro` 含むプロジェクト全体の型検査                                                         |
+| 単体テスト             | Vitest                             | 4.x                            | Vite ネイティブ。Astro の `getViteConfig()` で統合                                            |
+| コンポーネントカタログ | Storybook                          | 10.x (`@storybook/react-vite`) | React islands のカタログ・ドキュメント化                                                      |
+| デプロイ先(予定)       | Cloudflare Workers (static assets) | -                              | `wrangler` で `dist/` を配信。Pages ではなく Workers の静的アセット配信を採用(現行の推奨パス) |
 
 ### 設計判断の記録 (ADR 要約)
 
@@ -62,7 +60,7 @@
 └──────────────┬─────────────────────────────┘
                │ astro build (bun)
                ▼
-            dist/  ──────────▶  Cloudflare Workers static assets
+            dist/  ──(将来)──▶  Cloudflare Workers static assets
 ```
 
 - ページ・レイアウトは `.astro`。JS を出荷しない
@@ -95,7 +93,7 @@
 ├── tsconfig.json
 ├── .oxlintrc.json
 ├── .markdownlint-cli2.jsonc
-├── wrangler.jsonc           # Cloudflare 配信設定
+├── wrangler.jsonc           # Cloudflare 配信設定(デプロイ準備)
 ├── CLAUDE.md
 └── package.json
 ```
@@ -152,14 +150,13 @@ ci.yml
 - ジョブは並列実行。すべて成功で green
 - 依存インストールは `bun install --frozen-lockfile` で lockfile を厳守
 
-## 8. デプロイ運用
+## 8. デプロイ計画(後続フェーズ)
 
-1. `wrangler.jsonc` の `assets` 設定で `dist/` を static assets として配信中
-2. デプロイワークフロー(`workflow_dispatch`)と CI での `wrangler deploy --dry-run` 検証を構成済み。
+1. `wrangler.jsonc` の `assets` 設定で `dist/` を static assets として配信(準備済み)
+2. デプロイワークフロー(`workflow_dispatch`)と CI での `wrangler deploy --dry-run` 検証は準備済み。
    secrets 設定と手順は `docs/design-deploy.md` を参照
 3. CMS(`/admin`)の本番ログイン用 GitHub OAuth プロキシを Cloudflare Workers に追加(`docs/design-articles.md` 参照)
-4. 本番サイト: <https://toshi-page.mayabase.workers.dev/>
-5. 手動デプロイの安定を確認後、main マージ時の自動デプロイ化を判断
+4. 手動デプロイの安定を確認後、main マージ時の自動デプロイ化を判断
 
 ## 9. 開発支援 (Claude Code)
 

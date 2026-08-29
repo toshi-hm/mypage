@@ -4,7 +4,6 @@ import TagList from "../../components/atoms/TagList.astro";
 import ArticleCard from "../../components/molecules/ArticleCard.astro";
 import SectionHeading from "../../components/molecules/SectionHeading.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { SITE_URL } from "../../consts";
 import {
   excerpt,
   estimateReadingMinutes,
@@ -47,7 +46,7 @@ const description = excerpt(article.data, article.body);
 const jsonLd = buildBlogPostingLd({
   title,
   description,
-  url: new URL(`/articles/${article.id}/`, Astro.site ?? SITE_URL).href,
+  url: new URL(`/articles/${article.id}/`, Astro.site ?? "https://mypage.example.com").href,
   pubDate,
   updatedDate,
   tags,

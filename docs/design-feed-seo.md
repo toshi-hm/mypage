@@ -25,9 +25,9 @@
    `astro:content` に依存しない純関数にして Vitest で直接テストする(rss.xml.ts 自体は薄い接着層)
 2. **robots.txt は `public/` の静的ファイルではなく動的ルートで生成**
    Sitemap 行は絶対 URL が必要なため、`astro.config.ts` の `site` から導出して重複管理を避ける
-3. **`site` は本番URLを `src/consts.ts` の `SITE_URL` から参照する**
-   canonical / RSS / sitemap はすべて `site` から導出されるため、本番URLの変更は
-   `SITE_URL` の1箇所で済む
+3. **`site` は暫定 URL のまま**(`https://mypage.example.com`)
+   デプロイ時に本番ドメインへ変更する(TODO コメント済み)。canonical / RSS / sitemap はすべて
+   `site` から導出されるため、変更は 1 箇所で済む
 4. **`/admin/` はすべてのクローラ導線から除外**
    sitemap の filter、robots.txt の Disallow、既存の `noindex` メタの三重で防ぐ
 

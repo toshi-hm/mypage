@@ -1,9 +1,8 @@
 import type { APIRoute } from "astro";
-import { SITE_URL } from "../consts";
 
 // robots.txt を site 設定から動的に生成する(Sitemap は絶対 URL 必須のため)
 export const GET: APIRoute = (context) => {
-  const site = context.site ?? new URL(SITE_URL);
+  const site = context.site ?? new URL("https://mypage.example.com");
   const body = [
     "User-agent: *",
     "Disallow: /admin/",

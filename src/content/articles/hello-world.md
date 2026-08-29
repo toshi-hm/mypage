@@ -15,4 +15,4 @@ Bun をランタイムに採用しています。
 ## 今後
 
 - 記事を少しずつ追加していきます
-- Cloudflare Workers へデプロイ済みです
+- Cloudflare Workers へのデプロイを予定しています
