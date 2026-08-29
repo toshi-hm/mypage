@@ -7,7 +7,7 @@ import WorkCard from "../components/molecules/WorkCard.astro";
 import HomeHero from "../components/organisms/HomeHero.astro";
 import HomeProfile from "../components/organisms/HomeProfile.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
 import {
   estimateReadingMinutes,
   excerpt,
@@ -24,7 +24,7 @@ const featuredWorks = sortWorks(await getCollection("works", ({ data }) => data.
 const jsonLd = buildWebSiteLd({
   name: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  url: Astro.site?.href ?? "https://mypage.example.com/",
+  url: Astro.site?.href ?? `${SITE_URL}/`,
 });
 ---
 
