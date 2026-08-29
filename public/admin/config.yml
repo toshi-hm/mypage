@@ -27,6 +27,7 @@ collections:
               - { name: id, label: ID(英数字ケバブケース), widget: string }
               - { name: name, label: 名称, widget: string }
               - { name: description, label: 説明, widget: text }
+              - { name: detailUrl, label: 詳細ページ URL, widget: string, required: false }
               - { name: url, label: サイト URL, widget: string, required: false }
               - { name: repo, label: リポジトリ URL, widget: string, required: false }
               - { name: tech, label: 使用技術, widget: list, required: false }

@@ -26,6 +26,10 @@ const works = defineCollection({
     id: z.string().regex(SLUG_PATTERN, "id は英数字ケバブケースのみ"),
     name: z.string().min(1),
     description: z.string().min(1),
+    detailUrl: z
+      .string()
+      .regex(/^\/[a-z0-9/-]+\/?$/, "サイト内のパスのみ許可")
+      .optional(),
     // href に直接展開されるため、javascript: 等のスキームを排除し http(s) のみ許可する
     url: z
       .string()

@@ -18,6 +18,7 @@
 | `id`          | string       | ✅              | 識別子(英数字ケバブケース)     |
 | `name`        | string       | ✅              | 名称                           |
 | `description` | string       | ✅              | 説明(1〜2 文)                  |
+| `detailUrl`   | string       | -               | サイト内の詳細ページへのリンク |
 | `url`         | string (URL) | -               | デモ・サイトへのリンク         |
 | `repo`        | string (URL) | -               | リポジトリへのリンク           |
 | `tech`        | string[]     | -(既定 `[]`)    | 使用技術                       |
