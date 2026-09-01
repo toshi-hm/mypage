@@ -42,6 +42,36 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("Aboutの並行開始マーカーが経歴カードの間に表示される", async ({ page }) => {
+  const viewports = [
+    { width: 1280, height: 900 },
+    { width: 390, height: 844 },
+  ];
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.goto("/about/");
+
+    const getBox = async (selector: string) => {
+      const box = await page.locator(selector).boundingBox();
+      if (!box) {
+        throw new Error(`要素の矩形を取得できません: ${selector}`);
+      }
+      return box;
+    };
+    const parallelMarker = await getBox(".parallel-marker");
+    const graduateSchool = await getBox(
+      ".career-item.education:has-text('立教大学大学院 人工知能科学研究科')",
+    );
+    const softwareEngineer = await getBox(".career-item.work:has-text('LINEヤフー株式会社')");
+    const college = await getBox(".career-item.education:has-text('立教大学 理学部')");
+
+    expect(parallelMarker.y).toBeGreaterThan(graduateSchool.y + graduateSchool.height);
+    expect(parallelMarker.y).toBeGreaterThan(softwareEngineer.y + softwareEngineer.height);
+    expect(college.y).toBeGreaterThan(parallelMarker.y + parallelMarker.height);
+  }
+});
+
 test("Featured Works から housekeeper の詳細ページへ遷移できる", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "housekeeperの詳細ページ" }).click();

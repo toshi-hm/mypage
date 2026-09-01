@@ -49,6 +49,12 @@ const work = career.filter((item) => item.data.track === "work");
 const parallelStartDate = education.find((educationEntry) =>
   work.some((workEntry) => workEntry.data.startDate === educationEntry.data.startDate),
 )?.data.startDate;
+const parallelEducation = parallelStartDate
+  ? education.filter((entry) => entry.data.startDate === parallelStartDate)
+  : education;
+const previousEducation = parallelStartDate
+  ? education.filter((entry) => entry.data.startDate !== parallelStartDate)
+  : [];
 const now = new Date();
 const initialVisitDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
@@ -121,22 +127,14 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
             <small>今日まで続くキャリア</small>
           </div>
 
-          {parallelStartDate && (
-            <div class="parallel-marker" role="note">
-              <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
-              <strong>複数のキャリアを並行して開始</strong>
-              <small>Education × Professional</small>
-            </div>
-          )}
-
           <div class="timeline-row parallel-row">
-            {education.length > 0 && (
+            {parallelEducation.length > 0 && (
               <div class="timeline-entry education-entry">
                 <p class="lane-label">
                   <span aria-hidden="true">02</span> Education
                 </p>
                 <div class="career-stack">
-                  {education.map((entry) => (
+                  {parallelEducation.map((entry) => (
                     <CareerItem
                       role={entry.data.role}
                       organization={entry.data.organization}
@@ -157,6 +155,30 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
                 </p>
                 <div class="career-stack">
                   {work.map((entry) => (
+                    <CareerItem
+                      role={entry.data.role}
+                      organization={entry.data.organization}
+                      track={entry.data.track}
+                      startDate={entry.data.startDate}
+                      endDate={entry.data.endDate}
+                      description={entry.data.description}
+                      highlights={entry.data.highlights}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            {parallelStartDate && (
+              <div class="parallel-marker" role="note">
+                <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
+                <strong>複数のキャリアを並行して開始</strong>
+                <small>Education × Professional</small>
+              </div>
+            )}
+            {previousEducation.length > 0 && (
+              <div class="timeline-entry education-previous-entry">
+                <div class="career-stack">
+                  {previousEducation.map((entry) => (
                     <CareerItem
                       role={entry.data.role}
                       organization={entry.data.organization}
@@ -430,6 +452,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     text-align: center;
   }
   .parallel-marker {
+    grid-area: marker;
     position: relative;
     z-index: 2;
     display: grid;
@@ -462,6 +485,10 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     z-index: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "education work"
+      "marker marker"
+      "education-previous .";
     gap: clamp(1.5rem, 4vw, 4rem);
     align-items: start;
   }
@@ -471,6 +498,15 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
   .career-stack {
     display: grid;
     gap: 1.25rem;
+  }
+  .education-entry {
+    grid-area: education;
+  }
+  .work-entry {
+    grid-area: work;
+  }
+  .education-previous-entry {
+    grid-area: education-previous;
   }
   .lane-label {
     display: flex;
@@ -535,7 +571,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     }
     .parallel-marker {
       grid-template-columns: auto 1fr;
-      margin: 0 0 0 2.75rem;
+      margin: 0;
       border-radius: var(--radius);
     }
     .parallel-marker small {
@@ -543,18 +579,18 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     }
     .timeline-row {
       grid-template-columns: 2.75rem minmax(0, 1fr);
-      gap: 0;
+      grid-template-areas:
+        ". work"
+        ". education"
+        ". marker"
+        ". education-previous";
+      column-gap: 0;
+      row-gap: 1rem;
     }
-    .education-entry,
     .work-entry {
-      grid-column: 2;
-    }
-    .work-entry {
-      order: 1;
       margin-top: 0;
     }
     .education-entry {
-      order: 2;
       margin-top: 1.25rem;
     }
   }
