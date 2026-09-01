@@ -34,10 +34,40 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
       </p>
     </section>
 
+    <section aria-labelledby="pagelink-copy-button-screenshots">
+      <SectionHeading
+        id="pagelink-copy-button-screenshots"
+        index="02"
+        title="実際のボタンと操作画面"
+      />
+      <div class="screenshot-grid">
+        <figure>
+          <img
+            src="/images/works/pagelink-copy-button/button-on-page.png"
+            alt="Chromeのページ右下に表示されたPageLink Copy Button"
+            width="1400"
+            height="900"
+            loading="lazy"
+          />
+          <figcaption>ページ右下に表示されるボタン。ドラッグして位置を移動できます。</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="/images/works/pagelink-copy-button/context-menu.png"
+            alt="Chromeの右クリックメニューに表示されたPageLink Copy Button"
+            width="447"
+            height="567"
+            loading="lazy"
+          />
+          <figcaption>右クリックメニューからもページリンクをコピーできます。</figcaption>
+        </figure>
+      </div>
+    </section>
+
     <section aria-labelledby="pagelink-copy-button-features">
       <SectionHeading
         id="pagelink-copy-button-features"
-        index="02"
+        index="03"
         title="どのようなことができるのか"
       />
       <ul class="feature-grid">
@@ -69,7 +99,7 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
     </section>
 
     <section aria-labelledby="pagelink-copy-button-usage">
-      <SectionHeading id="pagelink-copy-button-usage" index="03" title="どのように活用できるか" />
+      <SectionHeading id="pagelink-copy-button-usage" index="04" title="どのように活用できるか" />
       <div class="usage-list">
         <article>
           <p class="usage-number mono">01 / SHARE</p>
@@ -96,7 +126,7 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
     </section>
 
     <section aria-labelledby="pagelink-copy-button-start">
-      <SectionHeading id="pagelink-copy-button-start" index="04" title="使い始めるには" />
+      <SectionHeading id="pagelink-copy-button-start" index="05" title="使い始めるには" />
       <p>
         現在はChromeウェブストア未公開のため、GitHubリポジトリを取得してビルドした拡張機能をChromeへ読み込んで使用します。セットアップ手順とソースコードはリポジトリで公開しています。
       </p>
@@ -160,7 +190,8 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
   }
 
   .feature-grid,
-  .usage-list {
+  .usage-list,
+  .screenshot-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
@@ -170,7 +201,8 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
   }
 
   .feature-grid li,
-  .usage-list article {
+  .usage-list article,
+  figure {
     padding: clamp(1.25rem, 3vw, 2rem);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg) var(--radius-sm) var(--radius-lg) var(--radius-lg);
@@ -178,9 +210,33 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
   }
 
   .feature-grid li:nth-child(even),
-  .usage-list article:nth-child(3) {
+  .usage-list article:nth-child(3),
+  figure:nth-child(even) {
     border-radius: var(--radius-sm) var(--radius-lg) var(--radius-lg) var(--radius-lg);
     background: var(--color-highlight-soft);
+  }
+
+  .screenshot-grid {
+    align-items: start;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+  }
+
+  figcaption {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
   }
 
   h3 {
@@ -215,7 +271,8 @@ const repository = "https://github.com/toshi-hm/pagelink-copy-button";
 
   @media (max-width: 680px) {
     .feature-grid,
-    .usage-list {
+    .usage-list,
+    .screenshot-grid {
       grid-template-columns: 1fr;
     }
 
