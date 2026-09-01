@@ -48,6 +48,12 @@ test("Featured Works から PageLink Copy Button の詳細ページへ遷移で�
   await expect(page.getByRole("heading", { level: 1, name: "PageLink Copy Button" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "どのようなツールなのか" })).toBeVisible();
   await expect(page.getByText("タイトル付きリンクをコピー")).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: "Chromeのページ右下に表示されたPageLink Copy Button" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: "Chromeの右クリックメニューに表示されたPageLink Copy Button" }),
+  ).toBeVisible();
 });
 
 test("スキルアイコンのCDN失敗時は略称へフォールバックする", async ({ page }) => {
