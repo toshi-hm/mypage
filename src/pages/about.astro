@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import CareerItem from "../components/molecules/CareerItem.astro";
 import ExternalLink from "../components/atoms/ExternalLink.astro";
-import PageHeader from "../components/molecules/PageHeader.astro";
 import SectionHeading from "../components/molecules/SectionHeading.astro";
 import SkillList from "../components/molecules/SkillList.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -57,19 +56,44 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 ---
 
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
-  <PageHeader
-    eyebrow="About me"
-    title="日常を少し便利にする、プロダクトをつくる。"
-    description="フロントエンドを軸に、技術とデザインの境界を行き来しながら、分かりやすく気持ちよく使えるWeb体験を設計・実装しています。"
-  />
-  <nav class="social-links" aria-label="ソーシャルリンク">
-    <ExternalLink href="https://github.com/toshi-hm" label="GitHub"
-      ><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink
-    >
-    <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"
-      ><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink
-    >
-  </nav>
+  <section class="about-intro" aria-labelledby="about-intro-heading">
+    <div class="about-intro-photo">
+      <div class="about-intro-photo-frame">
+        <img
+          src="/images/profile.webp"
+          alt="濱俊也のプロフィール写真"
+          width="1200"
+          height="1200"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <p class="about-intro-photo-caption mono">PROFILE / 2026</p>
+    </div>
+    <div class="about-intro-copy">
+      <p class="eyebrow">About me</p>
+      <h1 id="about-intro-heading">日常を少し便利にする、プロダクトをつくる。</h1>
+      <p class="about-intro-name"><strong>濱 俊也</strong><span class="mono">Hama Toshiya</span></p>
+      <div class="about-intro-description">
+        <p>
+          2024年にLINEヤフー株式会社へ新卒入社したフロントエンドエンジニアです。Vue.js / Nuxt、React
+          / Next.jsを中心に、要件定義から保守運用までプロダクト開発に取り組んでいます。
+        </p>
+        <p>
+          大学院では人工知能科学を専攻し、2026年3月に修士（人工知能科学）を取得。生成AIを理論と実用の両面から学んでいます。
+        </p>
+      </div>
+      <nav class="social-links" aria-label="ソーシャルリンク">
+        <ExternalLink href="https://github.com/toshi-hm" label="GitHub"
+          ><span class="mono">GitHub</span><span aria-hidden="true">↗</span></ExternalLink
+        >
+        <ExternalLink href="https://www.linkedin.com/in/toshiyahama" label="LinkedIn"
+          ><span class="mono">LinkedIn</span><span aria-hidden="true">↗</span></ExternalLink
+        >
+      </nav>
+    </div>
+  </section>
   <div class="profile-grid">
     <section aria-labelledby="skills-heading">
       <SectionHeading id="skills-heading" index="01" title="Skills" /><SkillList skills={skills} />
@@ -166,11 +190,115 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
 </script>
 
 <style>
+  .about-intro {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(13rem, 0.55fr) minmax(0, 1.45fr);
+    gap: clamp(1.5rem, 5vw, 4.5rem);
+    align-items: center;
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface) 76%, transparent);
+    box-shadow: var(--shadow-sm);
+    isolation: isolate;
+  }
+  .about-intro::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 1.25rem;
+    left: 1.25rem;
+    width: min(24vw, 17rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--color-highlight-soft);
+    transform: translate(-1.5rem, -1.5rem);
+  }
+  .about-intro-photo {
+    position: relative;
+    width: 100%;
+    max-width: 18rem;
+    margin: 0 auto;
+  }
+  .about-intro-photo-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 0.55rem solid var(--color-surface);
+    border-radius: 48% 52% 45% 55% / 46% 44% 56% 54%;
+    box-shadow: var(--shadow-lg);
+    transform: rotate(-2deg);
+  }
+  .about-intro-photo-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgb(255 255 255 / 45%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .about-intro-photo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .about-intro-photo-caption {
+    position: absolute;
+    right: -0.5rem;
+    bottom: -1.1rem;
+    margin: 0;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(3deg);
+  }
+  .about-intro-copy {
+    min-width: 0;
+  }
+  .about-intro-copy h1 {
+    margin: 0.75rem 0 1rem;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+  }
+  .about-intro-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.85rem;
+    margin: 0;
+  }
+  .about-intro-name strong {
+    color: var(--color-accent);
+    font-size: 1.2rem;
+  }
+  .about-intro-name span {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .about-intro-description {
+    margin-top: 1.25rem;
+    color: var(--color-text-muted);
+  }
+  .about-intro-description p {
+    margin: 0;
+  }
+  .about-intro-description p + p {
+    margin-top: 0.75rem;
+  }
   .social-links {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin: -2rem 0 clamp(4rem, 8vw, 7rem);
+    margin: 1.5rem 0 0;
   }
   .social-links :global(.external-link) {
     display: inline-flex;
@@ -206,6 +334,9 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     grid-template-columns: 1fr minmax(15rem, 0.45fr);
     gap: clamp(2rem, 6vw, 5rem);
     align-items: end;
+  }
+  .profile-grid :global(.heading) {
+    margin-top: clamp(2rem, 4vw, 3rem);
   }
   aside {
     padding: 1.5rem;
@@ -367,6 +498,17 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     background: color-mix(in srgb, var(--color-coral) 14%, var(--color-surface));
   }
   @media (max-width: 700px) {
+    .about-intro {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+    .about-intro-photo {
+      width: min(100%, 13rem);
+    }
+    .about-intro-copy h1 {
+      margin-top: 0.5rem;
+    }
     .profile-grid {
       grid-template-columns: 1fr;
     }
