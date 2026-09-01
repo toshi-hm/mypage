@@ -9,6 +9,7 @@ const pages = [
   { name: "Works", path: "/works/" },
   { name: "housekeeper詳細", path: "/works/housekeeper/" },
   { name: "PageLink Copy Button詳細", path: "/works/pagelink-copy-button/" },
+  { name: "Meet Subtitles詳細", path: "/works/meet-subtitles-tool/" },
   { name: "About", path: "/about/" },
   { name: "タグ一覧", path: "/tags/" },
   { name: "検索", path: "/search/" },

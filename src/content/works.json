@@ -29,6 +29,16 @@
       "tech": ["bun", "typescript", "wxt"],
       "featured": true,
       "order": 3
+    },
+    {
+      "id": "meet-subtitles-tool",
+      "name": "Meet Subtitles",
+      "description": "Google Meet中の字幕を話者ごとに保存できるブラウザ拡張機能。会議中に字幕をコピー・TXT保存でき、長い会議の内容も後から確認できます。",
+      "detailUrl": "/works/meet-subtitles-tool/",
+      "repo": "https://github.com/toshi-hm/meet-subtitles-tool",
+      "tech": ["typescript", "wxt", "chrome", "indexeddb", "google-drive"],
+      "featured": true,
+      "order": 4
     }
   ]
 }

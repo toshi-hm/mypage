@@ -1,0 +1,280 @@
+---
+import ExternalLink from "../../components/atoms/ExternalLink.astro";
+import SectionHeading from "../../components/molecules/SectionHeading.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "Meet Subtitles";
+const description =
+  "Meet Subtitlesは、Google Meet中の字幕を話者ごとに保存し、会議中にコピー・TXT保存できるChromium系ブラウザ拡張機能です。";
+const repository = "https://github.com/toshi-hm/meet-subtitles-tool";
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="work-detail">
+    <header class="detail-header">
+      <p class="eyebrow">Featured work / Browser extension</p>
+      <h1>{title}</h1>
+      <p class="lead">Meet中の字幕を、その場で残して後から確認する。</p>
+      <div class="actions">
+        <ExternalLink href={repository} label="GitHubリポジトリ">
+          GitHubリポジトリ <span aria-hidden="true">↗</span>
+        </ExternalLink>
+        <a href="/works/">Works一覧へ</a>
+      </div>
+    </header>
+    <section aria-labelledby="meet-subtitles-challenge">
+      <SectionHeading id="meet-subtitles-challenge" index="01" title="従来の課題" />
+      <p>
+        Google
+        Meetが終わった後にGeminiで文字起こしを作ると、発話の取り違えなどがあり、精度に不満が残ることがあります。
+      </p>
+      <p>
+        その一方で、Meet中に画面へ表示される字幕は精度が高く、会議の進行中に発言を追いかけるために役立ちます。
+      </p>
+    </section>
+    <section aria-labelledby="meet-subtitles-idea">
+      <SectionHeading id="meet-subtitles-idea" index="02" title="発想と提案" />
+      <p>
+        そこで、Meet中に表示されている字幕の文章を保存できるようにしたいと考えました。会議が終わってから別の文字起こしを待つのではなく、字幕が表示された時点で手元に残します。
+      </p>
+      <ul class="feature-grid">
+        <li>
+          <h3>クリップボードにコピー</h3>
+          <p>必要な時点で、蓄積した字幕をまとめてコピーできます。</p>
+        </li>
+        <li>
+          <h3>TXTファイルとして保存</h3>
+          <p>字幕をテキストファイルに書き出し、会議後のメモや共有に利用できます。</p>
+        </li>
+        <li>
+          <h3>長い会議も確認</h3>
+          <p>会議中に蓄積した字幕を、長い会議であってもすべて確認できます。</p>
+        </li>
+        <li>
+          <h3>話者ごとに記録</h3>
+          <p>話者名と発話内容をセットで保存し、後から会話の流れを追いやすくします。</p>
+        </li>
+      </ul>
+    </section>
+    <section aria-labelledby="meet-subtitles-screenshots">
+      <SectionHeading id="meet-subtitles-screenshots" index="03" title="Meet中の操作画面" />
+      <div class="screenshot-grid">
+        <figure>
+          <img
+            src="/images/works/meet-subtitles-tool/panel-guide.svg"
+            alt="Google
+Meet画面上に表示されたMeet Subtitlesパネル"
+            width="1200"
+            height="720"
+            loading="lazy"
+          />
+          <figcaption>Meet画面上のパネルから、字幕の件数確認とコピー・保存を行います。</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="/images/works/meet-subtitles-tool/setup-guide.svg"
+            alt="Meet
+SubtitlesをChromeまたはEdgeへ追加するセットアップ手順"
+            width="1200"
+            height="680"
+            loading="lazy"
+          />
+          <figcaption>
+            ChromeまたはEdgeへ追加して、Meetを再読み込みすると使い始められます。
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <section aria-labelledby="meet-subtitles-usage">
+      <SectionHeading id="meet-subtitles-usage" index="04" title="使い方" />
+      <div class="usage-list">
+        <article>
+          <p class="usage-number mono">01 / JOIN</p>
+          <h3>Meetに入室する</h3>
+          <p>
+            Meetを開いて会議に入室すると、字幕が自動的にONになり、Meet
+            Subtitlesパネルが表示されます。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">02 / COLLECT</p>
+          <h3>字幕を蓄積する</h3>
+          <p>
+            会議中の字幕が話者ごとにブラウザ内へ保存されます。パネルで現在の保存件数を確認できます。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">03 / SAVE</p>
+          <h3>コピーまたはTXT保存する</h3>
+          <p>
+            必要なタイミングで「コピー」または「TXT保存」を押し、会議中の字幕を手元へ取り出します。
+          </p>
+        </article>
+        <article>
+          <p class="usage-number mono">04 / REVIEW</p>
+          <h3>会議後に見返す</h3>
+          <p>保存したTXTをメモや資料作成に使い、長い会議であっても全字幕を後から確認できます。</p>
+        </article>
+      </div>
+    </section>
+    <section aria-labelledby="meet-subtitles-stack">
+      <SectionHeading id="meet-subtitles-stack" index="05" title="技術構成" />
+      <ul class="tech-list">
+        <li>TypeScript</li>
+        <li>WXT</li>
+        <li>Chrome MV3</li>
+        <li>IndexedDB</li>
+        <li>Google Drive API</li>
+      </ul>
+      <p class="note">
+        会議中の字幕はブラウザ内に保存し、必要な場合だけTXTとして取り出せます。Google
+        Driveへの保存にも対応しています。
+      </p>
+    </section>
+    <footer class="detail-footer">
+      <a href="/works/">← Works一覧へ</a>
+      <ExternalLink href={repository} label="Repository">
+        Repository <span aria-hidden="true">↗</span>
+      </ExternalLink>
+    </footer>
+  </article>
+</BaseLayout>
+<style>
+  .work-detail {
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  .detail-header {
+    padding: clamp(2rem, 6vw, 5rem) 0 1rem;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(3rem, 9vw, 7rem);
+  }
+  .lead {
+    margin: 1.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .actions a {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+    text-decoration: none;
+  }
+  .actions a:first-child {
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+  section > p,
+  .usage-list p,
+  .note {
+    color: var(--color-text-muted);
+  }
+  .feature-grid,
+  .usage-list,
+  .screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .feature-grid li,
+  .usage-list article,
+  figure {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-sm) var(--radius-lg) var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .feature-grid li:nth-child(even),
+  .usage-list article:nth-child(3),
+  figure:nth-child(even) {
+    border-radius: var(--radius-sm) var(--radius-lg) var(--radius-lg) var(--radius-lg);
+    background: var(--color-highlight-soft);
+  }
+  .screenshot-grid {
+    align-items: start;
+  }
+  figure {
+    margin: 0;
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+  }
+  figcaption {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+  }
+  h3 {
+    margin: 0 0 0.6rem;
+  }
+  .feature-grid p,
+  .usage-list p:last-child {
+    margin: 0;
+  }
+  .usage-number {
+    margin: 0 0 1rem;
+    color: var(--color-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tech-list li {
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font: 600 0.78rem/1.2 var(--font-mono);
+  }
+  .note {
+    margin-bottom: 0;
+  }
+  .detail-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .detail-footer a {
+    color: var(--color-text);
+    font: 700 0.78rem/1.4 var(--font-mono);
+  }
+  @media (max-width: 680px) {
+    .feature-grid,
+    .usage-list,
+    .screenshot-grid {
+      grid-template-columns: 1fr;
+    }
+    .detail-footer {
+      flex-direction: column;
+    }
+  }
+</style>
