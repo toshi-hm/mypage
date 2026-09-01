@@ -59,21 +59,34 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
       }
       return box;
     };
-    const parallelMarker = await getBox(".parallel-marker");
-    const parallelStartEvent = await getBox('.timeline-event[data-date="2024-04"]');
-    const graduateSchool = await getBox(
-      ".career-item.education:has-text('立教大学大学院 人工知能科学研究科')",
-    );
-    const softwareEngineer = await getBox(".career-item.work:has-text('LINEヤフー株式会社')");
-    const college = await getBox(".career-item.education:has-text('立教大学 理学部')");
+    const [parallelMarker, parallelStartEvent, graduateSchool, softwareEngineer, college] =
+      await Promise.all([
+        getBox(".parallel-marker"),
+        getBox('.timeline-event[data-date="2024-04"]'),
+        getBox(".career-item.education:has-text('立教大学大学院 人工知能科学研究科')"),
+        getBox(".career-item.work:has-text('LINEヤフー株式会社')"),
+        getBox(".career-item.education:has-text('立教大学 理学部')"),
+      ]);
 
     expect(parallelMarker.y).toBeGreaterThan(graduateSchool.y + graduateSchool.height);
     expect(parallelMarker.y).toBeGreaterThan(softwareEngineer.y + softwareEngineer.height);
     expect(college.y).toBeGreaterThan(parallelMarker.y + parallelMarker.height);
 
     if (viewport.width > 700) {
-      const jobLabel = await getBox(".work-entry .lane-label");
-      const educationLabel = await getBox(".education-entry .lane-label");
+      const [jobLabel, educationLabel, markerIsFrontmost] = await Promise.all([
+        getBox(".work-entry .lane-label"),
+        getBox(".education-entry .lane-label"),
+        page.evaluate(() => {
+          const marker = document.querySelector<HTMLElement>(".parallel-marker");
+          if (!marker) return false;
+          const rect = marker.getBoundingClientRect();
+          return (
+            document
+              .elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)
+              ?.closest(".parallel-marker") !== null
+          );
+        }),
+      ]);
       expect(jobLabel.x).toBeLessThan(educationLabel.x);
       expect(
         Math.abs(
@@ -96,16 +109,6 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
             graduateSchool.height,
         ),
       ).toBeLessThan(1);
-      const markerIsFrontmost = await page.evaluate(() => {
-        const marker = document.querySelector<HTMLElement>(".parallel-marker");
-        if (!marker) return false;
-        const rect = marker.getBoundingClientRect();
-        return (
-          document
-            .elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)
-            ?.closest(".parallel-marker") !== null
-        );
-      });
       expect(markerIsFrontmost).toBe(true);
     }
   }
@@ -115,14 +118,18 @@ test("Aboutの経歴タイムラインにイベント月と期間が表示され
   await page.goto("/about/");
 
   await expect(page.locator(".timeline-event")).toHaveCount(4);
-  for (const date of ["2026-03", "2024-04", "2024-03", "2020-04"]) {
-    await expect(page.locator(`.timeline-event[data-date="${date}"]`)).toBeVisible();
-  }
+  await Promise.all(
+    ["2026-03", "2024-04", "2024-03", "2020-04"].map((date) =>
+      expect(page.locator(`.timeline-event[data-date="${date}"]`)).toBeVisible(),
+    ),
+  );
 
   const periods = page.locator(".timeline-period");
   await expect(periods).toHaveCount(3);
-  for (let index = 0; index < (await periods.count()); index += 1) {
-    const box = await periods.nth(index).boundingBox();
+  const periodBoxes = await Promise.all(
+    Array.from({ length: await periods.count() }, (_, index) => periods.nth(index).boundingBox()),
+  );
+  for (const box of periodBoxes) {
     expect(box).not.toBeNull();
     expect(box?.height).toBeGreaterThan(box?.width ?? 0);
   }
