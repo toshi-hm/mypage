@@ -38,6 +38,14 @@ test("Featured Works から housekeeper の詳細ページへ遷移できる", a
   await expect(page.getByRole("heading", { level: 1, name: "housekeeper" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "housekeeperとは" })).toBeVisible();
   await expect(page.getByText("Supabase MCPとChatGPT")).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "GitHubリポジトリ（外部サイト・新しいタブ）" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("link", { name: "GitHubリポジトリ（外部サイト・新しいタブ）" })
+      .locator("strong"),
+  ).toHaveText("toshi-hm/housekeeper");
 });
 
 test("Featured Works から PageLink Copy Button の詳細ページへ遷移できる", async ({ page }) => {
@@ -54,6 +62,14 @@ test("Featured Works から PageLink Copy Button の詳細ページへ遷移で�
   await expect(
     page.getByRole("img", { name: "Chromeの右クリックメニューに表示されたPageLink Copy Button" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "GitHubリポジトリ（外部サイト・新しいタブ）" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("link", { name: "GitHubリポジトリ（外部サイト・新しいタブ）" })
+      .locator("strong"),
+  ).toHaveText("toshi-hm/pagelink-copy-button");
 });
 
 test("Featured Works から Meet Subtitles の詳細ページへ遷移できる", async ({ page }) => {
@@ -67,6 +83,14 @@ test("Featured Works から Meet Subtitles の詳細ページへ遷移できる"
   await expect(
     page.getByRole("img", { name: "Google Meet画面上に表示されたMeet Subtitlesパネル" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "GitHubリポジトリ（外部サイト・新しいタブ）" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("link", { name: "GitHubリポジトリ（外部サイト・新しいタブ）" })
+      .locator("strong"),
+  ).toHaveText("toshi-hm/meet-subtitles-tool");
 });
 
 test("スキルアイコンのCDN失敗時は略称へフォールバックする", async ({ page }) => {

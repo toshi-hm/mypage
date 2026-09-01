@@ -1,0 +1,151 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+}
+
+const { href, title, description } = Astro.props;
+const displayUrl = href.replace(/^https?:\/\//, "").replace(/\/$/, "");
+---
+
+<a
+  class="repository-bookmark"
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="GitHubリポジトリ（外部サイト・新しいタブ）"
+>
+  <span class="bookmark-main">
+    <span class="bookmark-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" role="presentation">
+        <path
+          d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+        ></path>
+      </svg>
+    </span>
+    <span class="bookmark-copy">
+      <span class="bookmark-label mono">GitHubリポジトリ</span>
+      <strong>{title}</strong>
+      <span class="bookmark-description">{description}</span>
+      <span class="bookmark-url mono">{displayUrl}</span>
+    </span>
+  </span>
+  <span class="bookmark-arrow" aria-hidden="true">↗</span>
+</a>
+
+<style>
+  .repository-bookmark {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-sm) var(--radius-lg) var(--radius-lg);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .repository-bookmark:hover {
+    border-color: var(--color-text);
+    transform: translateY(-3px);
+  }
+
+  .repository-bookmark:focus-visible {
+    outline: 3px solid var(--color-coral);
+    outline-offset: 3px;
+  }
+
+  .bookmark-main {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 1rem;
+  }
+
+  .bookmark-icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .bookmark-icon svg {
+    width: 1.55rem;
+    height: 1.55rem;
+    fill: currentColor;
+  }
+
+  .bookmark-copy {
+    display: grid;
+    min-width: 0;
+    gap: 0.25rem;
+  }
+
+  .bookmark-label {
+    color: var(--color-accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .bookmark-copy strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.05rem;
+  }
+
+  .bookmark-description {
+    overflow: hidden;
+    color: var(--color-text-muted);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .bookmark-url {
+    overflow: hidden;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bookmark-arrow {
+    flex: 0 0 auto;
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 520px) {
+    .repository-bookmark {
+      align-items: flex-start;
+      padding: 1rem;
+    }
+
+    .bookmark-main {
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .bookmark-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .bookmark-icon svg {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+  }
+</style>

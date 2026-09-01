@@ -1,6 +1,7 @@
 ---
 import ExternalLink from "../../components/atoms/ExternalLink.astro";
 import SectionHeading from "../../components/molecules/SectionHeading.astro";
+import RepositoryBookmark from "../../components/molecules/RepositoryBookmark.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const title = "housekeeper";
@@ -15,10 +16,12 @@ const repository = "https://github.com/toshi-hm/housekeeper";
       <p class="eyebrow">Featured work / housekeeper</p>
       <h1>{title}</h1>
       <p class="lead">家にあるものを把握して、買い物から献立づくりまでを少し便利にする。</p>
+      <RepositoryBookmark
+        href={repository}
+        title="toshi-hm/housekeeper"
+        description="自宅の備品・食料品を管理するWebアプリ。バーコード登録、在庫・賞味期限を管理できます。"
+      />
       <div class="actions">
-        <ExternalLink href={repository} label="GitHubリポジトリ">
-          GitHubリポジトリ <span aria-hidden="true">↗</span>
-        </ExternalLink>
         <a href="/works/">Works一覧へ</a>
       </div>
     </header>
@@ -139,12 +142,6 @@ const repository = "https://github.com/toshi-hm/housekeeper";
     color: var(--color-text);
     font: 700 0.78rem/1.4 var(--font-mono);
     text-decoration: none;
-  }
-
-  .actions a:first-child {
-    border-color: var(--color-text);
-    background: var(--color-text);
-    color: var(--color-bg);
   }
 
   section > p,
