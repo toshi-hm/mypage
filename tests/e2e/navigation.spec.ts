@@ -60,6 +60,7 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
       return box;
     };
     const parallelMarker = await getBox(".parallel-marker");
+    const parallelStartEvent = await getBox('.timeline-event[data-date="2024-04"]');
     const graduateSchool = await getBox(
       ".career-item.education:has-text('立教大学大学院 人工知能科学研究科')",
     );
@@ -79,7 +80,51 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
           softwareEngineer.y + softwareEngineer.height - graduateSchool.y - graduateSchool.height,
         ),
       ).toBeLessThan(1);
+      expect(
+        Math.abs(
+          parallelStartEvent.y +
+            parallelStartEvent.height / 2 -
+            softwareEngineer.y -
+            softwareEngineer.height,
+        ),
+      ).toBeLessThan(1);
+      expect(
+        Math.abs(
+          parallelStartEvent.y +
+            parallelStartEvent.height / 2 -
+            graduateSchool.y -
+            graduateSchool.height,
+        ),
+      ).toBeLessThan(1);
+      const markerIsFrontmost = await page.evaluate(() => {
+        const marker = document.querySelector<HTMLElement>(".parallel-marker");
+        if (!marker) return false;
+        const rect = marker.getBoundingClientRect();
+        return (
+          document
+            .elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)
+            ?.closest(".parallel-marker") !== null
+        );
+      });
+      expect(markerIsFrontmost).toBe(true);
     }
+  }
+});
+
+test("Aboutの経歴タイムラインにイベント月と期間が表示される", async ({ page }) => {
+  await page.goto("/about/");
+
+  await expect(page.locator(".timeline-event")).toHaveCount(4);
+  for (const date of ["2026-03", "2024-04", "2024-03", "2020-04"]) {
+    await expect(page.locator(`.timeline-event[data-date="${date}"]`)).toBeVisible();
+  }
+
+  const periods = page.locator(".timeline-period");
+  await expect(periods).toHaveCount(3);
+  for (let index = 0; index < (await periods.count()); index += 1) {
+    const box = await periods.nth(index).boundingBox();
+    expect(box).not.toBeNull();
+    expect(box?.height).toBeGreaterThan(box?.width ?? 0);
   }
 });
 

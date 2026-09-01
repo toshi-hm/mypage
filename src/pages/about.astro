@@ -59,6 +59,32 @@ const now = new Date();
 const initialVisitDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 const initialVisitLabel = initialVisitDate.replaceAll("-", ".");
 const formatMonthLabel = (month: string) => month.replace("-", ".");
+const currentMonth = initialVisitDate.slice(0, 7);
+const monthNumber = (month: string) => {
+  const [year, monthValue] = month.split("-").map(Number);
+  return year * 12 + monthValue;
+};
+const timelineStartMonth = Math.min(...career.map((entry) => monthNumber(entry.data.startDate)));
+const timelineEndMonth = Math.max(
+  monthNumber(currentMonth),
+  ...career.map((entry) => monthNumber(entry.data.endDate ?? currentMonth)),
+);
+const timelineSpan = Math.max(timelineEndMonth - timelineStartMonth, 1);
+const timelinePosition = (month: string) =>
+  ((timelineEndMonth - monthNumber(month)) / timelineSpan) * 100;
+const timelineEvents = [
+  ...new Set(
+    career.flatMap((entry) =>
+      [entry.data.startDate, entry.data.endDate].filter((date): date is string => Boolean(date)),
+    ),
+  ),
+].toSorted((a, b) => monthNumber(b) - monthNumber(a));
+const timelinePeriods = career.map((entry) => ({
+  startDate: entry.data.startDate,
+  endDate: entry.data.endDate ?? currentMonth,
+  startPosition: timelinePosition(entry.data.startDate),
+  endPosition: timelinePosition(entry.data.endDate ?? currentMonth),
+}));
 ---
 
 <BaseLayout title="About" description="Hama Toshiya のプロフィール">
@@ -118,6 +144,23 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
           理学から人工知能科学へ学びを広げながら、ソフトウェアエンジニアとしてプロダクト開発に取り組んできました。
         </p>
         <div class="career-timeline">
+          <div class="timeline-rail" aria-hidden="true">
+            {timelinePeriods.map((period) => (
+              <span
+                class="timeline-period"
+                data-start-date={period.startDate}
+                data-end-date={period.endDate}
+                style={`--period-top: ${period.endPosition}%; --period-height: ${period.startPosition - period.endPosition}%;`}
+              />
+            ))}
+            {timelineEvents.map((eventDate) => (
+              <span
+                class="timeline-event"
+                data-date={eventDate}
+                style={`--event-position: ${timelinePosition(eventDate)}%;`}
+              />
+            ))}
+          </div>
           <div class="visit-marker">
             <span class="visit-label mono">SITE VISIT</span>
             <time class="visit-date mono" datetime={initialVisitDate}>
@@ -207,6 +250,65 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     const day = String(now.getDate()).padStart(2, "0");
     visitDate.dateTime = `${year}-${month}-${day}`;
     visitDate.textContent = `${year}.${month}.${day}`;
+  }
+
+  const careerTimeline = document.querySelector<HTMLElement>(".career-timeline");
+  const timelineRail = careerTimeline?.querySelector<HTMLElement>(".timeline-rail");
+  const getEdge = (element: HTMLElement | null, edge: "top" | "bottom") => {
+    if (!element) return null;
+    const rect = element.getBoundingClientRect();
+    return rect[edge];
+  };
+  if (careerTimeline && timelineRail) {
+    const getCard = (selector: string) =>
+      careerTimeline.querySelector<HTMLElement>(`${selector} .career-item`);
+
+    const syncTimelineGeometry = () => {
+      const railRect = timelineRail.getBoundingClientRect();
+      const workCard = getCard(".work-entry");
+      const graduateCard = getCard(".education-entry");
+      const collegeCard = getCard(".education-previous-entry");
+      const parallelStart = [getEdge(workCard, "bottom"), getEdge(graduateCard, "bottom")]
+        .filter((edge): edge is number => edge !== null)
+        .reduce((edge, nextEdge) => Math.max(edge, nextEdge), railRect.top);
+      const eventEdges = new Map<string, number>();
+      const setEventEdge = (date: string, edge: number | null) => {
+        if (edge !== null) eventEdges.set(date, edge);
+      };
+      setEventEdge("2026-03", getEdge(graduateCard, "top"));
+      setEventEdge("2024-04", parallelStart);
+      setEventEdge("2024-03", getEdge(collegeCard, "top"));
+      setEventEdge("2020-04", getEdge(collegeCard, "bottom"));
+      eventEdges.set(
+        `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
+        railRect.top,
+      );
+
+      careerTimeline.querySelectorAll<HTMLElement>(".timeline-event").forEach((event) => {
+        const edge = eventEdges.get(event.dataset.date ?? "");
+        if (edge !== undefined && edge !== null) {
+          event.style.setProperty("--event-position", `${edge - railRect.top}px`);
+        }
+      });
+
+      careerTimeline.querySelectorAll<HTMLElement>(".timeline-period").forEach((period) => {
+        const startEdge = eventEdges.get(period.dataset.startDate ?? "");
+        const endEdge = eventEdges.get(period.dataset.endDate ?? "");
+        if (
+          startEdge !== undefined &&
+          startEdge !== null &&
+          endEdge !== undefined &&
+          endEdge !== null
+        ) {
+          period.style.setProperty("--period-top", `${endEdge - railRect.top}px`);
+          period.style.setProperty("--period-height", `${Math.max(startEdge - endEdge, 0)}px`);
+        }
+      });
+    };
+
+    syncTimelineGeometry();
+    window.addEventListener("resize", syncTimelineGeometry);
+    document.fonts?.ready.then(syncTimelineGeometry);
   }
 </script>
 
@@ -399,6 +501,38 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     );
     transform: translateX(-50%);
   }
+  .timeline-rail {
+    position: absolute;
+    z-index: 2;
+    top: 0.7rem;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+  }
+  .timeline-period {
+    position: absolute;
+    top: var(--period-top);
+    left: 50%;
+    width: 0.55rem;
+    height: var(--period-height);
+    border-radius: 999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-surface) 60%, transparent);
+    transform: translateX(-50%);
+  }
+  .timeline-event {
+    position: absolute;
+    top: var(--event-position);
+    left: 50%;
+    width: 0.9rem;
+    aspect-ratio: 1;
+    border: 2px solid var(--color-surface);
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: var(--shadow-sm);
+    transform: translate(-50%, -50%);
+  }
   .career-timeline::after {
     content: "";
     position: absolute;
@@ -481,7 +615,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
   }
   .timeline-row {
     position: relative;
-    z-index: 1;
+    z-index: 3;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
@@ -560,6 +694,10 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
       padding-left: 0;
     }
     .career-timeline::before {
+      left: 1rem;
+    }
+    .timeline-period,
+    .timeline-event {
       left: 1rem;
     }
     .career-timeline::after {
