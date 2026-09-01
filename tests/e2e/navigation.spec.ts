@@ -60,6 +60,7 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
       return box;
     };
     const parallelMarker = await getBox(".parallel-marker");
+    const parallelStartEvent = await getBox('.timeline-event[data-date="2024-04"]');
     const graduateSchool = await getBox(
       ".career-item.education:has-text('立教大学大学院 人工知能科学研究科')",
     );
@@ -79,6 +80,33 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
           softwareEngineer.y + softwareEngineer.height - graduateSchool.y - graduateSchool.height,
         ),
       ).toBeLessThan(1);
+      expect(
+        Math.abs(
+          parallelStartEvent.y +
+            parallelStartEvent.height / 2 -
+            softwareEngineer.y -
+            softwareEngineer.height,
+        ),
+      ).toBeLessThan(1);
+      expect(
+        Math.abs(
+          parallelStartEvent.y +
+            parallelStartEvent.height / 2 -
+            graduateSchool.y -
+            graduateSchool.height,
+        ),
+      ).toBeLessThan(1);
+      const markerIsFrontmost = await page.evaluate(() => {
+        const marker = document.querySelector<HTMLElement>(".parallel-marker");
+        if (!marker) return false;
+        const rect = marker.getBoundingClientRect();
+        return (
+          document
+            .elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)
+            ?.closest(".parallel-marker") !== null
+        );
+      });
+      expect(markerIsFrontmost).toBe(true);
     }
   }
 });

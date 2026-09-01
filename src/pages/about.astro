@@ -251,6 +251,65 @@ const timelinePeriods = career.map((entry) => ({
     visitDate.dateTime = `${year}-${month}-${day}`;
     visitDate.textContent = `${year}.${month}.${day}`;
   }
+
+  const careerTimeline = document.querySelector<HTMLElement>(".career-timeline");
+  const timelineRail = careerTimeline?.querySelector<HTMLElement>(".timeline-rail");
+  const getEdge = (element: HTMLElement | null, edge: "top" | "bottom") => {
+    if (!element) return null;
+    const rect = element.getBoundingClientRect();
+    return rect[edge];
+  };
+  if (careerTimeline && timelineRail) {
+    const getCard = (selector: string) =>
+      careerTimeline.querySelector<HTMLElement>(`${selector} .career-item`);
+
+    const syncTimelineGeometry = () => {
+      const railRect = timelineRail.getBoundingClientRect();
+      const workCard = getCard(".work-entry");
+      const graduateCard = getCard(".education-entry");
+      const collegeCard = getCard(".education-previous-entry");
+      const parallelStart = [getEdge(workCard, "bottom"), getEdge(graduateCard, "bottom")]
+        .filter((edge): edge is number => edge !== null)
+        .reduce((edge, nextEdge) => Math.max(edge, nextEdge), railRect.top);
+      const eventEdges = new Map<string, number>();
+      const setEventEdge = (date: string, edge: number | null) => {
+        if (edge !== null) eventEdges.set(date, edge);
+      };
+      setEventEdge("2026-03", getEdge(graduateCard, "top"));
+      setEventEdge("2024-04", parallelStart);
+      setEventEdge("2024-03", getEdge(collegeCard, "top"));
+      setEventEdge("2020-04", getEdge(collegeCard, "bottom"));
+      eventEdges.set(
+        `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
+        railRect.top,
+      );
+
+      careerTimeline.querySelectorAll<HTMLElement>(".timeline-event").forEach((event) => {
+        const edge = eventEdges.get(event.dataset.date ?? "");
+        if (edge !== undefined && edge !== null) {
+          event.style.setProperty("--event-position", `${edge - railRect.top}px`);
+        }
+      });
+
+      careerTimeline.querySelectorAll<HTMLElement>(".timeline-period").forEach((period) => {
+        const startEdge = eventEdges.get(period.dataset.startDate ?? "");
+        const endEdge = eventEdges.get(period.dataset.endDate ?? "");
+        if (
+          startEdge !== undefined &&
+          startEdge !== null &&
+          endEdge !== undefined &&
+          endEdge !== null
+        ) {
+          period.style.setProperty("--period-top", `${endEdge - railRect.top}px`);
+          period.style.setProperty("--period-height", `${Math.max(startEdge - endEdge, 0)}px`);
+        }
+      });
+    };
+
+    syncTimelineGeometry();
+    window.addEventListener("resize", syncTimelineGeometry);
+    document.fonts?.ready.then(syncTimelineGeometry);
+  }
 </script>
 
 <style>
@@ -556,7 +615,7 @@ const timelinePeriods = career.map((entry) => ({
   }
   .timeline-row {
     position: relative;
-    z-index: 1;
+    z-index: 3;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
