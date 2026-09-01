@@ -27,7 +27,19 @@ test("Works と About にナビゲーションできる", async ({ page }) => {
 
   await page.getByRole("navigation").getByRole("link", { name: "About" }).click();
   await expect(page).toHaveURL(/\/about\/$/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("日常を少し便利にする");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "日常を少し便利にする、プロダクトをつくる。" }),
+  ).toBeVisible();
+  const profileImage = page.getByRole("img", { name: "濱俊也のプロフィール写真" });
+  await expect(profileImage).toBeVisible();
+  await expect(profileImage).toBeInViewport();
+  const aboutIntro = page.locator(".about-intro");
+  await expect(
+    aboutIntro.getByRole("link", { name: "GitHub（外部サイト・新しいタブ）" }),
+  ).toBeVisible();
+  await expect(
+    aboutIntro.getByRole("link", { name: "LinkedIn（外部サイト・新しいタブ）" }),
+  ).toBeVisible();
 });
 
 test("Featured Works から housekeeper の詳細ページへ遷移できる", async ({ page }) => {
