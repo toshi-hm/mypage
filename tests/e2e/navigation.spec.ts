@@ -56,6 +56,19 @@ test("Featured Works から PageLink Copy Button の詳細ページへ遷移で�
   ).toBeVisible();
 });
 
+test("Featured Works から Meet Subtitles の詳細ページへ遷移できる", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Meet Subtitlesの詳細ページ" }).click();
+
+  await expect(page).toHaveURL(/\/works\/meet-subtitles-tool\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Meet Subtitles" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "従来の課題" })).toBeVisible();
+  await expect(page.getByText("クリップボードにコピー")).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: "Google Meet画面上に表示されたMeet Subtitlesパネル" }),
+  ).toBeVisible();
+});
+
 test("スキルアイコンのCDN失敗時は略称へフォールバックする", async ({ page }) => {
   await page.route("https://cdn.jsdelivr.net/**", (route) => route.abort());
   await page.route("https://cdn.jsdelivr.net/gh/devicons/**", (route) => route.abort());
