@@ -151,7 +151,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
             {work.length > 0 && (
               <div class="timeline-entry work-entry">
                 <p class="lane-label">
-                  <span aria-hidden="true">01</span> Professional
+                  <span aria-hidden="true">01</span> Job
                 </p>
                 <div class="career-stack">
                   {work.map((entry) => (
@@ -172,7 +172,7 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
               <div class="parallel-marker" role="note">
                 <span class="mono">{formatMonthLabel(parallelStartDate)}</span>
                 <strong>複数のキャリアを並行して開始</strong>
-                <small>Education × Professional</small>
+                <small>Education × Job</small>
               </div>
             )}
             {previousEducation.length > 0 && (
@@ -486,9 +486,9 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
-      "education work"
+      "work education"
       "marker marker"
-      "education-previous .";
+      ". education-previous";
     gap: clamp(1.5rem, 4vw, 4rem);
     align-items: start;
   }
@@ -498,6 +498,14 @@ const formatMonthLabel = (month: string) => month.replace("-", ".");
   .career-stack {
     display: grid;
     gap: 1.25rem;
+  }
+  .parallel-row > .timeline-entry:not(.education-previous-entry) {
+    align-self: stretch;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .parallel-row > .timeline-entry:not(.education-previous-entry) .career-stack {
+    align-content: end;
   }
   .education-entry {
     grid-area: education;

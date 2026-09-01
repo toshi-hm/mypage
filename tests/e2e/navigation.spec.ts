@@ -69,6 +69,17 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
     expect(parallelMarker.y).toBeGreaterThan(graduateSchool.y + graduateSchool.height);
     expect(parallelMarker.y).toBeGreaterThan(softwareEngineer.y + softwareEngineer.height);
     expect(college.y).toBeGreaterThan(parallelMarker.y + parallelMarker.height);
+
+    if (viewport.width > 700) {
+      const jobLabel = await getBox(".work-entry .lane-label");
+      const educationLabel = await getBox(".education-entry .lane-label");
+      expect(jobLabel.x).toBeLessThan(educationLabel.x);
+      expect(
+        Math.abs(
+          softwareEngineer.y + softwareEngineer.height - graduateSchool.y - graduateSchool.height,
+        ),
+      ).toBeLessThan(1);
+    }
   }
 });
 
