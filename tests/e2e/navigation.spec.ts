@@ -83,6 +83,23 @@ test("Aboutの並行開始マーカーが経歴カードの間に表示される
   }
 });
 
+test("Aboutの経歴タイムラインにイベント月と期間が表示される", async ({ page }) => {
+  await page.goto("/about/");
+
+  await expect(page.locator(".timeline-event")).toHaveCount(4);
+  for (const date of ["2026-03", "2024-04", "2024-03", "2020-04"]) {
+    await expect(page.locator(`.timeline-event[data-date="${date}"]`)).toBeVisible();
+  }
+
+  const periods = page.locator(".timeline-period");
+  await expect(periods).toHaveCount(3);
+  for (let index = 0; index < (await periods.count()); index += 1) {
+    const box = await periods.nth(index).boundingBox();
+    expect(box).not.toBeNull();
+    expect(box?.height).toBeGreaterThan(box?.width ?? 0);
+  }
+});
+
 test("Featured Works から housekeeper の詳細ページへ遷移できる", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "housekeeperの詳細ページ" }).click();
