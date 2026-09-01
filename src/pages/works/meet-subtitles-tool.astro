@@ -1,6 +1,7 @@
 ---
 import ExternalLink from "../../components/atoms/ExternalLink.astro";
 import SectionHeading from "../../components/molecules/SectionHeading.astro";
+import RepositoryBookmark from "../../components/molecules/RepositoryBookmark.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const title = "Meet Subtitles";
@@ -15,10 +16,12 @@ const repository = "https://github.com/toshi-hm/meet-subtitles-tool";
       <p class="eyebrow">Featured work / Browser extension</p>
       <h1>{title}</h1>
       <p class="lead">Meet中の字幕を、その場で残して後から確認する。</p>
+      <RepositoryBookmark
+        href={repository}
+        title="toshi-hm/meet-subtitles-tool"
+        description="Google Meet中の字幕を話者ごとに保存できるブラウザ拡張機能。"
+      />
       <div class="actions">
-        <ExternalLink href={repository} label="GitHubリポジトリ">
-          GitHubリポジトリ <span aria-hidden="true">↗</span>
-        </ExternalLink>
         <a href="/works/">Works一覧へ</a>
       </div>
     </header>
@@ -169,11 +172,6 @@ SubtitlesをChromeまたはEdgeへ追加するセットアップ手順"
     color: var(--color-text);
     font: 700 0.78rem/1.4 var(--font-mono);
     text-decoration: none;
-  }
-  .actions a:first-child {
-    border-color: var(--color-text);
-    background: var(--color-text);
-    color: var(--color-bg);
   }
   section > p,
   .usage-list p,
