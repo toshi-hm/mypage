@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SITE_URL } from "../src/consts";
@@ -13,6 +13,7 @@ const REQUIRED_META = [
   ["property", "og:site_name"],
   ["property", "og:locale"],
   ["property", "og:image"],
+  ["property", "og:image:alt"],
 ] as const;
 
 type Attributes = Record<string, string>;
@@ -45,6 +46,15 @@ async function findHtmlFiles(directory: string): Promise<string[]> {
   );
 
   return files.flat(1);
+}
+
+export function getRoutePath(relativePath: string): string {
+  if (relativePath === "index.html") return "/";
+  if (relativePath === "404.html") return "/404/";
+  if (relativePath.endsWith("/index.html")) {
+    return `/${relativePath.slice(0, -"index.html".length)}`;
+  }
+  return `/${relativePath}`;
 }
 
 function assertAbsoluteUrl(value: string, label: string, filePath: string): string | null {
@@ -97,6 +107,7 @@ export async function validateSeoMetadata(distDirectory: string): Promise<void> 
 
     const ogUrl = metadata.get("property=og:url")?.content;
     const ogImage = metadata.get("property=og:image")?.content;
+    const ogImageAlt = metadata.get("property=og:image:alt")?.content;
     const canonicalUrl = canonicalLinks[0]?.href;
 
     for (const [label, value] of [
@@ -112,6 +123,25 @@ export async function validateSeoMetadata(distDirectory: string): Promise<void> 
 
     if (ogUrl && canonicalUrl && ogUrl !== canonicalUrl) {
       errors.push(`${relativePath}: og:urlとcanonicalのURLが一致していません。`);
+    }
+
+    const expectedUrl = new URL(getRoutePath(relativePath), expectedSiteUrl).href;
+    if (ogUrl && ogUrl !== expectedUrl) {
+      errors.push(`${relativePath}: og:urlが生成ファイルの公開URLと一致していません。`);
+    }
+
+    if (ogImage && ogImageAlt) {
+      try {
+        const imageUrl = new URL(ogImage);
+        if (imageUrl.origin === expectedSiteUrl.origin) {
+          const imagePath = join(distDirectory, imageUrl.pathname.replace(/^\\/+/, ""));
+          if (!(await stat(imagePath)).isFile()) {
+            errors.push(`${relativePath}: og:imageの実体がdistにありません。`);
+          }
+        }
+      } catch {
+        // URL形式のエラーは上の絶対URL検証で報告する。
+      }
     }
 
     if (ogUrl) {
