@@ -36,7 +36,6 @@ test("LINE Seed JPをセルフホストしてサイト全体の標準フォン�
   expect(stylesheet).toContain('@import "@fontsource/line-seed-jp/latin-400.css"');
 });
 
-
 test("全ページ共通のSEOメタデータを出力する", async () => {
   const container = await createContainer();
   const result = await container.renderToString(BaseLayout, {
