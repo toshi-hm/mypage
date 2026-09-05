@@ -52,8 +52,12 @@ test("全ページ共通のSEOメタデータを出力する", async () => {
   expect(result).toContain('<meta property="og:title" content="About | Hama Toshiya"');
   expect(result).toContain('<meta property="og:description" content="プロフィール"');
   expect(result).toContain('<meta property="og:type" content="website"');
-  expect(result).toContain('<meta property="og:url" content="https://toshi-page.mayabase.workers.dev/');
+  expect(result).toContain(
+    '<meta property="og:url" content="https://toshi-page.mayabase.workers.dev/',
+  );
   expect(result).toContain('<meta property="og:site_name" content="Hama Toshiya | mypage"');
   expect(result).toContain('<meta property="og:locale" content="ja_JP"');
-  expect(result).toContain('<meta property="og:image" content="https://toshi-page.mayabase.workers.dev/images/profile.webp"');
+  expect(result).toContain(
+    '<meta property="og:image" content="https://toshi-page.mayabase.workers.dev/images/profile.webp"',
+  );
 });
