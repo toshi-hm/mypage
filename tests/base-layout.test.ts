@@ -17,6 +17,7 @@ test("OGP画像をX向け画像メタデータにも反映する", async () => {
     props: {
       title: "Home",
       ogImage: "https://example.com/og.png",
+      keywords: ["Hama Toshiya"],
     },
   });
 
@@ -27,7 +28,7 @@ test("OGP画像をX向け画像メタデータにも反映する", async () => {
 test("LINE Seed JPをセルフホストしてサイト全体の標準フォントとして読み込む", async () => {
   const container = await createContainer();
   const result = await container.renderToString(BaseLayout, {
-    props: { title: "Home" },
+    props: { title: "Home", keywords: ["Hama Toshiya"] },
   });
   const stylesheet = await readFile(resolve("src/styles/global.css"), "utf8");
 
