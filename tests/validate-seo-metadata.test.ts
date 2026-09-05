@@ -63,7 +63,6 @@ test("生成ファイルとog:urlの不一致を検出する", async () => {
   }
 });
 
-
 async function expectValidationError(
   html: string,
   message: string,
