@@ -21,7 +21,11 @@ const { tag } = Astro.params;
 const { articles } = Astro.props;
 ---
 
-<BaseLayout title={`Tag: ${tag}`} description={`タグ「${tag}」の記事一覧`}>
+<BaseLayout
+  title={`Tag: ${tag}`}
+  description={`タグ「${tag}」の記事一覧`}
+  keywords={["記事", tag ?? "", "技術ブログ"]}
+>
   <PageHeader
     eyebrow={`${articles.length} stories`}
     title={`#${tag}`}
