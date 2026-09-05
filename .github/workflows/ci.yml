@@ -71,6 +71,8 @@ jobs:
       - run: bun run build
       - name: Validate generated content links
         run: bun run content:validate
+      - name: Validate generated SEO metadata
+        run: bun run seo:validate
       - name: Validate wrangler config (dry-run)
         run: bun run deploy:dry-run
       - uses: actions/upload-artifact@v7
