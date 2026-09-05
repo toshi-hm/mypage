@@ -27,8 +27,9 @@ const adminImageUrl = new URL("/images/profile.webp", SITE_URL);
     <meta property="og:locale" content="ja_JP" />
     <meta
       property="og:image"
-      content="https://toshi-page.mayabase.workers.dev/images/profile.webp"
+      content={adminImageUrl.href}
     />
+    <meta property="og:image:alt" content="Hama Toshiyaのプロフィール写真" />
     <link rel="cms-config-url" href="/admin/config.yml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{adminTitle}</title>
