@@ -30,6 +30,7 @@ const adminImageUrl = new URL("/images/profile.webp", SITE_URL);
       content={adminImageUrl.href}
     />
     <meta property="og:image:alt" content="Hama Toshiyaのプロフィール写真" />
+    <link rel="canonical" href={adminUrl} />
     <link rel="cms-config-url" href="/admin/config.yml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{adminTitle}</title>
