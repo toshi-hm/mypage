@@ -28,7 +28,11 @@ const jsonLd = buildWebSiteLd({
 });
 ---
 
-<BaseLayout title="Home" jsonLd={jsonLd}>
+<BaseLayout
+  title="Home"
+  keywords={["Hama Toshiya", "ポートフォリオ", "フロントエンドエンジニア", "Web開発", "個人サイト"]}
+  jsonLd={jsonLd}
+>
   <HomeHero />
   <HomeProfile />
   {
