@@ -44,6 +44,7 @@ const { article, newer, older, related } = Astro.props;
 const { Content } = await render(article);
 const { title, pubDate, updatedDate, tags } = article.data;
 const description = excerpt(article.data, article.body);
+const keywords = tags.length > 0 ? tags : ["技術記事", "Web開発", "フロントエンド"];
 const jsonLd = buildBlogPostingLd({
   title,
   description,
@@ -59,7 +60,7 @@ const jsonLd = buildBlogPostingLd({
   title={title}
   description={description}
   jsonLd={jsonLd}
-  keywords={tags}
+  keywords={keywords}
   ogType="article"
   publishedTime={pubDate}
   modifiedTime={updatedDate}
