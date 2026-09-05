@@ -134,7 +134,7 @@ export async function validateSeoMetadata(distDirectory: string): Promise<void> 
       try {
         const imageUrl = new URL(ogImage);
         if (imageUrl.origin === expectedSiteUrl.origin) {
-          const imagePath = join(distDirectory, imageUrl.pathname.replace(/^\\/+/, ""));
+          const imagePath = join(distDirectory, imageUrl.pathname.replace(/^\/+/, ""));
           if (!(await stat(imagePath)).isFile()) {
             errors.push(`${relativePath}: og:imageの実体がdistにありません。`);
           }
