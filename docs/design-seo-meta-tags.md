@@ -15,7 +15,7 @@
 
 ## 2. 設計
 
-`src/layouts/BaseLayout.astro` をメタデータの単一出力点とする。
+`src/layouts/BaseLayout.astro` を公開ページのメタデータ出力点とし、`admin` は認証画面専用の出力を持つ。ただし、どちらも同じメタデータ項目とURL検証の契約に従う。
 
 - `title`: `Home` はサイト名、それ以外は「ページ名 | Hama Toshiya」
 - `description`: ページ固有値。未指定時はサイト概要
@@ -27,13 +27,14 @@
 - `og:locale`: `ja_JP`
 - `og:image`: ページ指定値、または `/images/profile.webp` の絶対URL
 
-記事詳細ページは既存のタグ配列を keywords に利用し、タグ一覧ページは現在のタグ名を含める。作品詳細ページは作品の機能・技術領域を表す語を個別に指定する。
+記事詳細ページは既存のタグ配列を keywords に利用し、タグが空の場合は「技術記事」「Web開発」「フロントエンド」で補完する。タグ一覧ページは一覧全体を表す固定キーワードを使い、タグ詳細ページは現在のタグ名を含める。作品詳細ページは作品の機能・技術領域を表す語を個別に指定する。
 
 対象はAstroがHTMLとして生成する公開ページ、404ページ、管理画面とする。RSS・robots.txt・sitemapはHTMLメタタグを持たない機械可読リソースのため対象外とする。
 
 ## 3. 検証
 
 - BaseLayoutのコンテナテストで各メタ項目の出力を確認する
+- SEO検証スクリプトのユニットテストで正常な生成HTML、ルート変換、`og:url` と生成ファイルの不一致を確認する
 - `bun run seo:validate` で `dist/**/*.html` を走査し、対象HTMLごとにtitleと10項目の存在数・content値・絶対URL・生成ファイルパスとの一致・画像実体を確認する
 - 記事詳細のkeywordsは記事タグ、タグ詳細のkeywordsは対象タグをページpropsから渡す
 - `typecheck` と `build` で全ページのprops・静的生成を確認する
