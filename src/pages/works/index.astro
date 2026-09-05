@@ -7,7 +7,11 @@ import { sortWorks } from "../../utils/works";
 const works = sortWorks(await getCollection("works"));
 ---
 
-<BaseLayout title="Works" description="Hama Toshiya の制作物・プロジェクト">
+<BaseLayout
+  title="Works"
+  description="Hama Toshiya の制作物・プロジェクト"
+  keywords={["Hama Toshiya", "ポートフォリオ", "制作実績", "Webアプリ", "Chrome拡張機能"]}
+>
   <PageHeader
     eyebrow="Selected projects"
     title="Works"

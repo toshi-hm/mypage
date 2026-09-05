@@ -1,4 +1,11 @@
 ---
+import { SITE_TITLE, SITE_URL } from "../../consts";
+
+const adminTitle = `Content Manager | ${SITE_TITLE}`;
+const adminDescription = "mypageのコンテンツ管理画面";
+const adminUrl = new URL("/admin/", SITE_URL);
+const adminImageUrl = new URL("/images/profile.webp", SITE_URL);
+
 // Sveltia CMS 管理画面。@sveltia/cms を Vite でバンドルして同梱する(外部 CDN 非依存)。
 // ローカルでは「Work with Local Repository」でプロキシ不要で編集できる。
 // 本番で GitHub ログインを使うには OAuth プロキシが必要(docs/design-articles.md 参照)。
@@ -10,9 +17,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
+    <meta name="description" content={adminDescription} />
+    <meta name="keywords" content="mypage, コンテンツ管理, Hama Toshiya" />
+    <meta property="og:title" content={adminTitle} />
+    <meta property="og:description" content={adminDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={adminUrl.href} />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:image" content={adminImageUrl.href} />
+    <meta property="og:image:alt" content="Hama Toshiyaのプロフィール写真" />
+    <link rel="canonical" href={adminUrl} />
     <link rel="cms-config-url" href="/admin/config.yml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>Content Manager | mypage</title>
+    <title>{adminTitle}</title>
   </head>
   <body>
     <script>
