@@ -33,6 +33,8 @@
 
 ## 3. 検証
 
-- BaseLayoutのコンテナテストで10項目の出力を確認する
+- BaseLayoutのコンテナテストで各メタ項目の出力を確認する
+- `bun run seo:validate` で `dist/**/*.html` を走査し、対象HTMLごとにtitleと10項目の存在数・content値・絶対URLを確認する
+- 記事詳細のkeywordsは記事タグ、タグ詳細のkeywordsは対象タグをページpropsから渡す
 - `typecheck` と `build` で全ページのprops・静的生成を確認する
-- PRのCIでlint、format、test、buildを確認する
+- PRのCIでlint、format、test、build、生成HTML検証を確認する
