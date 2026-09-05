@@ -7,7 +7,7 @@
 - HTMLページはすべて、共通レイアウトから同じメタ項目を出力する
 - title・description・keywordsは各ページの内容に合わせて定義する
 - OGPのURLはAstroのサイト設定を基準に、現在のパスを結合した絶対URLにする
-- OGP画像は既存のプロフィール画像を全ページの既定画像として使い、相対URLを残さない
+- OGP画像は既存のプロフィール画像を既定画像として使い、利用可能な作品画像はページ固有画像を優先し、相対URLを残さない
 - 日本語サイトとして `og:locale=ja_JP` を固定する
 - 管理画面もHTMLページとして項目を揃えるが、既存の `noindex` は維持する
 
@@ -34,7 +34,7 @@
 ## 3. 検証
 
 - BaseLayoutのコンテナテストで各メタ項目の出力を確認する
-- `bun run seo:validate` で `dist/**/*.html` を走査し、対象HTMLごとにtitleと10項目の存在数・content値・絶対URLを確認する
+- `bun run seo:validate` で `dist/**/*.html` を走査し、対象HTMLごとにtitleと10項目の存在数・content値・絶対URL・生成ファイルパスとの一致・画像実体を確認する
 - 記事詳細のkeywordsは記事タグ、タグ詳細のkeywordsは対象タグをページpropsから渡す
 - `typecheck` と `build` で全ページのprops・静的生成を確認する
 - PRのCIでlint、format、test、build、生成HTML検証を確認する
