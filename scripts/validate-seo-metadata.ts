@@ -31,9 +31,7 @@ function getAttributes(tag: string): Attributes {
 function findMetaTags(html: string, attribute: string, value: string): Attributes[] {
   const tags = html.match(/<meta\b[^>]*>/gi) ?? [];
 
-  return tags
-    .map(getAttributes)
-    .filter((attributes) => attributes[attribute] === value);
+  return tags.map(getAttributes).filter((attributes) => attributes[attribute] === value);
 }
 
 async function findHtmlFiles(directory: string): Promise<string[]> {
@@ -83,9 +81,7 @@ export async function validateSeoMetadata(distDirectory: string): Promise<void> 
       const content = match?.content;
 
       if (matches.length !== 1 || !content) {
-        errors.push(
-          `${relativePath}: meta ${key} はcontent付きで1つだけ指定してください。`,
-        );
+        errors.push(`${relativePath}: meta ${key} はcontent付きで1つだけ指定してください。`);
       } else {
         metadata.set(key, match);
       }
