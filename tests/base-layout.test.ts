@@ -35,3 +35,26 @@ test("LINE Seed JPをセルフホストしてサイト全体の標準フォン�
   expect(stylesheet).toContain('@import "@fontsource/line-seed-jp/japanese-400.css"');
   expect(stylesheet).toContain('@import "@fontsource/line-seed-jp/latin-400.css"');
 });
+
+
+test("全ページ共通のSEOメタデータを出力する", async () => {
+  const container = await createContainer();
+  const result = await container.renderToString(BaseLayout, {
+    props: {
+      title: "About",
+      description: "プロフィール",
+      keywords: ["Hama Toshiya", "プロフィール"],
+    },
+  });
+
+  expect(result).toContain("<title>About | Hama Toshiya</title>");
+  expect(result).toContain('<meta name="description" content="プロフィール"');
+  expect(result).toContain('<meta name="keywords" content="Hama Toshiya, プロフィール"');
+  expect(result).toContain('<meta property="og:title" content="About | Hama Toshiya"');
+  expect(result).toContain('<meta property="og:description" content="プロフィール"');
+  expect(result).toContain('<meta property="og:type" content="website"');
+  expect(result).toContain('<meta property="og:url" content="http://localhost/about"');
+  expect(result).toContain('<meta property="og:site_name" content="Hama Toshiya | mypage"');
+  expect(result).toContain('<meta property="og:locale" content="ja_JP"');
+  expect(result).toContain('<meta property="og:image" content="http://localhost/images/profile.webp"');
+});
