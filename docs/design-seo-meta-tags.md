@@ -17,17 +17,15 @@
 
 `src/layouts/BaseLayout.astro` をメタデータの単一出力点とする。
 
-| 項目 | 出力方法 |
-| --- | --- |
-| `title` | `Home` はサイト名、それ以外は「ページ名 | Hama Toshiya」 |
-| `description` | ページ固有値。未指定時はサイト概要 |
-| `keywords` | ページ固有の文字列配列をカンマ区切りで出力 |
-| `og:title` / `og:description` | title / description と同じ値 |
-| `og:type` | 通常ページは `website`、記事は既存の `article` |
-| `og:url` | `SITE_URL` + `Astro.url.pathname` の絶対URL |
-| `og:site_name` | `SITE_TITLE` |
-| `og:locale` | `ja_JP` |
-| `og:image` | ページ指定値、または `/images/profile.webp` の絶対URL |
+- `title`: `Home` はサイト名、それ以外は「ページ名 | Hama Toshiya」
+- `description`: ページ固有値。未指定時はサイト概要
+- `keywords`: ページ固有の文字列配列をカンマ区切りで出力
+- `og:title` / `og:description`: title / description と同じ値
+- `og:type`: 通常ページは `website`、記事は既存の `article`
+- `og:url`: `SITE_URL` と `Astro.url.pathname` から生成する絶対URL
+- `og:site_name`: `SITE_TITLE`
+- `og:locale`: `ja_JP`
+- `og:image`: ページ指定値、または `/images/profile.webp` の絶対URL
 
 記事詳細ページは既存のタグ配列を keywords に利用し、タグ一覧ページは現在のタグ名を含める。作品詳細ページは作品の機能・技術領域を表す語を個別に指定する。
 
