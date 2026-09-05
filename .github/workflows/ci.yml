@@ -25,6 +25,8 @@ jobs:
         run: |
           bunx oxfmt scripts/validate-seo-metadata.ts
           git diff -- scripts/validate-seo-metadata.ts
+          bunx prettier "src/pages/admin/index.astro"
+          git diff -- src/pages/admin/index.astro
       - name: oxfmt (check)
         run: bun run format:check
       - name: markdownlint
